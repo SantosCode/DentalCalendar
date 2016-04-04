@@ -1,0 +1,133 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	template="/template/modelo.xhtml">
+
+    <ui:define name="conteudo">
+        <h:form id="formListagem">
+            <p:panel header="Representantes">    
+                <p:dataTable id="tabela" emptyMessage="Nenhum registro encontrado." var="representante" paginator="true"
+                             value="#{representanteBean.representantes}" rows="10" paginatorPosition="top" rendered="true" liveResize="true"
+                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {NextPageLink} {LastPageLink}">
+                    <f:facet name="header">
+                        <p:commandButton value="Novo Cadastro" actionListener="#{representanteBean.novo}"
+                                         oncomplete="PF('dialogo').show();"
+                                         update=":mensagem :formCadastro:painel">
+                            <f:actionListener
+                                type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+                        </p:commandButton>
+
+                        <h:commandLink>
+                            <p:graphicImage name="/images/excel.png" width="24"/>
+                            <p:dataExporter type="xls" target="tabela" fileName="representantes" />
+                        </h:commandLink>
+
+                        <h:commandLink>
+                            <p:graphicImage name="/images/pdf.png" width="24"/>
+                            <p:dataExporter type="pdf" target="tabela" fileName="representantes"/>
+                        </h:commandLink>
+
+                        <h:commandLink>
+                            <p:graphicImage name="/images/csv.png" width="24"/>
+                            <p:dataExporter type="csv" target="tabela" fileName="representantes"/>
+                        </h:commandLink>
+
+                        <h:commandLink>
+                            <p:graphicImage name="/images/xml.png" width="24"/>
+                            <p:dataExporter type="xml" target="tabela" fileName="representantes" />
+                        </h:commandLink>
+
+
+                    </f:facet>
+                    <p:column headerText="Nome" filterBy="#{representante.nome}"
+                              sortBy="#{representante.nome}" colspan="1">
+                        <h:outputText value="#{representante.nome}" />
+                    </p:column>
+
+                    <p:column headerText="E-mail" filterBy="#{representante.email}"
+                              sortBy="#{representante.email}" colspan="2">
+                        <h:outputText value="#{representante.email}" />
+                    </p:column>
+
+                    <p:column headerText="Telefone" filterBy="#{representante.telcel}"
+                              sortBy="#{representante.telcel}">
+                        <h:outputText value="#{representante.telcel}" />
+                    </p:column>
+
+                    <p:column headerText="Login" filterBy="#{representante.login}"
+                              sortBy="#{representante.login}">
+                        <h:outputText value="#{representante.login}" />
+                    </p:column>
+
+                    <p:column headerText="Opções" exportable="false">
+                        <p:commandButton icon="ui-icon-trash"
+                                         actionListener="#{representanteBean.excluir}"
+                                         update=":mensagem :formListagem:tabela">
+                            <p:confirm header="Confirmação" message="Deseja excluir o representante"
+                                       icon="ui-icon-alert" />
+                            <f:attribute name="representanteSelecionado" value="#{representante}" />
+                        </p:commandButton>
+
+                        <p:commandButton icon="ui-icon-pencil"
+                                         actionListener="#{representanteBean.editar}"
+                                         update=":mensagem :formCadastro:painel"
+                                         oncomplete="PF('dialogo').show();">
+                            <f:attribute name="representanteSelecionado" value="#{representante}" />
+                            <f:actionListener
+                                type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+                        </p:commandButton>
+                    </p:column>
+                </p:dataTable>
+            </p:panel>
+            <p:confirmDialog global="true">
+                <p:commandButton value="Sim" type="button"
+                                 styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                <p:commandButton value="Não" type="button"
+                                 styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+            </p:confirmDialog>
+        </h:form>
+
+        <p:dialog header="Representantes - Cadastro" widgetVar="dialogo"
+                  draggable="false" resizable="false" modal="false" closable="false">
+
+            <h:form id="formCadastro">
+                <h:panelGrid id="painel" columns="2">
+                    <p:outputLabel for="nome" value="Nome:" />
+                    <p:inputText id="nome" maxlength="50" size="30"
+                                 value="#{representanteBean.representante.nome}" required="true"
+                                 requiredMessage="O campo 'Nome' é obrigatório" />
+
+                    <p:outputLabel for="email" value="E-mail:" />
+                    <p:inputText id="email" maxlength="50" size="30"
+                                 value="#{representanteBean.representante.email}" required="true"
+                                 requiredMessage="O campo 'E-mail' é obrigatório" />
+
+                    <p:outputLabel for="tel" value="Tel Cel:"/>
+                    <p:inputMask id="tel" mask="(99) 99999-9999" value="#{representanteBean.representante.telcel}" />
+
+                    <p:outputLabel for="login" value="Login:" />
+                    <p:inputText id="login" maxlength="50" size="30"
+                                 value="#{representanteBean.representante.login}" required="true"
+                                 requiredMessage="O campo 'Login' é obrigatório" />
+
+                    <p:outputLabel for="senha" value="Senha:"/>
+                    <p:password id="senha" value="#{representanteBean.representante.senha}" feedback="true" 
+                                promptLabel="Digite uma senha forte" weakLabel="Senha Fraca" goodLabel="Senha média" strongLabel="Senha Forte" />
+                </h:panelGrid>
+
+                <h:panelGrid columns="2">
+                    <p:commandButton value="Salvar"
+                                     actionListener="#{representanteBean.salvar}"
+                                     update=":mensagem :formCadastro:painel :formListagem:tabela" />
+
+                    <p:commandButton value="Fechar" oncomplete="PF('dialogo').hide();" />
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
+    </ui:define>
+
+</ui:composition>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+  <session-factory>
+    <!-- Configurações de Conexão com o Banco de Dados -->
+    <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
+    <property name="connection.url">jdbc:mysql://192.168.200.6:3306/odontofs</property>
+    <property name="connection.username">aptech</property>
+    <property name="connection.password">Aptech2016</property>
+    <!-- Pool de Conexões -->
+    <property name="connection.pool_size">5</property>
+    <!-- SQL dialect -->
+    <property name="dialect">org.hibernate.dialect.MySQL5InnoDBDialect</property>
+    <!-- Gerenciamento do Contexto das Sessões -->
+    <property name="current_session_context_class">thread</property>
+    <!-- Cache de Segundo Nível -->
+    <property name="cache.provider_class">org.hibernate.cache.internal.NoCacheProvider</property>
+    <!-- Mostra as SQLs Geradas -->
+    <property name="show_sql">true</property>
+    <!-- Cria as tabelas do banco de dados -->
+    <property name="hbm2ddl.auto">update</property>
+    <!-- Mapeamento das entidades -->
+    <mapping class="br.com.nfsconsultoria.dentalcalendar.domain.Agenda"/>
+    <mapping class="br.com.nfsconsultoria.dentalcalendar.domain.Datas"/>
+    <mapping class="br.com.nfsconsultoria.dentalcalendar.domain.Dentista"/>
+    <mapping class="br.com.nfsconsultoria.dentalcalendar.domain.Representante"/>
+    <mapping class="br.com.nfsconsultoria.dentalcalendar.domain.Radiologia"/>
+    <mapping class="br.com.nfsconsultoria.dentalcalendar.domain.Especial"/>
+  </session-factory>
+</hibernate-configuration>

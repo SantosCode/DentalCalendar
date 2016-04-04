@@ -1,0 +1,178 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="/template/modelo.xhtml">
+
+    <ui:define name="conteudo">
+        <h:form id="formListagem">
+            <p:panel header="Datas Especiais">      
+                <p:dataTable id="tabela" emptyMessage="Nenhum registro encontrado."
+                             paginator="true" value="#{datasBean.datas}" var="datas"
+                             rows="10" paginatorPosition="top" rendered="true"
+                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {NextPageLink} {LastPageLink}">
+                    <f:facet name="header">
+                        <p:commandButton value="Novo Cadastro" actionListener="#{datasBean.novo}"
+                                         oncomplete="PF('dialogo').show();"
+                                         update=":mensagem :formCadastro:painel">
+                            <f:actionListener
+                                type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+                        </p:commandButton>
+
+                        <h:commandLink>
+                            <p:graphicImage name="/images/excel.png" width="24"/>
+                            <p:dataExporter type="xls" target="tabela" fileName="datas"
+                                            postProcessor="#{agendaBean.postProcessXLS}"/>
+                        </h:commandLink>
+
+                        <h:commandLink>
+                            <p:graphicImage name="/images/pdf.png" width="24"/>
+                            <p:dataExporter type="pdf" target="tabela" fileName="datas"
+                                            preProcessor="#{agendaBean.preProcessPDF}"/>
+                        </h:commandLink>
+
+                        <h:commandLink>
+                            <p:graphicImage name="/images/csv.png" width="24"/>
+                            <p:dataExporter type="csv" target="tabela" fileName="datas"/>
+                        </h:commandLink>
+
+                        <h:commandLink>
+                            <p:graphicImage name="/images/xml.png" width="24"/>
+                            <p:dataExporter type="xml" target="tabela" fileName="datas" />
+                        </h:commandLink>
+
+                    </f:facet>
+
+                    <p:column headerText="Dia" filterBy="#{datas.dia}"  filterMatchMode="contains"
+                              sortBy="#{datas.dia}" >
+                        
+                    </p:column>
+
+                    <p:column headerText="Hora" filterBy="#{agenda.hora}" filterMatchMode="contains"
+                              sortBy="#{agenda.hora}">
+                        <p:calendar value="#{agenda.hora}" pattern="HH:mm" timeOnly="true"
+                                    readonly="true" showOn="false" size="6"/>
+                    </p:column>
+
+                    <p:column headerText="Dentista" filterBy="#{agenda.dentista.nome}"
+                              sortBy="#{agenda.dentista.nome}">
+                        <h:outputText value="#{agenda.dentista.nome}" />
+                    </p:column>
+
+                    <p:column headerText="Representante" filterBy="#{agenda.representante.nome}"
+                              sortBy="#{agenda.representante.nome}">
+                        <h:outputText value="#{agenda.representante.nome}" />
+                    </p:column>
+
+                    <p:column headerText="Opções" exportable="false">
+                        <p:commandButton icon="ui-icon-trash"
+                                         actionListener="#{agendaBean.excluir}"
+                                         update=":mensagem :formListagem:tabela">
+                            <p:confirm header="Confirmação" message="Deseja excluir a cidade"
+                                       icon="ui-icon-alert" />
+                            <f:attribute name="agendaSelecionada" value="#{agenda}" />
+                        </p:commandButton>
+
+                        <p:commandButton icon="ui-icon-pencil"
+                                         actionListener="#{agendaBean.editar}"
+                                         update=":mensagem :formCadastro:painel"
+                                         oncomplete="PF('dialogo').show();">
+                            <f:attribute name="agendaSelecionada" value="#{agenda}" />
+                            <f:actionListener
+                                type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+                        </p:commandButton>
+
+                        <p:commandButton icon="ui-icon-info"
+                                         actionListener="#{agendaBean.editar}"
+                                         update=":mensagem :formListagem:tabela" oncomplete="PF('dlgVisu').show();">
+                            <f:attribute name="agendaSelecionada" value="#{agenda}" />
+                            <f:actionListener
+                                type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+                        </p:commandButton>
+                    </p:column>
+                </p:dataTable>
+            </p:panel>
+            <p:confirmDialog global="true">
+                <p:commandButton value="Sim" type="button"
+                                 styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                <p:commandButton value="Não" type="button"
+                                 styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+            </p:confirmDialog>
+        </h:form>
+
+        <p:dialog header="Agenda - Cadastro" widgetVar="dialogo"
+                  draggable="false" resizable="false" modal="true" closable="false" appendTo="@(body)" 
+                  showEffect="clip" responsive="true" dynamic="true">
+            <h:form id="formCadastro">
+                <h:panelGrid id="painel" columns="2">
+                    <p:outputLabel for="dia" value="Dia:" />
+
+                    <p:calendar id="dia" value="#{agendaBean.agenda.dia}" pattern="dd/MM/yyyy" mask="true" 
+                                locale="pt_BR" mindate="1/1/16"/>
+                    <p:outputLabel for="hora" value="Hora:" />
+                    <p:calendar id="hora" value="#{agendaBean.agenda.hora}" pattern="HH:mm" timeOnly="true"
+                                minHour="6" maxHour="19"/>
+
+                    <p:outputLabel for="dentista" value="Dentista:"/>
+                    <p:selectOneMenu id="dentista" value="#{agendaBean.agenda.dentista}" effect="fade"
+                                     filter="true" required="true" requiredMessage="O campo dentista é obrigatório " 
+                                     converter="omnifaces.SelectItemsConverter">
+                        <f:selectItem noSelectionOption="true" itemLabel="Selecione um dentista"/>
+                        <f:selectItems value="#{dentistaBean.dentistas}" var="dentista" 
+                                       itemValue="#{dentista}" itemLabel="#{dentista.nome}"/>
+                    </p:selectOneMenu>
+
+                    <p:outputLabel for="representante" value="Representante:"/>
+                    <p:selectOneMenu id="representante" value="#{agendaBean.agenda.representante}" effect="fade"
+                                     filter="true" required="true" requiredMessage="O campo dentista é obrigatório " 
+                                     converter="omnifaces.SelectItemsConverter" >
+                        <f:selectItem noSelectionOption="true" itemLabel="Selecione um representante"/>
+                        <f:selectItems value="#{representanteBean.representantes}" var="representante" 
+                                       itemValue="#{representante}" itemLabel="#{representante.nome}"/>
+                    </p:selectOneMenu>
+                </h:panelGrid>
+
+                <h:panelGrid columns="2">
+                    <p:commandButton value="Salvar"
+                                     actionListener="#{agendaBean.salvar}"
+                                     update=":mensagem :formCadastro:painel :formListagem:tabela" />
+
+                    <p:commandButton value="Fechar" oncomplete="PF('dialogo').hide();" />
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
+
+        <p:dialog header="Agenda" widgetVar="dlgVisu"
+                  draggable="false" resizable="false" modal="true" closable="false" appendTo="@(body)" 
+                  showEffect="clip" responsive="true" dynamic="true">
+            <h:form id="formVisu">
+                <h:panelGrid id="painel" columns="2">
+                    <p:outputLabel for="dia" value="Dia:" style="font-weight: bold"/>
+                    <p:calendar id="dia" value="#{agendaBean.agenda.dia}" pattern="yyyy-MM-dd" mask="true" 
+                                    readonly="true" showOn="false"/>
+
+                    <p:outputLabel for="hora" value="Hora:" style="font-weight: bold"/>
+                    <p:calendar id="hora" value="#{agendaBean.agenda.hora}" pattern="HH:mm" timeOnly="true"
+                                    readonly="true" showOn="false"/>
+
+                    <p:outputLabel for="dentista" value="Dentista:" style="font-weight: bold"/>
+                    <h:outputText id="dentista" value="#{agendaBean.agenda.dentista.nome}"/>
+
+                    <p:outputLabel for="representante" value="Representante:" style="font-weight: bold"/>
+                    <h:outputText  id="representante" value="#{agendaBean.agenda.representante.nome}" />
+                </h:panelGrid>
+
+                <h:panelGrid columns="2">
+                    <p:commandButton value="Fechar" oncomplete="PF('dlgVisu').hide();" />
+                    <p:commandButton value="Imprimir" type="button" icon="ui-icon-print" >
+                        <p:printer target="formVisu" />
+                    </p:commandButton>
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
+    </ui:define>
+
+</ui:composition>

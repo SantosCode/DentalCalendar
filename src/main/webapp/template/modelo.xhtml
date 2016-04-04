@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title>DentalCalendar</title>
+        <h:outputStylesheet library="css" name="estilos.css" />
+        <h:outputScript name="scripts.js" library="js" />
+    </h:head>
+    <h:body>
+        <p:growl id="mensagem" />
+        <p:layout >
+            <div id="geral" class="divCabecalho">
+                <p:layoutUnit position="north" resizable="true" style="height: 100px">
+                <div id="topo" class="divTopo">
+                   <p:graphicImage library="images" name="banner.png" styleClass="imagemCentralizada" />
+                </div>
+                    </p:layoutUnit> 
+                <p:layoutUnit position="west" resizable="true"  size="300px" style="width: 150px; height: 340px">
+                <div id="cabecalho" class="divCabecalho">
+                    <h:form id="formMenu">
+                        <p:menu toggleable="true" style="size: auto">
+                                <p:submenu label="Arquivo">
+                                    <p:menuitem value="Sair" />
+                                </p:submenu>
+
+                                <p:submenu label="Cadastros">
+                                    <p:menuitem value="Representantes" url="/pages/representante.xhtml" />
+                                    <p:menuitem value="Dentistas" url="/pages/dentista.xhtml" />
+                                    <p:menuitem value="Agenda" url="/pages/agenda.xhtml" />
+                                    <p:menuitem value="Datas" url="/pages/datas.xhtml" />
+                                    <p:menuitem value="Radiologias" url="/pages/radiologias.xhtml"/>
+                                    <p:menuitem value="Especialidades" url="/pages/especialidades.xhtml"/>
+                                </p:submenu>
+
+                                <p:submenu label="Ajuda">
+                                    <p:menuitem value="Sobre" />
+                                </p:submenu>
+                            </p:menu>
+                    </h:form>
+                </div>
+                        </p:layoutUnit>
+                <div id="conteudo" class="left_content">
+                    <p:layoutUnit position="center" resizable="true">
+                    <ui:insert name="conteudo" />
+                </p:layoutUnit>
+                </div>
+            </div>
+        </p:layout>
+    </h:body>
+</html>
