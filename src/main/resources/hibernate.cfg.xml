@@ -26,5 +26,6 @@
     <mapping class="br.com.nfsconsultoria.dentalcalendar.domain.Representante"/>
     <mapping class="br.com.nfsconsultoria.dentalcalendar.domain.Radiologia"/>
     <mapping class="br.com.nfsconsultoria.dentalcalendar.domain.Especial"/>
+    <mapping class="br.com.nfsconsultoria.dentalcalendar.domain.Visita"/>
   </session-factory>
 </hibernate-configuration>

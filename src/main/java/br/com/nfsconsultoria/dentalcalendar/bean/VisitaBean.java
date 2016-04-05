@@ -129,6 +129,7 @@ public class VisitaBean implements Serializable {
         this.agendas = agendaDAO.listar();
         visita = new Visita();
         
+        
          if (this.representantes.isEmpty()) {
              Messages.addGlobalError("É nescessario cadastrar representantes antes");
         } else if (this.dentistas.isEmpty()){
@@ -142,6 +143,7 @@ public class VisitaBean implements Serializable {
 
         try {
             VisitaDAO visitaDAO = new VisitaDAO();
+           
             visitaDAO.merge(visita);
 
             visita = new Visita();
