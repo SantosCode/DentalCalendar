@@ -49,7 +49,7 @@
 
 					<p:column headerText="Agenda" filterBy="#{visita.agenda.dia}"
 						sortBy="#{visita.agenda.dia}">
-						<h:outputText value="#{agenda.dentista.nome}" />
+						<h:outputText value="#{visita.agenda.dia}" />
 					</p:column>
 
 					<p:column headerText="Representante"
@@ -57,9 +57,8 @@
 						sortBy="#{visita.representante.nome}">
 						<h:outputText value="#{visita.representante.nome}" />
 					</p:column>
-					
-					<p:column headerText="Dentista"
-						filterBy="#{visita.dentista.nome}"
+
+					<p:column headerText="Dentista" filterBy="#{visita.dentista.nome}"
 						sortBy="#{visita.dentista.nome}">
 						<h:outputText value="#{visita.dentista.nome}" />
 					</p:column>
@@ -68,25 +67,25 @@
 						<p:commandButton icon="ui-icon-trash"
 							actionListener="#{agendaBean.excluir}"
 							update=":mensagem :formListagem:tabela">
-							<p:confirm header="Confirmação" message="Deseja excluir a cidade"
-								icon="ui-icon-alert" />
-							<f:attribute name="agendaSelecionada" value="#{agenda}" />
+							<p:confirm header="Confirmação"
+								message="Deseja excluir a visita?" icon="ui-icon-alert" />
+							<f:attribute name="visitaSelecionada" value="#{visita}" />
 						</p:commandButton>
 
 						<p:commandButton icon="ui-icon-pencil"
-							actionListener="#{agendaBean.editar}"
+							actionListener="#{visitaBean.editar}"
 							update=":mensagem :formCadastro:painel"
 							oncomplete="PF('dialogo').show();">
-							<f:attribute name="agendaSelecionada" value="#{agenda}" />
+							<f:attribute name="visitaSelecionada" value="#{visita}" />
 							<f:actionListener
 								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
 						</p:commandButton>
 
 						<p:commandButton icon="ui-icon-info"
-							actionListener="#{agendaBean.editar}"
+							actionListener="#{visitaBean.editar}"
 							update=":mensagem :formListagem:tabela"
 							oncomplete="PF('dlgVisu').show();">
-							<f:attribute name="agendaSelecionada" value="#{agenda}" />
+							<f:attribute name="visitaSelecionada" value="#{visita}" />
 							<f:actionListener
 								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
 						</p:commandButton>
@@ -101,47 +100,54 @@
 			</p:confirmDialog>
 		</h:form>
 
-		<p:dialog header="Agenda - Cadastro" widgetVar="dialogo"
+		<p:dialog header="Visita - Cadastro" widgetVar="dialogo"
 			draggable="false" resizable="false" modal="true" closable="false"
 			appendTo="@(body)" showEffect="clip" responsive="true" dynamic="true">
 			<h:form id="formCadastro">
 				<h:panelGrid id="painel" columns="2">
-					<p:outputLabel for="dia" value="Dia:" />
-
-					<p:calendar id="dia" value="#{agendaBean.agenda.dia}"
-						pattern="yyyy-MM-dd" mask="true" locale="pt_BR" mindate="1/1/16" />
-					<p:outputLabel for="hora" value="Hora:" />
-					<p:calendar id="hora" value="#{agendaBean.agenda.hora}"
-						pattern="HH:mm" timeOnly="true" minHour="6" maxHour="19" />
+					<p:outputLabel for="agenda" value="Agenda:" />
+					<p:selectOneMenu id="agenda" value="#{visitaBean.visita.agenda}"
+						effect="fade" filter="true" required="true"
+						requiredMessage="O campo agenda é obrigatório "
+						converter="omnifaces.SelectItemsConverter">
+						<f:selectItem noSelectionOption="true"
+							itemLabel="Selecione uma agenda" />
+						<f:selectItems value="#{visitaBean.agendas}" var="agen"
+							itemValue="#{agen}" itemLabel="#{agen.dia} às #{agen.hora}" />
+					</p:selectOneMenu>
 
 					<p:outputLabel for="dentista" value="Dentista:" />
 					<p:selectOneMenu id="dentista"
-						value="#{agendaBean.agenda.dentista}" effect="fade" filter="true"
+						value="#{visitaBean.visita.dentista}" effect="fade" filter="true"
 						required="true" requiredMessage="O campo dentista é obrigatório "
 						converter="omnifaces.SelectItemsConverter">
 						<f:selectItem noSelectionOption="true"
 							itemLabel="Selecione um dentista" />
-						<f:selectItems value="#{dentistaBean.dentistas}" var="dentista"
+						<f:selectItems value="#{visitaBean.dentistas}" var="dentista"
 							itemValue="#{dentista}" itemLabel="#{dentista.nome}" />
 					</p:selectOneMenu>
 
 					<p:outputLabel for="representante" value="Representante:" />
 					<p:selectOneMenu id="representante"
-						value="#{agendaBean.agenda.representante}" effect="fade"
+						value="#{visitaBean.visita.representante}" effect="fade"
 						filter="true" required="true"
 						requiredMessage="O campo dentista é obrigatório "
 						converter="omnifaces.SelectItemsConverter">
 						<f:selectItem noSelectionOption="true"
 							itemLabel="Selecione um representante" />
-						<f:selectItems value="#{representanteBean.representantes}"
+						<f:selectItems value="#{visitaBean.representantes}"
 							var="representante" itemValue="#{representante}"
 							itemLabel="#{representante.nome}" />
 					</p:selectOneMenu>
+					
+					<p:outputLabel for="acordo" value="Acordo:" />
+					<p:editor id="acordo" widgetVar="editor" value="#{visitaBean.visita.acordo}" 
+					required="true" requiredMessage="O campo acordo é obrigatório"/>
 				</h:panelGrid>
 
 				<h:panelGrid columns="2">
 					<p:commandButton value="Salvar"
-						actionListener="#{agendaBean.salvar}"
+						actionListener="#{visitaBean.salvar}"
 						update=":mensagem :formCadastro:painel :formListagem:tabela" />
 
 					<p:commandButton value="Fechar" oncomplete="PF('dialogo').hide();" />
@@ -155,22 +161,26 @@
 			<h:form id="formVisu">
 				<h:panelGrid id="painel" columns="2">
 					<p:outputLabel for="dia" value="Dia:" style="font-weight: bold" />
-					<p:calendar id="dia" value="#{agendaBean.agenda.dia}"
+					<p:calendar id="dia" value="#{visitaBean.visita.agenda.dia}"
 						pattern="yyyy-MM-dd" mask="true" readonly="true" showOn="false" />
 
 					<p:outputLabel for="hora" value="Hora:" style="font-weight: bold" />
-					<p:calendar id="hora" value="#{agendaBean.agenda.hora}"
+					<p:calendar id="hora" value="#{visitaBean.visita.agenda.hora}"
 						pattern="HH:mm" timeOnly="true" readonly="true" showOn="false" />
 
 					<p:outputLabel for="dentista" value="Dentista:"
 						style="font-weight: bold" />
 					<h:outputText id="dentista"
-						value="#{agendaBean.agenda.dentista.nome}" />
+						value="#{visitaBean.visita.dentista.nome}" />
 
 					<p:outputLabel for="representante" value="Representante:"
 						style="font-weight: bold" />
 					<h:outputText id="representante"
-						value="#{agendaBean.agenda.representante.nome}" />
+						value="#{visitaBean.visita.representante.nome}" />
+
+					<p:outputLabel for="acordo" value="Acordo:"
+						style="font-weight: bold" />
+					<p:editor id="acordo" widgetVar="editor" value="#{visitaBean.visita.acordo}" disabled="true"/>
 				</h:panelGrid>
 
 				<h:panelGrid columns="2">
