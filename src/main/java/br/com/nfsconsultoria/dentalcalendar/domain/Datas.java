@@ -17,20 +17,23 @@ import javax.persistence.Entity;
 public class Datas extends GenericDomain{
     
     @Column(nullable = false, length = 45)
-    private String nome;
+    private String evento;
     
     @Column(nullable = false, length = 10)
     private String dia;
     
     @Column(nullable = false, length = 10)
     private String mes;
+    
+    @Column(nullable = false, length = 45)
+    private String nome;
 
-    public String getNome() {
-        return nome;
+    public String getEvento() {
+        return evento;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setEvento(String evento) {
+        this.evento = evento;
     }
 
     public String getDia() {
@@ -48,4 +51,14 @@ public class Datas extends GenericDomain{
     public void setMes(String mes) {
         this.mes = mes;
     }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    
 }

@@ -17,9 +17,20 @@ import javax.persistence.Entity;
 public class Radiologia extends GenericDomain{
     @Column(nullable = false, length = 45)
     private String nome;
+    
+    @Column(length = 80)
     private String rua;
+    
+    @Column(length = 80)
+    private String complemento;
+    
+    @Column(length = 80)
     private String bairro;
+    
+    @Column(length = 50)
     private String cidade;
+    
+    @Column(length = 15)
     private String telefone;
 
     public String getNome() {
@@ -60,5 +71,13 @@ public class Radiologia extends GenericDomain{
 
     public void setTelefone(String telefone) {
         this.telefone = telefone;
+    }
+
+    public String getComplemento() {
+        return complemento;
+    }
+
+    public void setComplemento(String complemento) {
+        this.complemento = complemento;
     }
 }

@@ -1,314 +1,429 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:h="http://xmlns.jcp.org/jsf/html"
-	xmlns:f="http://xmlns.jcp.org/jsf/core"
-	xmlns:p="http://primefaces.org/ui"
-	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-	template="/template/modelo.xhtml">
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="/template/modelo.xhtml">
 
-	<ui:define name="conteudo">
-		<h:form id="formListagem">
-			<p:panel header="Dentistas">
-				<p:dataTable id="tabela" emptyMessage="Nenhum registro encontrado."
-					paginator="true" value="#{dentistaBean.dentistas}" var="dentista"
-					rows="10" paginatorPosition="top" rendered="true" liveResize="true"
-					tableStyle="width: auto"
-					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {NextPageLink} {LastPageLink}">
-					<f:facet name="header">
-						<p:commandButton value="Novo Cadastro"
-							actionListener="#{dentistaBean.novo}"
-							oncomplete="PF('dialogo').show();"
-							update=":mensagem :formCadastro:painel">
-							<f:actionListener
-								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
-						</p:commandButton>
-						<h:commandLink>
-							<p:graphicImage name="/images/excel.png" width="24" />
-							<p:dataExporter type="xls" target="tabela" fileName="dentistas"
-								postProcessor="#{dentistaBean.postProcessXLS}" />
-						</h:commandLink>
+    <ui:define name="conteudo">
+        <h:form id="formListagem">
+            <p:panel header="Dentistas">
+                <p:dataTable id="tabela" emptyMessage="Nenhum registro encontrado."
+                             paginator="true" value="#{dentistaBean.dentistas}" var="dentista"
+                             rows="10" paginatorPosition="top" rendered="true" liveResize="true"
+                             tableStyle="width: auto"
+                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {NextPageLink} {LastPageLink}">
+                    <f:facet name="header">
+                        <p:commandButton value="Novo Cadastro"
+                                         actionListener="#{dentistaBean.novo}"
+                                         oncomplete="PF('dialogo').show();"
+                                         update=":mensagem :formCadastro:painel">
+                            <f:actionListener
+                                type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+                        </p:commandButton>
+                        <h:commandLink>
+                            <p:graphicImage name="/images/excel.png" width="24" />
+                            <p:dataExporter type="xls" target="tabela" fileName="dentistas"
+                                            postProcessor="#{dentistaBean.postProcessXLS}" />
+                        </h:commandLink>
 
-						<h:commandLink>
-							<p:graphicImage name="/images/pdf.png" width="24" />
-							<p:dataExporter type="pdf" target="tabela" fileName="dentistas"
-								encoding="UTF-8" preProcessor="#{dentistaBean.preProcessPDF}" />
-						</h:commandLink>
+                        <h:commandLink>
+                            <p:graphicImage name="/images/pdf.png" width="24" />
+                            <p:dataExporter type="pdf" target="tabela" fileName="dentistas"
+                                            encoding="UTF-8" preProcessor="#{dentistaBean.preProcessPDF}" />
+                        </h:commandLink>
 
-						<h:commandLink>
-							<p:graphicImage name="/images/csv.png" width="24" />
-							<p:dataExporter type="csv" target="tabela" fileName="dentistas" />
-						</h:commandLink>
+                        <h:commandLink>
+                            <p:graphicImage name="/images/csv.png" width="24" />
+                            <p:dataExporter type="csv" target="tabela" fileName="dentistas" />
+                        </h:commandLink>
 
-						<h:commandLink>
-							<p:graphicImage name="/images/xml.png" width="24" />
-							<p:dataExporter type="xml" target="tabela" fileName="dentistas" />
-						</h:commandLink>
-					</f:facet>
+                        <h:commandLink>
+                            <p:graphicImage name="/images/xml.png" width="24" />
+                            <p:dataExporter type="xml" target="tabela" fileName="dentistas" />
+                        </h:commandLink>
+                    </f:facet>
 
-					<p:column headerText="Nome" filterBy="#{dentista.nome}"
-						sortBy="#{dentista.nome}">
-						<h:outputText value="#{dentista.nome}" />
-					</p:column>
+                    <p:column headerText="Nome" filterBy="#{dentista.nome}"
+                              sortBy="#{dentista.nome}">
+                        <h:outputText value="#{dentista.nome}" />
+                    </p:column>
 
-					<p:column headerText="Espec"
-						filterBy="#{dentista.especialidade.descricao}"
-						sortBy="#{dentista.especialidade.descricao}">
-						<h:outputText value="#{dentista.especialidade.descricao}" />
-					</p:column>
+                    <p:column headerText="Espec"
+                              filterBy="#{dentista.especialidade.descricao}"
+                              sortBy="#{dentista.especialidade.descricao}">
+                        <h:outputText value="#{dentista.especialidade.descricao}" />
+                    </p:column>
 
-					<p:column headerText="Aniver" filterBy="#{dentista.aniver}"
-						sortBy="#{dentista.aniver}">
-						<h:outputText value="#{dentista.aniver}" />
-					</p:column>
-
-					<p:column headerText="Anv Sec" filterBy="#{dentista.aniverSec}"
-						sortBy="#{dentista.aniverSec}">
-						<h:outputText value="#{dentista.aniverSec}" />
-					</p:column>
-
-					<p:column headerText="Tel Cel" filterBy="#{dentista.telcel}"
-						sortBy="#{dentista.telcel}">
-						<h:outputText value="#{dentista.telcel}" />
-					</p:column>
+                    <p:column headerText="Tel Cel" filterBy="#{dentista.telcel}"
+                              sortBy="#{dentista.telcel}">
+                        <h:outputText value="#{dentista.telcel}" />
+                    </p:column>
 
 
-					<p:column headerText="Bairro" filterBy="#{dentista.bairro}"
-						sortBy="#{dentista.bairro}">
-						<h:outputText value="#{dentista.bairro}" />
-					</p:column>
+                    <p:column headerText="Bairro" filterBy="#{dentista.bairro}"
+                              sortBy="#{dentista.bairro}">
+                        <h:outputText value="#{dentista.bairro}" />
+                    </p:column>
 
-					<p:column headerText="Cidade" filterBy="#{dentista.cidade}"
-						sortBy="#{dentista.cidade}">
-						<h:outputText value="#{dentista.cidade}" />
-					</p:column>
+                    <p:column headerText="Cidade" filterBy="#{dentista.cidade}"
+                              sortBy="#{dentista.cidade}">
+                        <h:outputText value="#{dentista.cidade}" />
+                    </p:column>
 
-					<p:column headerText="Opções" exportable="false">
+                    <p:column headerText="Opções" exportable="false">
 
-						<p:commandButton icon="ui-icon-trash"
-							actionListener="#{dentistaBean.excluir}"
-							update=":mensagem :formListagem:tabela">
-							<p:confirm header="Confirmação"
-								message="Deseja excluir o Dentista?" icon="ui-icon-alert" />
-							<f:attribute name="dentistaSelecionado" value="#{dentista}" />
-						</p:commandButton>
+                        <p:commandButton icon="ui-icon-trash"
+                                         actionListener="#{dentistaBean.excluir}"
+                                         update=":mensagem :formListagem:tabela">
+                            <p:confirm header="Confirmação"
+                                       message="Deseja excluir o Dentista?" icon="ui-icon-alert" />
+                            <f:attribute name="dentistaSelecionado" value="#{dentista}" />
+                        </p:commandButton>
 
-						<p:commandButton icon="ui-icon-pencil"
-							actionListener="#{dentistaBean.editar}"
-							update=":mensagem :formCadastro:painel"
-							oncomplete="PF('dialogo').show();">
-							<f:attribute name="dentistaSelecionado" value="#{dentista}" />
-							<f:actionListener
-								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
-						</p:commandButton>
+                        <p:commandButton icon="ui-icon-pencil"
+                                         actionListener="#{dentistaBean.editar}"
+                                         update=":mensagem :formCadastro:painel"
+                                         oncomplete="PF('dialogo').show();">
+                            <f:attribute name="dentistaSelecionado" value="#{dentista}" />
+                            <f:actionListener
+                                type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+                        </p:commandButton>
 
-						<p:commandButton icon="ui-icon-info"
-							actionListener="#{dentistaBean.editar}"
-							update=":mensagem :formListagem:tabela"
-							oncomplete="PF('dlgVisu').show();">
-							<f:attribute name="dentistaSelecionado" value="#{dentista}" />
-							<f:actionListener
-								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
-						</p:commandButton>
-					</p:column>
-				</p:dataTable>
-			</p:panel>
-			<p:confirmDialog global="true">
-				<p:commandButton value="Sim" type="button"
-					styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
-				<p:commandButton value="Não" type="button"
-					styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
-			</p:confirmDialog>
-		</h:form>
+                        <p:commandButton icon="ui-icon-info"
+                                         actionListener="#{dentistaBean.editar}"
+                                         update=":mensagem :formListagem:tabela"
+                                         oncomplete="PF('dlgVisu').show();">
+                            <f:attribute name="dentistaSelecionado" value="#{dentista}" />
+                            <f:actionListener
+                                type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+                        </p:commandButton>
+                    </p:column>
+                </p:dataTable>
+            </p:panel>
+            <p:confirmDialog global="true">
+                <p:commandButton value="Sim" type="button"
+                                 styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                <p:commandButton value="Não" type="button"
+                                 styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+            </p:confirmDialog>
+        </h:form>
 
-		<p:dialog header="Dentista - Cadastro" widgetVar="dialogo"
-			draggable="false" resizable="false" modal="true" closable="false"
-			appendTo="@(body)" showEffect="clip" responsive="true" dynamic="true">
-			<h:form id="formCadastro">
-				<h:panelGrid id="painel" columns="2">
-					<p:outputLabel for="nome" value="Nome:" />
-					<p:inputText id="nome" maxlength="50" size="30"
-						value="#{dentistaBean.dentista.nome}" required="true"
-						requiredMessage="O campo 'Nome' é obrigatório" />
+        <p:dialog header="Dentista - Cadastro" widgetVar="dialogo"
+                  draggable="false" resizable="false" modal="true" closable="false"
+                  appendTo="@(body)" showEffect="clip" responsive="true" dynamic="true">
+            <h:form id="formCadastro">
+                <h:panelGrid id="painel" columns="2">
+                    <p:outputLabel for="nome" value="Nome:" />
+                    <p:inputText id="nome" maxlength="50" size="30"
+                                 value="#{dentistaBean.dentista.nome}" required="true"
+                                 requiredMessage="O campo 'Nome' é obrigatório" />
 
-					<p:outputLabel for="espec" value="Especialidade:" />
-					<p:selectOneMenu id="espec"
-						value="#{dentistaBean.dentista.especialidade}" effect="fade"
-						filter="true" required="true"
-						requiredMessage="O campo especialidade é obrigatório "
-						converter="omnifaces.SelectItemsConverter">
-						<f:selectItem noSelectionOption="true"
-							itemLabel="Selecione uma especialidade" />
-						<f:selectItems value="#{dentistaBean.especiais}" var="espec"
-							itemValue="#{espec}" itemLabel="#{espec.descricao}" />
-					</p:selectOneMenu>
+                    <p:outputLabel for="espec" value="Especialidade:" />
+                    <p:selectOneMenu id="espec"
+                                     value="#{dentistaBean.dentista.especialidade}" effect="fade"
+                                     filter="true" required="true"
+                                     requiredMessage="O campo especialidade é obrigatório "
+                                     converter="omnifaces.SelectItemsConverter">
+                        <f:selectItem noSelectionOption="true"
+                                      itemLabel="Selecione uma especialidade" />
+                        <f:selectItems value="#{dentistaBean.especiais}" var="espec"
+                                       itemValue="#{espec}" itemLabel="#{espec.descricao}" />
+                    </p:selectOneMenu>
 
-					<p:outputLabel for="cro" value="CRO-SP:" />
-					<p:inputMask id="cro" mask="99.999"
-						value="#{dentistaBean.dentista.cro}" />
-					<p:outputLabel for="telFixo" value="Tel Fixo:" />
-					<p:inputMask id="telFixo" mask="(99) 9999-9999"
-						value="#{dentistaBean.dentista.telfixo}" />
+                    <p:outputLabel for="cro" value="CRO-SP:" />
+                    <p:inputMask id="cro" mask="99.999"
+                                 value="#{dentistaBean.dentista.cro}" />
+                    <p:outputLabel for="telFixo" value="Tel Fixo:" />
+                    <p:inputMask id="telFixo" mask="(99) 9999-9999"
+                                 value="#{dentistaBean.dentista.telfixo}" />
 
-					<p:outputLabel for="telCel" value="Tel Cel:" />
-					<p:inputMask id="telCel" mask="(99) 99999-9999"
-						value="#{dentistaBean.dentista.telcel}" />
+                    <p:outputLabel for="telCel" value="Tel Cel:" />
+                    <p:inputMask id="telCel" mask="(99) 99999-9999"
+                                 value="#{dentistaBean.dentista.telcel}" />
 
-					<p:outputLabel for="rua" value="Rua:" />
-					<p:inputText id="rua" maxlength="80" size="50"
-						value="#{dentistaBean.dentista.rua}" required="true"
-						requiredMessage="O campo 'Rua' é obrigatório" />
+                    <p:outputLabel for="rua" value="Rua:" />
+                    <p:inputText id="rua" maxlength="80" size="50"
+                                 value="#{dentistaBean.dentista.rua}" required="true"
+                                 requiredMessage="O campo 'Rua' é obrigatório" />
 
-					<p:outputLabel for="compl" value="Complemento" />
-					<p:inputText id="compl" maxlength="50" size="45"
-						value="#{dentistaBean.dentista.complemento}" required="false"
-						requiredMessage="O Campo Complemento é obrigatório" />
+                    <p:outputLabel for="compl" value="Complemento" />
+                    <p:inputText id="compl" maxlength="50" size="20"
+                                 value="#{dentistaBean.dentista.complemento}" required="false"
+                                 requiredMessage="O Campo Complemento é obrigatório" />
 
-					<p:outputLabel for="bairro" value="Bairro:" />
-					<p:inputText id="bairro" maxlength="50" size="30"
-						value="#{dentistaBean.dentista.bairro}" required="true"
-						requiredMessage="O campo 'Bairro' é obrigatório" />
+                    <p:outputLabel for="bairro" value="Bairro:" />
+                    <p:inputText id="bairro" maxlength="50" size="20"
+                                 value="#{dentistaBean.dentista.bairro}" required="true"
+                                 requiredMessage="O campo 'Bairro' é obrigatório" />
 
-					<p:outputLabel for="cep" value="CEP:" />
-					<p:inputMask id="cep" mask="99999-999"
-						value="#{dentistaBean.dentista.cep}" />
+                    <p:outputLabel for="cep" value="CEP:" />
+                    <p:inputMask id="cep" mask="99999-999"
+                                 value="#{dentistaBean.dentista.cep}" />
 
-					<p:outputLabel for="cidade" value="Cidade:" />
-					<p:inputText id="cidade" maxlength="50" size="30"
-						value="#{dentistaBean.dentista.cidade}" required="true"
-						requiredMessage="O campo 'Cidade' é obrigatório" />
+                    <p:outputLabel for="cidade" value="Cidade:" />
+                    <p:inputText id="cidade" maxlength="50" size="20"
+                                 value="#{dentistaBean.dentista.cidade}" required="true"
+                                 requiredMessage="O campo 'Cidade' é obrigatório" />
 
-					<p:outputLabel for="email" value="E-mail:" />
-					<p:inputText id="email" maxlength="50" size="30"
-						value="#{dentistaBean.dentista.email}" required="false"
-						requiredMessage="O campo 'E-mail' é obrigatório" />
+                    <p:outputLabel for="email" value="E-mail:" />
+                    <p:inputText id="email" maxlength="50" size="30"
+                                 value="#{dentistaBean.dentista.email}" required="false"
+                                 requiredMessage="O campo 'E-mail' é obrigatório" />
 
-					<p:outputLabel for="niver" value="Aniver:" />
-					<p:inputMask id="niver" mask="99/99"
-						value="#{dentistaBean.dentista.aniver}" />
+                    <p:outputLabel for="nomeSec" value="Nome Secretaria:" />
+                    <p:inputText id="nomeSec" maxlength="50" size="30"
+                                 value="#{dentistaBean.dentista.nomeSec}" required="false"
+                                 requiredMessage="O campo 'NomeSec' é obrigatório" />
 
-					<p:outputLabel for="nomeSec" value="Nome Secretaria:" />
-					<p:inputText id="nomeSec" maxlength="50" size="30"
-						value="#{dentistaBean.dentista.nomeSec}" required="false"
-						requiredMessage="O campo 'NomeSec' é obrigatório" />
+                    <p:outputLabel for="telCelSec" value="Tel Cel Secretaria:" />
+                    <p:inputMask id="telCelSec" mask="(99) 99999-9999"
+                                 value="#{dentistaBean.dentista.telCelSec}" />
 
-					<p:outputLabel for="telCelSec" value="Tel Cel Secretaria:" />
-					<p:inputMask id="telCelSec" mask="(99) 99999-9999"
-						value="#{dentistaBean.dentista.telCelSec}" />
+                    <p:outputLabel for="indicaRadio" value="Indicação" />
+                    <p:selectOneMenu id="indicaRadio"
+                                     value="#{dentistaBean.dentista.radiologia}" effect="fade"
+                                     filter="true" required="true"
+                                     requiredMessage="O campo indicação é obrigatório "
+                                     converter="omnifaces.SelectItemsConverter">
+                        <f:selectItem noSelectionOption="true"
+                                      itemLabel="Indica para qual Radiologia?" />
+                        <f:selectItems value="#{dentistaBean.radiologias}"
+                                       var="indicaRadio" itemValue="#{indicaRadio}"
+                                       itemLabel="#{indicaRadio.nome}" />
+                    </p:selectOneMenu>
 
-					<p:outputLabel for="niverSec" value="Aniver Secretaria:" />
-					<p:inputMask id="niverSec" mask="99/99"
-						value="#{dentistaBean.dentista.aniverSec}" />
+                    <p:outputLabel for="atende" value="Atende com quantos Dentistas?" />
+                    <p:spinner id="atende" value="#{dentistaBean.dentista.qntDent}"
+                               min="0" max="100" size="3" maxlength="3" />
 
-					<p:outputLabel for="indicaRadio" value="Indicação" />
-					<p:selectOneMenu id="indicaRadio"
-						value="#{dentistaBean.dentista.radiologia}" effect="fade"
-						filter="true" required="true"
-						requiredMessage="O campo indicação é obrigatório "
-						converter="omnifaces.SelectItemsConverter">
-						<f:selectItem noSelectionOption="true"
-							itemLabel="Indica para qual Radiologia?" />
-						<f:selectItems value="#{dentistaBean.radiologias}"
-							var="indicaRadio" itemValue="#{indicaRadio}"
-							itemLabel="#{indicaRadio.nome}" />
-					</p:selectOneMenu>
+                </h:panelGrid>
+                <h:panelGrid id="nasc" columns="6">
+                    <p:outputLabel value="Aniverssário Dentista:" style="font-weight: bold"/>
+                    <p:outputLabel for="diaNasc" value="Dia:" />
+                    <p:selectOneMenu id="diaNasc"
+                                     value="#{dentistaBean.data.dia}" effect="fade"
+                                     filter="true" required="false"
+                                     requiredMessage="O campo dia de nascimento é obrigatório "
+                                     converter="omnifaces.SelectItemsConverter"  widgetVar="diaNascDent">
+                        <f:selectItem noSelectionOption="true"
+                                      itemLabel="Dia" />
+                        <f:selectItem itemLabel="01" itemValue="01"/>
+                        <f:selectItem itemLabel="02" itemValue="02"/>
+                        <f:selectItem itemLabel="03" itemValue="03"/>
+                        <f:selectItem itemLabel="04" itemValue="04"/>
+                        <f:selectItem itemLabel="05" itemValue="05"/>
+                        <f:selectItem itemLabel="06" itemValue="06"/>
+                        <f:selectItem itemLabel="07" itemValue="07"/>
+                        <f:selectItem itemLabel="08" itemValue="08"/>
+                        <f:selectItem itemLabel="09" itemValue="09"/>
+                        <f:selectItem itemLabel="10" itemValue="10"/>
+                        <f:selectItem itemLabel="11" itemValue="11"/>
+                        <f:selectItem itemLabel="12" itemValue="12"/>
+                        <f:selectItem itemLabel="13" itemValue="13"/>
+                        <f:selectItem itemLabel="14" itemValue="14"/>
+                        <f:selectItem itemLabel="15" itemValue="15"/>
+                        <f:selectItem itemLabel="16" itemValue="16"/>
+                        <f:selectItem itemLabel="17" itemValue="17"/>
+                        <f:selectItem itemLabel="18" itemValue="18"/>
+                        <f:selectItem itemLabel="19" itemValue="19"/>
+                        <f:selectItem itemLabel="20" itemValue="20"/>
+                        <f:selectItem itemLabel="21" itemValue="21"/>
+                        <f:selectItem itemLabel="22" itemValue="22"/>
+                        <f:selectItem itemLabel="23" itemValue="23"/>
+                        <f:selectItem itemLabel="24" itemValue="24"/>
+                        <f:selectItem itemLabel="25" itemValue="25"/>
+                        <f:selectItem itemLabel="26" itemValue="26"/>
+                        <f:selectItem itemLabel="27" itemValue="27"/>
+                        <f:selectItem itemLabel="28" itemValue="28"/>
+                        <f:selectItem itemLabel="29" itemValue="29"/>
+                        <f:selectItem itemLabel="30" itemValue="30"/>
+                        <f:selectItem itemLabel="31" itemValue="31"/>
+                    </p:selectOneMenu>
 
-					<p:outputLabel for="atende" value="Atende com quantos Dentistas?" />
-					<p:spinner id="atende" value="#{dentistaBean.dentista.qntDent}"
-						min="0" max="100" size="3" maxlength="3" />
+                    <p:outputLabel for="mesNasc" value="Mês:" />
+                    <p:selectOneMenu id="mesNasc"
+                                     value="#{dentistaBean.data.mes}" effect="fade"
+                                     filter="true" required="false"
+                                     requiredMessage="O campo mês de nascimento é obrigatório "
+                                     converter="omnifaces.SelectItemsConverter" widgetVar="mesNasDent">
+                        <f:selectItem noSelectionOption="true"
+                                      itemLabel="Mês" />
+                        <f:selectItem itemLabel="Janeiro" itemValue="Janeiro"/>
+                        <f:selectItem itemLabel="Fevereiro" itemValue="Fevereiroo"/>
+                        <f:selectItem itemLabel="Março" itemValue="Março"/>
+                        <f:selectItem itemLabel="Abril" itemValue="Abril"/>
+                        <f:selectItem itemLabel="Maio" itemValue="Maio"/>
+                        <f:selectItem itemLabel="Junho" itemValue="Junho"/>
+                        <f:selectItem itemLabel="Julho" itemValue="Julho"/>
+                        <f:selectItem itemLabel="Agosto" itemValue="Agosto"/>
+                        <f:selectItem itemLabel="Setembro" itemValue="Setembro"/>
+                        <f:selectItem itemLabel="Outubro" itemValue="Outubro"/>
+                        <f:selectItem itemLabel="Novembro" itemValue="Novembro"/>
+                        <f:selectItem itemLabel="Dezembro" itemValue="Dezembro"/>
+                    </p:selectOneMenu>
+                    <p:commandButton  value="Cadastrar" actionListener="#{dentistaBean.salvarNiverDent}"
+                                      update=":mensagem"/>
+                    
+                    <p:outputLabel value="Aniverssário Secretária:" style="font-weight: bold"/>
+                    <p:outputLabel for="diaNascSec" value="Dia:" />
+                    <p:selectOneMenu id="diaNascSec"
+                                     value="#{dentistaBean.data.dia}" effect="fade"
+                                     filter="true" required="false"
+                                     requiredMessage="O campo dia de nascimento é obrigatório "
+                                     converter="omnifaces.SelectItemsConverter" >
+                         <f:selectItem noSelectionOption="true"
+                                      itemLabel="Dia" />
+                        <f:selectItem itemLabel="01" itemValue="01"/>
+                        <f:selectItem itemLabel="02" itemValue="02"/>
+                        <f:selectItem itemLabel="03" itemValue="03"/>
+                        <f:selectItem itemLabel="04" itemValue="04"/>
+                        <f:selectItem itemLabel="05" itemValue="05"/>
+                        <f:selectItem itemLabel="06" itemValue="06"/>
+                        <f:selectItem itemLabel="07" itemValue="07"/>
+                        <f:selectItem itemLabel="08" itemValue="08"/>
+                        <f:selectItem itemLabel="09" itemValue="09"/>
+                        <f:selectItem itemLabel="10" itemValue="10"/>
+                        <f:selectItem itemLabel="11" itemValue="11"/>
+                        <f:selectItem itemLabel="12" itemValue="12"/>
+                        <f:selectItem itemLabel="13" itemValue="13"/>
+                        <f:selectItem itemLabel="14" itemValue="14"/>
+                        <f:selectItem itemLabel="15" itemValue="15"/>
+                        <f:selectItem itemLabel="16" itemValue="16"/>
+                        <f:selectItem itemLabel="17" itemValue="17"/>
+                        <f:selectItem itemLabel="18" itemValue="18"/>
+                        <f:selectItem itemLabel="19" itemValue="19"/>
+                        <f:selectItem itemLabel="20" itemValue="20"/>
+                        <f:selectItem itemLabel="21" itemValue="21"/>
+                        <f:selectItem itemLabel="22" itemValue="22"/>
+                        <f:selectItem itemLabel="23" itemValue="23"/>
+                        <f:selectItem itemLabel="24" itemValue="24"/>
+                        <f:selectItem itemLabel="25" itemValue="25"/>
+                        <f:selectItem itemLabel="26" itemValue="26"/>
+                        <f:selectItem itemLabel="27" itemValue="27"/>
+                        <f:selectItem itemLabel="28" itemValue="28"/>
+                        <f:selectItem itemLabel="29" itemValue="29"/>
+                        <f:selectItem itemLabel="30" itemValue="30"/>
+                        <f:selectItem itemLabel="31" itemValue="31"/>
+                    </p:selectOneMenu>
 
-				</h:panelGrid>
+                    <p:outputLabel for="mesNascSec" value="Mês:" />
+                    <p:selectOneMenu id="mesNascSec"
+                                     value="#{dentistaBean.data.mes}" effect="fade"
+                                     filter="true" required="false"
+                                     requiredMessage="O campo mês de nascimento é obrigatório "
+                                     converter="omnifaces.SelectItemsConverter" >
+                         <f:selectItem noSelectionOption="true"
+                                      itemLabel="Mês" />
+                        <f:selectItem itemLabel="Janeiro" itemValue="Janeiro"/>
+                        <f:selectItem itemLabel="Fevereiro" itemValue="Fevereiroo"/>
+                        <f:selectItem itemLabel="Março" itemValue="Março"/>
+                        <f:selectItem itemLabel="Abril" itemValue="Abril"/>
+                        <f:selectItem itemLabel="Maio" itemValue="Maio"/>
+                        <f:selectItem itemLabel="Junho" itemValue="Junho"/>
+                        <f:selectItem itemLabel="Julho" itemValue="Julho"/>
+                        <f:selectItem itemLabel="Agosto" itemValue="Agosto"/>
+                        <f:selectItem itemLabel="Setembro" itemValue="Setembro"/>
+                        <f:selectItem itemLabel="Outubro" itemValue="Outubro"/>
+                        <f:selectItem itemLabel="Novembro" itemValue="Novembro"/>
+                        <f:selectItem itemLabel="Dezembro" itemValue="Dezembro"/>
+                    </p:selectOneMenu>
+                    <p:commandButton  value="Cadastrar" actionListener="#{dentistaBean.salvarNiverSec}"
+                                      update=":mensagem"/>
+                </h:panelGrid>
 
-				<h:panelGrid columns="2">
-					<p:commandButton value="Salvar"
-						actionListener="#{dentistaBean.salvar}"
-						update=":mensagem :formCadastro:painel :formListagem:tabela" />
-					<p:commandButton value="Fechar" oncomplete="PF('dialogo').hide();" />
-				</h:panelGrid>
-			</h:form>
-		</p:dialog>
+                <h:panelGrid columns="2">
+                    <p:commandButton value="Salvar"
+                                     actionListener="#{dentistaBean.salvar}"
+                                     update=":mensagem :formCadastro:painel :formListagem:tabela" />
+                    <p:commandButton value="Fechar" oncomplete="PF('dialogo').hide();" />
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
 
 
-		<p:dialog header="Dentista" widgetVar="dlgVisu" draggable="false"
-			resizable="false" modal="true" closable="false" appendTo="@(body)"
-			showEffect="clip" responsive="true" dynamic="true">
-			<h:form id="formVisu">
+        <p:dialog header="Dentista" widgetVar="dlgVisu" draggable="false"
+                  resizable="false" modal="true" closable="false" appendTo="@(body)"
+                  showEffect="clip" responsive="true" dynamic="true">
+            <h:form id="formVisu">
 
-				<h:panelGrid id="painel" columns="2">
-					<p:outputLabel for="nome" value="Nome:" style="font-weight: bold" />
-					<h:outputText id="nome" value="#{dentistaBean.dentista.nome}" />
+                <h:panelGrid id="painel" columns="2">
+                    <p:outputLabel for="nome" value="Nome:" style="font-weight: bold" />
+                    <h:outputText id="nome" value="#{dentistaBean.dentista.nome}" />
 
-					<p:outputLabel for="espec" value="Especialidade:"
-						style="font-weight: bold" />
-					<h:outputText id="espec"
-						value="#{dentistaBean.dentista.especialidade.descricao}" />
+                    <p:outputLabel for="espec" value="Especialidade:"
+                                   style="font-weight: bold" />
+                    <h:outputText id="espec"
+                                  value="#{dentistaBean.dentista.especialidade.descricao}" />
 
-					<p:outputLabel for="cro" value="CRO-SP:" style="font-weight: bold" />
-					<h:outputText id="cro" value="#{dentistaBean.dentista.cro}" />
+                    <p:outputLabel for="cro" value="CRO-SP:" style="font-weight: bold" />
+                    <h:outputText id="cro" value="#{dentistaBean.dentista.cro}" />
 
-					<p:outputLabel for="telFixo" value="Tel Fixo:"
-						style="font-weight: bold" />
-					<h:outputText id="telFixo" value="#{dentistaBean.dentista.telfixo}" />
+                    <p:outputLabel for="telFixo" value="Tel Fixo:"
+                                   style="font-weight: bold" />
+                    <h:outputText id="telFixo" value="#{dentistaBean.dentista.telfixo}" />
 
-					<p:outputLabel for="telCel" value="Tel Cel:"
-						style="font-weight: bold" />
-					<h:outputText id="telCel" value="#{dentistaBean.dentista.telcel}" />
+                    <p:outputLabel for="telCel" value="Tel Cel:"
+                                   style="font-weight: bold" />
+                    <h:outputText id="telCel" value="#{dentistaBean.dentista.telcel}" />
 
-					<p:outputLabel for="rua" value="Rua:" style="font-weight: bold" />
-					<h:outputText id="rua" value="#{dentistaBean.dentista.rua}" />
+                    <p:outputLabel for="rua" value="Rua:" style="font-weight: bold" />
+                    <h:outputText id="rua" value="#{dentistaBean.dentista.rua}" />
 
-					<p:outputLabel for="bairro" value="Bairro:"
-						style="font-weight: bold" />
-					<h:outputText id="bairro" value="#{dentistaBean.dentista.bairro}" />
+                    <p:outputLabel for="bairro" value="Bairro:"
+                                   style="font-weight: bold" />
+                    <h:outputText id="bairro" value="#{dentistaBean.dentista.bairro}" />
 
-					<p:outputLabel for="cep" value="CEP:" style="font-weight: bold" />
-					<h:outputText id="cep" value="#{dentistaBean.dentista.cep}" />
+                    <p:outputLabel for="cep" value="CEP:" style="font-weight: bold" />
+                    <h:outputText id="cep" value="#{dentistaBean.dentista.cep}" />
 
-					<p:outputLabel for="cidade" value="Cidade:"
-						style="font-weight: bold" />
-					<h:outputText id="cidade" value="#{dentistaBean.dentista.cidade}" />
+                    <p:outputLabel for="cidade" value="Cidade:"
+                                   style="font-weight: bold" />
+                    <h:outputText id="cidade" value="#{dentistaBean.dentista.cidade}" />
 
-					<p:outputLabel for="email" value="E-mail:"
-						style="font-weight: bold" />
-					<h:outputText id="email" value="#{dentistaBean.dentista.email}" />
+                    <p:outputLabel for="email" value="E-mail:"
+                                   style="font-weight: bold" />
+                    <h:outputText id="email" value="#{dentistaBean.dentista.email}" />
 
-					<p:outputLabel for="niver" value="Aniver:"
-						style="font-weight: bold" />
-					<h:outputText id="niver" value="#{dentistaBean.dentista.aniver}" />
+                    <p:outputLabel for="niver" value="Aniver:"
+                                   style="font-weight: bold" />
+                    <h:outputText id="niver" value="#{dentistaBean.dentista.aniver}" />
 
-					<p:outputLabel for="nomeSec" value="Nome Secretaria:"
-						style="font-weight: bold" />
-					<h:outputText id="nomeSec" value="#{dentistaBean.dentista.nomeSec}" />
+                    <p:outputLabel for="nomeSec" value="Nome Secretaria:"
+                                   style="font-weight: bold" />
+                    <h:outputText id="nomeSec" value="#{dentistaBean.dentista.nomeSec}" />
 
-					<p:outputLabel for="telCelSec" value="Tel Cel Secretaria:"
-						style="font-weight: bold" />
-					<h:outputText id="telCelSec"
-						value="#{dentistaBean.dentista.telCelSec}" />
+                    <p:outputLabel for="telCelSec" value="Tel Cel Secretaria:"
+                                   style="font-weight: bold" />
+                    <h:outputText id="telCelSec"
+                                  value="#{dentistaBean.dentista.telCelSec}" />
 
-					<p:outputLabel for="niverSec" value="Aniver Secretaria:"
-						style="font-weight: bold" />
-					<h:outputText id="niverSec"
-						value="#{dentistaBean.dentista.aniverSec}" />
+                    <p:outputLabel for="niverSec" value="Aniver Secretaria:"
+                                   style="font-weight: bold" />
+                    <h:outputText id="niverSec"
+                                  value="#{dentistaBean.dentista.aniverSec}" />
 
-					<p:outputLabel for="indicaRadio" value="Indicação"
-						style="font-weight: bold" />
-					<h:outputText id="indicaRadio"
-						value="#{dentistaBean.dentista.radiologia.nome}" />
+                    <p:outputLabel for="indicaRadio" value="Indicação"
+                                   style="font-weight: bold" />
+                    <h:outputText id="indicaRadio"
+                                  value="#{dentistaBean.dentista.radiologia.nome}" />
 
-					<p:outputLabel for="atende" value="Atende com quantos Dentistas?"
-						style="font-weight: bold" />
-					<h:outputText id="atende" value="#{dentistaBean.dentista.qntDent}" />
-				</h:panelGrid>
+                    <p:outputLabel for="atende" value="Atende com quantos Dentistas?"
+                                   style="font-weight: bold" />
+                    <h:outputText id="atende" value="#{dentistaBean.dentista.qntDent}" />
+                </h:panelGrid>
 
-				<h:panelGrid columns="2">
-					<p:commandButton value="Fechar" oncomplete="PF('dlgVisu').hide();" />
-					<p:commandButton value="Imprimir" type="button"
-						icon="ui-icon-print">
-						<p:printer target="formVisu" />
-					</p:commandButton>
-				</h:panelGrid>
-			</h:form>
-		</p:dialog>
-	</ui:define>
+                <h:panelGrid columns="2">
+                    <p:commandButton value="Fechar" oncomplete="PF('dlgVisu').hide();" />
+                    <p:commandButton value="Imprimir" type="button"
+                                     icon="ui-icon-print">
+                        <p:printer target="formVisu" />
+                    </p:commandButton>
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
+    </ui:define>
 
 </ui:composition>

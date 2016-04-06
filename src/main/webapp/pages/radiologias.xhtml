@@ -61,6 +61,11 @@
                               filterMatchMode="contains"  sortBy="#{radio.rua}">
                         <h:outputText value="#{radio.rua}" />
                     </p:column>
+                   
+                    <p:column headerText="Complemento" filterBy="#{radio.complemento}"
+                              filterMatchMode="contains"  sortBy="#{radio.complemento}">
+                        <h:outputText value="#{radio.complemento}" />
+                    </p:column>
 
                     <p:column headerText="Bairro" filterBy="#{radio.bairro}"
                               filterMatchMode="contains"  sortBy="#{radio.bairro}">
@@ -131,6 +136,11 @@
                                  value="#{radiologiaBean.radiologia.rua}" required="false"
                                  requiredMessage="O campo 'Rua' é obrigatório" />
                     
+                    <p:outputLabel for="comple" value="Complemento:" />
+                    <p:inputText id="comple" maxlength="80" size="30"
+                                 value="#{radiologiaBean.radiologia.complemento}" required="false"
+                                 requiredMessage="O campo 'Complemento' é obrigatório" />
+                    
                     <p:outputLabel for="bairro" value="Bairro:" />
                     <p:inputText id="bairro" maxlength="50" size="30"
                                  value="#{radiologiaBean.radiologia.bairro}" required="false"
@@ -165,6 +175,9 @@
                     
                     <p:outputLabel for="rua" value="Rua:" style="font-weight: bold"/>
                     <h:outputText  id="rua" value="#{radiologiaBean.radiologia.rua}"/>
+                   
+                    <p:outputLabel for="comple" value="Complemento:" style="font-weight: bold"/>
+                    <h:outputText  id="comple" value="#{radiologiaBean.radiologia.complemento}"/>
                     
                     <p:outputLabel for="bairro" value="Bairro:" style="font-weight: bold"/>
                     <h:outputText  id="bairro" value="#{radiologiaBean.radiologia.bairro}"/>

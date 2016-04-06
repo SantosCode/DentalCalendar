@@ -5,6 +5,7 @@
  */
 package br.com.nfsconsultoria.dentalcalendar.bean;
 
+import br.com.nfsconsultoria.dentalcalendar.dao.DatasDAO;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
@@ -34,9 +35,12 @@ import com.lowagie.text.PageSize;
 import br.com.nfsconsultoria.dentalcalendar.dao.DentistaDAO;
 import br.com.nfsconsultoria.dentalcalendar.dao.EspecialDAO;
 import br.com.nfsconsultoria.dentalcalendar.dao.RadiologiaDAO;
+import br.com.nfsconsultoria.dentalcalendar.domain.Datas;
 import br.com.nfsconsultoria.dentalcalendar.domain.Dentista;
 import br.com.nfsconsultoria.dentalcalendar.domain.Especial;
 import br.com.nfsconsultoria.dentalcalendar.domain.Radiologia;
+import java.util.Arrays;
+import org.primefaces.component.commandbutton.CommandButton;
 
 /**
  *
@@ -48,14 +52,21 @@ import br.com.nfsconsultoria.dentalcalendar.domain.Radiologia;
 public class DentistaBean implements Serializable {
 
     private Dentista dentista;
+    private Datas data;
     private List<Dentista> dentistas;
+    private List<Datas> datas;
     private List<Radiologia> radiologias;
     private List<Especial> especiais;
+    private CommandButton botao;
+    
+
 
     public DentistaBean() {
         DentistaDAO dentDAO = new DentistaDAO();
+        DatasDAO dataDAO = new DatasDAO();
 
         this.dentistas = dentDAO.listar();
+        this.datas = dataDAO.listar();
     }
 
     public Dentista getDentista() {
@@ -90,6 +101,46 @@ public class DentistaBean implements Serializable {
         this.especiais = especiais;
     }
 
+    public Datas getData() {
+        return data;
+    }
+
+    public void setData(Datas data) {
+        this.data = data;
+    }
+
+    public List<Datas> getDatas() {
+        return datas;
+    }
+
+    public void setDatas(List<Datas> datas) {
+        this.datas = datas;
+    }
+
+    public CommandButton getBotao() {
+        return botao;
+    }
+
+    public void setBotao(CommandButton botao) {
+        this.botao = botao;
+    }
+
+//     public List<String> getDiasMes() {
+//        String[] dias = new String[]{"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14",
+//            "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"};
+//        return Arrays.asList(dias);
+
+  
+    
+//    public List<String> getMesAno() {
+//        String[] dias = new String[]{"Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto",
+//            "Setembro", "Outubro", "Novembro", "Dezembro"};
+//        return Arrays.asList(dias);
+
+    
+
+   
+
     @PostConstruct
     public void listar() {
 
@@ -102,6 +153,9 @@ public class DentistaBean implements Serializable {
 
             RadiologiaDAO radiologiaDAO = new RadiologiaDAO();
             radiologiaDAO.listar();
+            
+            DatasDAO dataDAO = new DatasDAO();
+            dataDAO.listar();
 
         } catch (RuntimeException erro) {
             Messages.addGlobalError("Ocorreu um erro ao tentar listar os dentistas");
@@ -117,6 +171,7 @@ public class DentistaBean implements Serializable {
         this.radiologias = radioDAO.listar();
         this.especiais = espDAO.listar();
         dentista = new Dentista();
+        data = new Datas();
 
         if (this.radiologias.isEmpty()) {
             Messages.addGlobalError("É nescessario cadastrar radiologia antes");
@@ -129,6 +184,18 @@ public class DentistaBean implements Serializable {
 
         try {
             DentistaDAO dentistaDAO = new DentistaDAO();
+            DatasDAO datasDAO = new DatasDAO();
+            if (data != null) {
+                data.setEvento("Aniverssário");
+                data.setNome(dentista.getNome());
+                datasDAO.merge(data);
+                
+                data = new Datas();
+                data.setEvento("Aniverssário");
+                data.setNome(dentista.getNome());
+                datasDAO.merge(data);
+                data = new Datas();
+            }
             dentistaDAO.merge(dentista);
 
             dentista = new Dentista();
@@ -136,6 +203,48 @@ public class DentistaBean implements Serializable {
             Messages.addGlobalInfo("Dentista salvo com sucesso");
         } catch (RuntimeException erro) {
             Messages.addFlashGlobalError("Ocorreu um erro ao tentar salvar um novo Dentista");
+            erro.printStackTrace();
+        }
+    }
+    
+    public void salvarNiverDent() {
+
+        try {
+           
+            DatasDAO datasDAO = new DatasDAO();
+            if (data != null) {
+                data.setEvento("Aniverssário");
+                data.setNome(dentista.getNome());
+                
+                datasDAO.merge(data);
+                
+                data = new Datas();
+                datasDAO.listar();
+            Messages.addGlobalInfo("Aniverssário de Dentista salvo com sucesso");
+            }
+        } catch (RuntimeException erro) {
+            Messages.addFlashGlobalError("Ocorreu um erro ao tentar salvar aniverssário de Dentista");
+            erro.printStackTrace();
+        }
+    }
+    public void salvarNiverSec() {
+
+        try {
+           
+            DatasDAO datasDAO = new DatasDAO();
+            if (data != null) {
+                data.setEvento("Aniverssário");
+                data.setNome(dentista.getNomeSec());
+                data.setDia(data.getDia());
+                data.setMes(data.getMes());
+                datasDAO.merge(data);
+                
+                data = new Datas();
+                datasDAO.listar();
+            Messages.addGlobalInfo("Aniverssário de Secretario(a) salvo com sucesso");
+            }
+        } catch (RuntimeException erro) {
+            Messages.addFlashGlobalError("Ocorreu um erro ao tentar salvar aniverssário de Secretário(a)");
             erro.printStackTrace();
         }
     }
@@ -167,6 +276,11 @@ public class DentistaBean implements Serializable {
         }
     }
 
+public void mudalLabel(){
+    this.botao.setValue("Cadastrado");
+    this.botao.setDisabled(true);
+}
+        
     public void preProcessPDF(Object document) throws IOException, BadElementException, DocumentException {
         Document pdf = (Document) document;
         pdf.open();
