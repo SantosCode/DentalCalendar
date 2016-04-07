@@ -7,8 +7,6 @@ package br.com.nfsconsultoria.dentalcalendar.bean;
 
 import br.com.nfsconsultoria.dentalcalendar.dao.DatasDAO;
 import br.com.nfsconsultoria.dentalcalendar.dao.DentistaDAO;
-import br.com.nfsconsultoria.dentalcalendar.dao.EspecialDAO;
-import br.com.nfsconsultoria.dentalcalendar.dao.RadiologiaDAO;
 import br.com.nfsconsultoria.dentalcalendar.domain.Datas;
 import br.com.nfsconsultoria.dentalcalendar.domain.Dentista;
 import com.lowagie.text.BadElementException;

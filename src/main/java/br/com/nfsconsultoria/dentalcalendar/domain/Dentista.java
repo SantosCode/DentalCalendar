@@ -21,13 +21,13 @@ public class Dentista extends GenericDomain{
     @Column(nullable = false, length = 45)
     private String nome;
     
-    @Column(nullable = true, length = 6)
+    @Column(nullable = true, length = 6, unique = true)
     private String cro;
     
     @Column(nullable = false, length = 15)
     private String telfixo;
     
-    @Column(nullable = true, length = 15)
+    @Column(nullable = true, length = 15, unique = true)
     private String telcel;
     
     @Column(nullable = true, length = 45)

@@ -125,20 +125,19 @@ public class DentistaBean implements Serializable {
         this.botao = botao;
     }
 
-//     public List<String> getDiasMes() {
-//        String[] dias = new String[]{"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14",
-//            "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"};
-//        return Arrays.asList(dias);
+     public List<String> getDiasMes() {
+        String[] dias = new String[]{"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14",
+            "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"};
+        return Arrays.asList(dias);
 
+     }
+    
+    public List<String> getMesAno() {
+        String[] dias = new String[]{"Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto",
+            "Setembro", "Outubro", "Novembro", "Dezembro"};
+        return Arrays.asList(dias);
   
-    
-//    public List<String> getMesAno() {
-//        String[] dias = new String[]{"Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto",
-//            "Setembro", "Outubro", "Novembro", "Dezembro"};
-//        return Arrays.asList(dias);
-
-    
-
+    }
    
 
     @PostConstruct
@@ -214,9 +213,11 @@ public class DentistaBean implements Serializable {
             DatasDAO datasDAO = new DatasDAO();
             if (data != null) {
                 data.setEvento("Aniverssário");
-                data.setNome(dentista.getNome());
+                data.setNome("Dr(a) " +dentista.getNome());
                 
                 datasDAO.merge(data);
+                
+                System.out.println("Dia: " +data.getDia() + "Mes: " +data.getMes());
                 
                 data = new Datas();
                 datasDAO.listar();
@@ -234,7 +235,7 @@ public class DentistaBean implements Serializable {
             DatasDAO datasDAO = new DatasDAO();
             if (data != null) {
                 data.setEvento("Aniverssário");
-                data.setNome(dentista.getNomeSec());
+                data.setNome("Sec. " +dentista.getNomeSec());
                 data.setDia(data.getDia());
                 data.setMes(data.getMes());
                 datasDAO.merge(data);
@@ -278,6 +279,7 @@ public class DentistaBean implements Serializable {
 
 public void mudalLabel(){
     this.botao.setValue("Cadastrado");
+    this.botao.setLabel("Cadastrado");
     this.botao.setDisabled(true);
 }
         

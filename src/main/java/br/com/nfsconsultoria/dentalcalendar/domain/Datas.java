@@ -25,7 +25,7 @@ public class Datas extends GenericDomain{
     @Column(nullable = false, length = 10)
     private String mes;
     
-    @Column(nullable = false, length = 45)
+    @Column(nullable = false, length = 45, unique = true)
     private String nome;
 
     public String getEvento() {

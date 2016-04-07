@@ -15,7 +15,8 @@ import javax.persistence.Entity;
 @SuppressWarnings("serial")
 @Entity
 public class Especial extends GenericDomain{
-    @Column(nullable = false, length = 45)
+    
+    @Column(nullable = false, length = 45, unique = true)
     private String descricao;
 
     public String getDescricao() {

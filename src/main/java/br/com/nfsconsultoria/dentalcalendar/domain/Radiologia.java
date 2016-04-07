@@ -15,7 +15,8 @@ import javax.persistence.Entity;
 @SuppressWarnings("serial")
 @Entity
 public class Radiologia extends GenericDomain{
-    @Column(nullable = false, length = 45)
+    
+    @Column(nullable = false, length = 45, unique = true)
     private String nome;
     
     @Column(length = 80)

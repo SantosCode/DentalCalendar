@@ -17,7 +17,7 @@ import javax.persistence.Entity;
 @Entity
 public class Representante extends GenericDomain{
     
-    @Column(nullable = false, length = 45)
+    @Column(nullable = false, length = 45, unique = true)
     private String nome;
     
     @Column(nullable = true, length = 15)
@@ -26,7 +26,7 @@ public class Representante extends GenericDomain{
     @Column(nullable = false, length = 45)
     private String email;
     
-    @Column(nullable = false, length = 20)
+    @Column(nullable = false, length = 20, unique = true)
     private String login;
     
     @Column(nullable = false, length = 20)
