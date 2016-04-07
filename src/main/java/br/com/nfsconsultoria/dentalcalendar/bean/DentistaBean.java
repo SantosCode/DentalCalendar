@@ -133,9 +133,9 @@ public class DentistaBean implements Serializable {
      }
     
     public List<String> getMesAno() {
-        String[] dias = new String[]{"Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto",
+        String[] meses = new String[]{"Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto",
             "Setembro", "Outubro", "Novembro", "Dezembro"};
-        return Arrays.asList(dias);
+        return Arrays.asList(meses);
   
     }
    
@@ -153,8 +153,8 @@ public class DentistaBean implements Serializable {
             RadiologiaDAO radiologiaDAO = new RadiologiaDAO();
             radiologiaDAO.listar();
             
-            DatasDAO dataDAO = new DatasDAO();
-            dataDAO.listar();
+//            DatasDAO dataDAO = new DatasDAO();
+//            dataDAO.listar();
 
         } catch (RuntimeException erro) {
             Messages.addGlobalError("Ocorreu um erro ao tentar listar os dentistas");
