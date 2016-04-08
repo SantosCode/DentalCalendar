@@ -67,7 +67,7 @@ public class EspecialidadesBean implements Serializable{
 
         try {
             EspecialDAO especiaisDAO = new EspecialDAO();
-            especiaisDAO.listar();
+            especiaisDAO.listar("descricao");
         } catch (RuntimeException erro) {
             Messages.addGlobalError("Ocorreu um erro ao tentar listar as especialidades");
             erro.printStackTrace();
@@ -86,7 +86,7 @@ public class EspecialidadesBean implements Serializable{
             especialDAO.merge(especial);
             
             especial = new Especial();
-            especiais = especialDAO.listar();
+            especialDAO.listar("descricao");
             Messages.addGlobalInfo("Especialidade salva com sucesso");
         } catch (RuntimeException erro) {
       Messages.addGlobalError("Ocorreu um erro ao tentar salvar a especialidade");

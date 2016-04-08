@@ -78,7 +78,7 @@ public class RadiologiaBean implements Serializable {
             radiologiasDAO.merge(radiologia);
 
             radiologia = new Radiologia();
-            radiologias = radiologiasDAO.listar();
+            radiologiasDAO.listar("nome");
             Messages.addGlobalInfo("Radiologia salva com sucesso");
         } catch (RuntimeException erro) {
             Messages.addGlobalError("Ocorreu um erro ao tentar salvar a radiologia");

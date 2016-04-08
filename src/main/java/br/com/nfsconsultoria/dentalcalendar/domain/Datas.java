@@ -20,7 +20,7 @@ public class Datas extends GenericDomain{
     private String evento;
     
     @Column(nullable = false, length = 10)
-    private Integer dia;
+    private String dia;
     
     @Column(nullable = false, length = 10)
     private String mes;
@@ -36,11 +36,11 @@ public class Datas extends GenericDomain{
         this.evento = evento;
     }
 
-    public Integer getDia() {
+    public String getDia() {
         return dia;
     }
 
-    public void setDia(Integer dia) {
+    public void setDia(String dia) {
         this.dia = dia;
     }
 
