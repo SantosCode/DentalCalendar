@@ -6,9 +6,7 @@
 package br.com.nfsconsultoria.dentalcalendar.bean;
 
 import br.com.nfsconsultoria.dentalcalendar.dao.DatasDAO;
-import br.com.nfsconsultoria.dentalcalendar.dao.DentistaDAO;
 import br.com.nfsconsultoria.dentalcalendar.domain.Datas;
-import br.com.nfsconsultoria.dentalcalendar.domain.Dentista;
 import com.lowagie.text.BadElementException;
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
@@ -17,6 +15,7 @@ import com.lowagie.text.PageSize;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -43,13 +42,10 @@ public class DatasBean implements Serializable {
 
     private Datas data;
     private List<Datas> datas;
-    private List<Dentista> dentistas;
 
     public DatasBean() {
         DatasDAO dataDAO = new DatasDAO();
-        DentistaDAO dentDAO = new DentistaDAO();
         this.datas = dataDAO.listar();
-        this.dentistas = dentDAO.listar();
     }
 
     public Datas getData() {
@@ -68,12 +64,19 @@ public class DatasBean implements Serializable {
         this.datas = datas;
     }
 
-    public List<Dentista> getDentistas() {
-        return dentistas;
-    }
+    
+    public List<Integer> getDiasMes() {
+        Integer[] dias = new Integer[] {1, 2, 3, 4, 5, 6, 7, 8 , 9 , 10, 11, 12, 13, 14,15,
+            16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31};
+        return Arrays.asList(dias);
 
-    public void setDentistas(List<Dentista> dentistas) {
-        this.dentistas = dentistas;
+     }
+    
+    public List<String> getMesAno() {
+        String[] meses = new String[]{"Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto",
+            "Setembro", "Outubro", "Novembro", "Dezembro"};
+        return Arrays.asList(meses);
+  
     }
 
     @PostConstruct
@@ -81,7 +84,7 @@ public class DatasBean implements Serializable {
 
         try {
             DatasDAO datasDAO = new DatasDAO();
-            datasDAO.listar("nome");
+            datasDAO.listar();
         } catch (RuntimeException erro) {
             Messages.addGlobalError("Ocorreu um erro ao tentar listar as datas");
             erro.printStackTrace();
@@ -90,14 +93,9 @@ public class DatasBean implements Serializable {
     }
 
     public void novo() {
-        DentistaDAO dentistaDAO = new DentistaDAO();
-
-        this.dentistas = dentistaDAO.listar();
+        
         data = new Datas();
-
-        if (this.dentistas.isEmpty()) {
-            Messages.addGlobalError("É nescessario cadastrar dentistas antes");
-        }
+        
     }
 
     public void salvar() {
@@ -107,9 +105,11 @@ public class DatasBean implements Serializable {
             datasDAO.merge(data);
 
             data = new Datas();
-            datasDAO.listar("dia");
+            datas = datasDAO.listar();
             Messages.addGlobalInfo("Data salva com sucesso");
         } catch (RuntimeException erro) {
+            Messages.addFlashGlobalError("Ocorreu um erro ao tentar salvar uma nova Data");
+            erro.printStackTrace();
         }
     }
 
@@ -119,9 +119,8 @@ public class DatasBean implements Serializable {
 
             DatasDAO dataDAO = new DatasDAO();
             dataDAO.excluir(data);
-
+            
             datas = dataDAO.listar();
-
             Messages.addGlobalInfo("Data removida com sucesso");
         } catch (RuntimeException erro) {
             Messages.addFlashGlobalError("Ocorreu um erro ao tentar remover a data");

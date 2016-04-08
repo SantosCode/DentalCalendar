@@ -23,12 +23,20 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Properties;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFRow;
@@ -147,14 +155,7 @@ public class VisitaBean implements Serializable {
             visitaDAO.merge(visita);
 
             visita = new Visita();
-            visitaDAO.listar();
-            RepresentanteDAO representanteDAO = new RepresentanteDAO();
-            DentistaDAO dentistaDAO = new DentistaDAO();
-            AgendaDAO agendaDAO = new AgendaDAO();
-
-            representanteDAO.listar();
-            dentistaDAO.listar();
-            agendaDAO.listar();
+            visitas = visitaDAO.listar();
             Messages.addGlobalInfo("Visita salva com sucesso");
         } catch (RuntimeException erro) {
              Messages.addFlashGlobalError("Ocorreu um erro ao tentar salvar uma nova visita");
@@ -214,6 +215,40 @@ public class VisitaBean implements Serializable {
             HSSFCell cell = header.getCell(i);
              
             cell.setCellStyle(cellStyle);
+        }
+    }
+    
+    public void mail(){
+        String to = visita.getAgenda().getDentista().getEmail();
+        String from = visita.getAgenda().getRepresentante().getEmail();
+        String user = "luis@nfsconsultoria.com.br";
+        String pass = "wildog";
+        String host = "mail.nfsconsultoria.com.br";
+        String msg = visita.getAcordo();
+        Properties propriedades = new Properties();
+        propriedades.put("mail.smtp.host","mail.nfsconsultoria.com.br");
+//        propriedades.put("mail.smtp.socketFactory.port", "25");
+        propriedades.put("mail.smtp.auth", "true");
+        propriedades.put("mail.smtp.port", "25");
+        
+        Session sessao = Session.getDefaultInstance(propriedades);
+        new javax.mail.Authenticator() {
+            
+            protected PasswordAuthentication getPasswordAuthentication(){
+                return new PasswordAuthentication(user, pass);
+            }
+};
+        
+        try {
+            MimeMessage mensagem = new MimeMessage(sessao);
+            mensagem.setFrom(new InternetAddress(from));
+            mensagem.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
+            mensagem.setSubject("Acordo tratado em Visita da Radiodoc");
+            mensagem.setContent(msg, "text/html");
+            Transport.send(mensagem);
+            Messages.addGlobalInfo("E-mail enviado com sucesso para o dentista");
+        } catch (MessagingException erro) {
+            Messages.addGlobalError("Ocorreu uma falha no envio de e-mail ao dentista");
         }
     }
 }

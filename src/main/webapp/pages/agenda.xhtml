@@ -110,12 +110,12 @@
             <h:form id="formCadastro">
                 <h:panelGrid id="painel" columns="2">
                     <p:outputLabel for="dia" value="Dia:" />
-
                     <p:calendar id="dia" value="#{agendaBean.agenda.dia}" pattern="yyyy-MM-dd" mask="true" 
-                                locale="pt_BR" mindate="1/1/16"/>
+                                locale="pt_BR" mindate="2016-01-01" required="true" requiredMessage="O campo dia é obrigatório"/>
+                    
                     <p:outputLabel for="hora" value="Hora:" />
                     <p:calendar id="hora" value="#{agendaBean.agenda.hora}" pattern="HH:mm" timeOnly="true"
-                                minHour="6" maxHour="19"/>
+                                minHour="6" maxHour="19" required="true" requiredMessage="O campo hora é obrigatório"/>
 
                     <p:outputLabel for="dentista" value="Dentista:"/>
                     <p:selectOneMenu id="dentista" value="#{agendaBean.agenda.dentista}" effect="fade"
@@ -158,12 +158,25 @@
                     <p:outputLabel for="hora" value="Hora:" style="font-weight: bold"/>
                     <p:calendar id="hora" value="#{agendaBean.agenda.hora}" pattern="HH:mm" timeOnly="true"
                                     readonly="true" showOn="false"/>
-
-                    <p:outputLabel for="dentista" value="Dentista:" style="font-weight: bold"/>
-                    <h:outputText id="dentista" value="#{agendaBean.agenda.dentista.nome}"/>
-
+                    
                     <p:outputLabel for="representante" value="Representante:" style="font-weight: bold"/>
                     <h:outputText  id="representante" value="#{agendaBean.agenda.representante.nome}" />
+                    
+                    <p:outputLabel for="dentista" value="Dentista:" style="font-weight: bold"/>
+                    <h:outputText id="dentista" value="#{agendaBean.agenda.dentista.nome}"/>
+                    
+                    <p:outputLabel for="rua" value="Rua:" style="font-weight: bold"/>
+                    <h:outputText id="rua" value="#{agendaBean.agenda.dentista.rua}"/>
+                   
+                    <p:outputLabel for="compl" value="Compl:" style="font-weight: bold"/>
+                    <h:outputText id="compl" value="#{agendaBean.agenda.dentista.complemento}"/>
+                    
+                    <p:outputLabel for="bairro" value="Bairro:" style="font-weight: bold"/>
+                    <h:outputText id="bairro" value="#{agendaBean.agenda.dentista.bairro}"/>
+                    
+                    <p:outputLabel for="cidade" value="Cidade:" style="font-weight: bold"/>
+                    <h:outputText id="cidade" value="#{agendaBean.agenda.dentista.cidade}"/>
+
                 </h:panelGrid>
 
                 <h:panelGrid columns="2">

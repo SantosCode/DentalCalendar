@@ -51,6 +51,11 @@
                               sortBy="#{visita.agenda.dia}" filterMatchMode="contains">
                         <h:outputText value="#{visita.agenda.dia}" />
                     </p:column>
+                    
+                    <p:column headerText="Hora" filterBy="#{visita.agenda.hora}"
+                              sortBy="#{visita.agenda.hora}" filterMatchMode="contains">
+                        <h:outputText value="#{visita.agenda.hora}" />
+                    </p:column>
 
                     <p:column headerText="Representante"
                               filterBy="#{visita.agenda.representante.nome}"
@@ -65,7 +70,7 @@
 
                     <p:column headerText="Opções" exportable="false">
                         <p:commandButton icon="ui-icon-trash"
-                                         actionListener="#{agendaBean.excluir}"
+                                         actionListener="#{visitaBean.excluir}"
                                          update=":mensagem :formListagem:tabela">
                             <p:confirm header="Confirmação"
                                        message="Deseja excluir a visita?" icon="ui-icon-alert" />
@@ -118,9 +123,8 @@
                     </p:selectOneMenu>
                     
                     <p:outputLabel for="acordo" value="Acordo:" />
-                    <p:editor id="acordo" widgetVar="editor" value="#{visitaBean.visita.acordo}" 
-                              required="true" requiredMessage="O campo acordo é obrigatório"  width="600"
-                              converter="omnifaces.SelectItemsConverter" />
+                    <p:editor id="acordo" value="#{visitaBean.visita.acordo}"
+                              required="true" requiredMessage="O campo acordo é obrigatório"/>
                 </h:panelGrid>
                 
                 <h:panelGrid columns="2">
