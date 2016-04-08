@@ -19,7 +19,7 @@
                         <p:commandButton value="Novo Cadastro"
                                          actionListener="#{dentistaBean.novo}"
                                          oncomplete="PF('dialogo').show();"
-                                         update=":mensagem :formCadastro:painel">
+                                         update=":mensagem :formCadastro:painel :formCadastro:nasc">
                             <f:actionListener
                                 type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
                         </p:commandButton>
@@ -200,63 +200,58 @@
                                min="0" max="100" size="3" maxlength="3" />
 
                 </h:panelGrid>
-                <h:panelGrid id="nasc" columns="6">
+                <h:panelGrid id="nasc" columns="5">
                     <p:outputLabel value="Aniverssário Dentista:" style="font-weight: bold"/>
                     <p:outputLabel for="diaNasc" value="Dia:" />
                     <p:selectOneMenu id="diaNasc"
-                                     value="#{dentistaBean.data.dia}" effect="true"
-                                     filter="true" required="false" var="diaNasc"
+                                     value="#{dentistaBean.dentista.diaNasc}" 
+                                     filter="true" required="false"
                                      requiredMessage="O campo dia de nascimento é obrigatório "
                                      converter="omnifaces.SelectItemsConverter">
                         <f:selectItem noSelectionOption="true"
                                       itemLabel="Dia" />
-                        <f:selectItems value="#{dentistaBean.diasMes}" itemValue="#{diaNasc}"/>Ï
+                        <f:selectItems value="#{dentistaBean.diasMes}" var="diaNasc" itemValue="#{diaNasc}"/>Ï
                     </p:selectOneMenu>
 
                     <p:outputLabel for="mesNasc" value="Mês:"/>
                     <p:selectOneMenu id="mesNasc"
-                                     value="#{dentistaBean.data.mes}" effect="fade"
-                                     filter="true" required="false" var="mesNasc"
+                                     value="#{dentistaBean.dentista.mesNasc}" 
+                                     filter="true" required="false"
                                      requiredMessage="O campo mês de nascimento é obrigatório "
                                      converter="omnifaces.SelectItemsConverter">
                         <f:selectItem noSelectionOption="true"
                                       itemLabel="Mês"/>
-                        <f:selectItems value="#{dentistaBean.mesAno}" itemValue="#{mesNasc}"/>
+                        <f:selectItems value="#{dentistaBean.mesAno}" var="mesNasc" itemValue="#{mesNasc}"/>
                     </p:selectOneMenu>
-                    
-                    <p:commandButton  value="Cadastrar" actionListener="#{dentistaBean.salvarNiverDent}"
-                                      update=":mensagem"/>
-
+                   
                     <p:outputLabel value="Aniverssário Secretária:" style="font-weight: bold"/>
                     <p:outputLabel for="diaNascSec" value="Dia:" />
                     <p:selectOneMenu id="diaNascSec"
-                                     value="#{dentistaBean.data.dia}" effect="fade"
-                                     filter="true" required="false" var="diaNasc"
+                                     value="#{dentistaBean.dentista.diaNascSec}"
+                                     filter="true" required="false"
                                      requiredMessage="O campo dia de nascimento é obrigatório "
                                      converter="omnifaces.SelectItemsConverter" >
                         <f:selectItem noSelectionOption="true"
                                       itemLabel="Dia" />
-                        <f:selectItems value="#{dentistaBean.diasMes}" itemValue="#{diaNasc}"/>
+                        <f:selectItems value="#{dentistaBean.diasMes}" var="diaNasc" itemValue="#{diaNasc}"/>
                     </p:selectOneMenu>
 
                     <p:outputLabel for="mesNascSec" value="Mês:" />
                     <p:selectOneMenu id="mesNascSec"
-                                     value="#{dentistaBean.data.mes}" effect="fade"
-                                     filter="true" required="false" var="mesNasc"
+                                     value="#{dentistaBean.dentista.mesNascSec}"
+                                     filter="true" required="false"
                                      requiredMessage="O campo mês de nascimento é obrigatório "
                                      converter="omnifaces.SelectItemsConverter" >
                         <f:selectItem noSelectionOption="true"
                                       itemLabel="Mês" />
-                        <f:selectItems value="#{dentistaBean.mesAno}" itemValue="#{mesNasc}"/>
+                        <f:selectItems value="#{dentistaBean.mesAno}" var="mesNasc" itemValue="#{mesNasc}"/>
                     </p:selectOneMenu>
-                    <p:commandButton  value="Cadastrar" actionListener="#{dentistaBean.salvarNiverSec}"
-                                      update=":mensagem"/>
                 </h:panelGrid>
 
                 <h:panelGrid columns="2">
                     <p:commandButton value="Salvar"
                                      actionListener="#{dentistaBean.salvar}"
-                                     update=":mensagem :formCadastro:painel :formListagem:tabela" />
+                                     update=":mensagem :formCadastro:painel :formCadastro:nasc :formListagem:tabela" />
                     <p:commandButton value="Fechar" oncomplete="PF('dialogo').hide();" />
                 </h:panelGrid>
             </h:form>

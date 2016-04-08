@@ -17,7 +17,7 @@
                     <f:facet name="header">
                         <p:commandButton value="Novo Cadastro" actionListener="#{datasBean.novo}"
                                          oncomplete="PF('dialogo').show();"
-                                         update=":mensagem :formCadastro:painel">
+                                         update=":mensagem :formCadastro:nasc :formCadastro:painel">
                             <f:actionListener
                                 type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
                         </p:commandButton>
@@ -72,7 +72,7 @@
                                          update=":mensagem :formListagem:tabela">
                             <p:confirm header="Confirmação" message="Deseja excluir a cidade"
                                        icon="ui-icon-alert" />
-                            <f:attribute name="dataSelecionada" value="#{agenda}" />
+                            <f:attribute name="dataSelecionada" value="#{data}" />
                         </p:commandButton>
 
                         <p:commandButton icon="ui-icon-pencil"
@@ -102,70 +102,70 @@
             </p:confirmDialog>
         </h:form>
 
-        <p:dialog header="Agenda - Cadastro" widgetVar="dialogo"
+        <p:dialog header="Datas - Cadastro" widgetVar="dialogo"
                   draggable="false" resizable="false" modal="true" closable="false" appendTo="@(body)" 
                   showEffect="clip" responsive="true" dynamic="true">
             <h:form id="formCadastro">
-                <h:panelGrid id="painel" columns="2">
-                    <p:outputLabel for="dia" value="Dia:" />
-                    <p:inputText id="dia" value="#{datasBean.data.dia}" required="true" 
-                                 requiredMessage="O campo dia é obrigatório"/>
+                
+                <h:panelGrid id="nasc" columns="4">
+                    <p:outputLabel for="diaNasc" value="Dia:" />
+                    <p:selectOneMenu id="diaNasc"
+                                     value="#{datasBean.data.dia}" 
+                                     filter="true" required="true"
+                                     requiredMessage="O campo dia de nascimento é obrigatório "
+                                     converter="omnifaces.SelectItemsConverter">
+                        <f:selectItem noSelectionOption="true"
+                                      itemLabel="Dia" />
+                        <f:selectItems value="#{datasBean.diasMes}" var="diaNasc" itemValue="#{diaNasc}" />Ï
+                    </p:selectOneMenu>
 
-                    <p:outputLabel for="mes" value="Mês:"/>
-                    <p:inputText id="mes" value="#{datasBean.data.mes}" required="true" 
-                                 requiredMessage="O campo mês é obrigatório"/>
-                   
+                    <p:outputLabel for="mesNasc" value="Mês:"/>
+                    <p:selectOneMenu id="mesNasc"
+                                     value="#{datasBean.data.mes}"
+                                     filter="true" required="true"
+                                     requiredMessage="O campo mês de nascimento é obrigatório "
+                                     converter="omnifaces.SelectItemsConverter">
+                        <f:selectItem noSelectionOption="true"
+                                      itemLabel="Mês"/>
+                        <f:selectItems value="#{datasBean.mesAno}" var="mesNasc" itemValue="#{mesNasc}" />
+                    </p:selectOneMenu>
+                </h:panelGrid>
+                <h:panelGrid id="painel" columns="2">
                     <p:outputLabel for="evento" value="Evento:"/>
                     <p:inputText id="evento" value="#{datasBean.data.evento}" required="true" 
                                  requiredMessage="O campo evento é obrigatório"/>
 
                     <p:outputLabel for="nome" value="Nome:"/>
-                    <p:selectOneMenu id="dentista" value="#{datasBean.data.nome}" effect="fade"
-                                     filter="true" required="false" requiredMessage="O campo dentista é obrigatório " 
-                                     converter="omnifaces.SelectItemsConverter">
-                        <f:selectItem noSelectionOption="true" itemLabel="Selecione um dentista"/>
-                        <f:selectItems value="#{datasBean.data.nome}" var="dentista" 
-                                       itemValue="#{dentista}" itemLabel="#{dentista.nome}"/>
-                    </p:selectOneMenu>
-                    
-                    <p:outputLabel for="representante" value="Representante:"/>
-                    <p:selectOneMenu id="representante" value="#{agendaBean.agenda.representante}" effect="fade"
-                                     filter="true" required="true" requiredMessage="O campo dentista é obrigatório " 
-                                     converter="omnifaces.SelectItemsConverter" >
-                        <f:selectItem noSelectionOption="true" itemLabel="Selecione um representante"/>
-                        <f:selectItems value="#{representanteBean.representantes}" var="representante" 
-                                       itemValue="#{representante}" itemLabel="#{representante.nome}"/>
-                    </p:selectOneMenu>
+                    <p:inputText id="nome" value="#{datasBean.data.nome}" required="true" 
+                                 requiredMessage="O campo nome é obrigatório"/>
                 </h:panelGrid>
 
                 <h:panelGrid columns="2">
                     <p:commandButton value="Salvar"
-                                     actionListener="#{agendaBean.salvar}"
-                                     update=":mensagem :formCadastro:painel :formListagem:tabela" />
+                                     actionListener="#{datasBean.salvar}"
+                                     update=":mensagem :formCadastro:nasc :formCadastro:painel  :formListagem:tabela" />
 
                     <p:commandButton value="Fechar" oncomplete="PF('dialogo').hide();" />
                 </h:panelGrid>
             </h:form>
         </p:dialog>
 
-        <p:dialog header="Agenda" widgetVar="dlgVisu"
+        <p:dialog header="Datas Especiais" widgetVar="dlgVisu"
                   draggable="false" resizable="false" modal="true" closable="false" appendTo="@(body)" 
                   showEffect="clip" responsive="true" dynamic="true">
             <h:form id="formVisu">
                 <h:panelGrid id="painel" columns="2">
                     <p:outputLabel for="dia" value="Dia:" style="font-weight: bold"/>
-                    <p:calendar id="dia" value="#{agendaBean.agenda.dia}" pattern="yyyy-MM-dd" mask="true" 
-                                readonly="true" showOn="false"/>
+                    <p:outputLabel id="dia" value="#{datasBean.data.dia}" />
 
-                    <p:outputLabel for="hora" value="Hora:" style="font-weight: bold"/>
-                    <p:calendar id="hora" value="#{agendaBean.agenda.hora}" pattern="HH:mm" timeOnly="true"
-                                readonly="true" showOn="false"/>
+                    <p:outputLabel for="mes" value="Mes:" style="font-weight: bold"/>
+                    <p:outputLabel id="mes" value="#{datasBean.data.mes}" />
 
-                    <p:outputLabel for="dentista" value="Dentista:" style="font-weight: bold"/>
-                    <h:outputText id="dentista" value="#{agendaBean.agenda.dentista.nome}"/>
+                    <p:outputLabel for="evento" value="Evento:" style="font-weight: bold"/>
+                    <h:outputText id="evento" value="#{datasBean.data.evento}"/>
 
-                    <p:outputLabel for="representante" value="Representante:" style="font-weight: bold"/>
-                    <h:outputText  id="representante" value="#{agendaBean.agenda.representante.nome}" />
+                    <p:outputLabel for="nome" value="Nome:" style="font-weight: bold"/>
+                    <h:outputText  id="nome" value="#{datasBean.data.nome}" />
                 </h:panelGrid>
 
                 <h:panelGrid columns="2">

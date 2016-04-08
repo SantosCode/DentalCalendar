@@ -48,20 +48,26 @@ public class Dentista extends GenericDomain{
     @Column(nullable = false, length = 45)
     private String cidade;
     
-    @Column(nullable = true, length = 5)
-    private String aniver;
-    
     @Column(nullable = true, length = 45)
     private String nomeSec;
-    
-    @Column(nullable = true, length = 5)
-    private String aniverSec;
-    
+   
     @Column(nullable = true, length = 15)
     private String telCelSec;
     
     @Column(nullable = true, length = 45)
     private Integer qntDent;
+    
+    @Column(length = 2)
+    private Integer diaNasc;
+    
+    @Column(length = 10)
+    private String mesNasc;
+    
+    @Column(length = 2)
+    private Integer diaNascSec;
+    
+    @Column(length = 10)
+    private String mesNascSec;
     
     @ManyToOne
     @JoinColumn(nullable = false)
@@ -151,28 +157,12 @@ public class Dentista extends GenericDomain{
         this.cidade = cidade;
     }
 
-    public String getAniver() {
-        return aniver;
-    }
-
-    public void setAniver(String aniver) {
-        this.aniver = aniver;
-    }
-
     public String getNomeSec() {
         return nomeSec;
     }
 
     public void setNomeSec(String nomeSec) {
         this.nomeSec = nomeSec;
-    }
-
-    public String getAniverSec() {
-        return aniverSec;
-    }
-
-    public void setAniverSec(String aniverSec) {
-        this.aniverSec = aniverSec;
     }
 
     public String getTelCelSec() {
@@ -189,6 +179,38 @@ public class Dentista extends GenericDomain{
 
     public void setQntDent(Integer qntDent) {
         this.qntDent = qntDent;
+    }
+
+    public Integer getDiaNasc() {
+        return diaNasc;
+    }
+
+    public void setDiaNasc(Integer diaNasc) {
+        this.diaNasc = diaNasc;
+    }
+
+    public String getMesNasc() {
+        return mesNasc;
+    }
+
+    public void setMesNasc(String mesNasc) {
+        this.mesNasc = mesNasc;
+    }
+
+    public Integer getDiaNascSec() {
+        return diaNascSec;
+    }
+
+    public void setDiaNascSec(Integer diaNascSec) {
+        this.diaNascSec = diaNascSec;
+    }
+
+    public String getMesNascSec() {
+        return mesNascSec;
+    }
+
+    public void setMesNascSec(String mesNascSec) {
+        this.mesNascSec = mesNascSec;
     }
 
     public Especial getEspecialidade() {
