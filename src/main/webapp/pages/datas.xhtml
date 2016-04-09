@@ -56,12 +56,12 @@
                         <h:outputText value="#{data.mes}"/>
                     </p:column>
 
-                    <p:column headerText="Evento" filterBy="#{data.evento}"
+                    <p:column headerText="Evento" filterBy="#{data.evento}" filterMatchMode="contains"
                               sortBy="#{data.evento}">
                         <h:outputText value="#{data.evento}" />
                     </p:column>
 
-                    <p:column headerText="Nome" filterBy="#{data.nome}"
+                    <p:column headerText="Nome" filterBy="#{data.nome}" filterMatchMode="contains"
                               sortBy="#{data.nome}">
                         <h:outputText value="#{data.nome}" />
                     </p:column>

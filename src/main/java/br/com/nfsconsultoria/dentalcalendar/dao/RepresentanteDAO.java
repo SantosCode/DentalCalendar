@@ -13,4 +13,5 @@ import br.com.nfsconsultoria.dentalcalendar.domain.Representante;
  */
 public class RepresentanteDAO extends GenericDAO<Representante>{
     
+   
 }

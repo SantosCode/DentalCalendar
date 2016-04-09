@@ -152,9 +152,9 @@ public class VisitaBean implements Serializable {
             DentistaDAO dentistaDAO = new DentistaDAO();
             AgendaDAO agendaDAO = new AgendaDAO();
 
-            representantes = representanteDAO.listar();
-            dentistas = dentistaDAO.listar();
-            agendas = agendaDAO.listar();
+            representanteDAO.listar();
+            dentistaDAO.listar();
+            agendaDAO.listar();
             Messages.addGlobalInfo("Visita salva com sucesso");
         } catch (RuntimeException erro) {
              Messages.addFlashGlobalError("Ocorreu um erro ao tentar salvar uma nova visita");
