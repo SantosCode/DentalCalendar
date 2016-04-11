@@ -121,7 +121,6 @@ public class VisitaBean implements Serializable {
             visitaDAO.listar();
         } catch (RuntimeException erro) {
             Messages.addGlobalError("Ocorreu um erro ao tentar listar as visitas");
-            erro.printStackTrace();
         }
 
     }
@@ -159,7 +158,6 @@ public class VisitaBean implements Serializable {
             Messages.addGlobalInfo("Visita salva com sucesso");
         } catch (RuntimeException erro) {
              Messages.addFlashGlobalError("Ocorreu um erro ao tentar salvar uma nova visita");
-            erro.printStackTrace();
         }
     }
     public void excluir(ActionEvent evento) {
@@ -174,7 +172,6 @@ public class VisitaBean implements Serializable {
             Messages.addGlobalInfo("Visita removida com sucesso");
         } catch (RuntimeException erro) {
             Messages.addFlashGlobalError("Ocorreu um erro ao tentar remover a visita");
-            erro.printStackTrace();
         }
     }
 
@@ -183,7 +180,6 @@ public class VisitaBean implements Serializable {
             visita = (Visita) evento.getComponent().getAttributes().get("visitaSelecionada");
         } catch (RuntimeException erro) {
             Messages.addFlashGlobalError("Ocorreu um erro ao tentar selecionar uma visita");
-            erro.printStackTrace();
         }
     }
     
@@ -234,6 +230,7 @@ public class VisitaBean implements Serializable {
         Session sessao = Session.getDefaultInstance(propriedades);
         new javax.mail.Authenticator() {
             
+            @Override
             protected PasswordAuthentication getPasswordAuthentication(){
                 return new PasswordAuthentication(user, pass);
             }

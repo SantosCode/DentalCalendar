@@ -148,7 +148,6 @@ public class DentistaBean implements Serializable {
             dataDAO.listar();
         } catch (RuntimeException erro) {
             Messages.addGlobalError("Ocorreu um erro ao tentar listar os dentistas");
-            erro.printStackTrace();
         }
 
     }
@@ -210,7 +209,6 @@ public class DentistaBean implements Serializable {
             Messages.addGlobalInfo("Dentista salvo com sucesso");
         } catch (RuntimeException erro) {
             Messages.addFlashGlobalError("Ocorreu um erro ao tentar salvar um novo Dentista");
-            erro.printStackTrace();
         }
     }
 
@@ -227,7 +225,6 @@ public class DentistaBean implements Serializable {
             Messages.addGlobalInfo("Dentista removido com sucesso");
         } catch (RuntimeException erro) {
             Messages.addFlashGlobalError("Ocorreu um erro ao tentar remover o dentista");
-            erro.printStackTrace();
         }
     }
 

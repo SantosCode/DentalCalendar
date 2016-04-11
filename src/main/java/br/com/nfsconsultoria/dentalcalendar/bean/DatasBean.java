@@ -87,7 +87,6 @@ public class DatasBean implements Serializable {
             datasDAO.listar();
         } catch (RuntimeException erro) {
             Messages.addGlobalError("Ocorreu um erro ao tentar listar as datas");
-            erro.printStackTrace();
         }
 
     }
@@ -109,7 +108,6 @@ public class DatasBean implements Serializable {
             Messages.addGlobalInfo("Data salva com sucesso");
         } catch (RuntimeException erro) {
             Messages.addFlashGlobalError("Ocorreu um erro ao tentar salvar uma nova Data");
-            erro.printStackTrace();
         }
     }
 
@@ -124,7 +122,6 @@ public class DatasBean implements Serializable {
             Messages.addGlobalInfo("Data removida com sucesso");
         } catch (RuntimeException erro) {
             Messages.addFlashGlobalError("Ocorreu um erro ao tentar remover a data");
-            erro.printStackTrace();
         }
     }
 
@@ -135,7 +132,6 @@ public class DatasBean implements Serializable {
             data = (Datas) evento.getComponent().getAttributes().get("dataSelecionada");
         } catch (RuntimeException erro) {
             Messages.addFlashGlobalError("Ocorreu um erro ao tentar selecionar uma data");
-            erro.printStackTrace();
         }
     }
 
