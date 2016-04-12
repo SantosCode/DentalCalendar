@@ -153,7 +153,8 @@ public class VisitaBean implements Serializable {
 
     public void excluir(ActionEvent evento) {
         try {
-            visita = (Visita) evento.getComponent().getAttributes().get("visitaSelecionada");
+            visita = (Visita) evento.getComponent().getAttributes()
+                    .get("visitaSelecionada");
 
             VisitaDAO visitaDAO = new VisitaDAO();
             visitaDAO.excluir(visita);
@@ -168,13 +169,15 @@ public class VisitaBean implements Serializable {
 
     public void editar(ActionEvent evento) {
         try {
-            visita = (Visita) evento.getComponent().getAttributes().get("visitaSelecionada");
+            visita = (Visita) evento.getComponent().getAttributes()
+                    .get("visitaSelecionada");
         } catch (RuntimeException erro) {
             Messages.addFlashGlobalError("Ocorreu um erro ao tentar selecionar uma visita");
         }
     }
 
-    public void preProcessPDF(Object document) throws IOException, BadElementException, DocumentException {
+    public void preProcessPDF(Object document) throws IOException,
+            BadElementException, DocumentException {
         Document pdf = (Document) document;
         pdf.open();
         pdf.setPageSize(PageSize.A4);
@@ -183,8 +186,11 @@ public class VisitaBean implements Serializable {
         pdf.addCreator("NFS Consultoria");
         pdf.addSubject("Agendas Cadastradas");
 
-        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
-        String logo = externalContext.getRealPath("") + File.separator + "resources" + File.separator + "images" + File.separator + "banner.png";
+        ExternalContext externalContext = FacesContext.getCurrentInstance()
+                .getExternalContext();
+        String logo = externalContext.getRealPath("") + File.separator 
+                + "resources" + File.separator + "images" + File.separator 
+                + "banner.png";
 
         pdf.add(Image.getInstance(logo));
     }

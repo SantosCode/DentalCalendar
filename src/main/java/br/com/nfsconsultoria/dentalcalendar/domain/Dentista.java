@@ -5,11 +5,15 @@
  */
 package br.com.nfsconsultoria.dentalcalendar.domain;
 
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.UniqueConstraint;
+import javax.persistence.Table;
 
 /**
  *
@@ -17,6 +21,7 @@ import javax.persistence.UniqueConstraint;
  */
 @SuppressWarnings("serial")
 @Entity
+@Table(name = "Dentista")
 public class Dentista extends GenericDomain{
     
     @Column(nullable = false, length = 45, unique = true)
@@ -49,23 +54,11 @@ public class Dentista extends GenericDomain{
     @Column(nullable = false, length = 45)
     private String cidade;
     
-    @Column(nullable = true, length = 45)
-    private String nomeSec;
-   
-    @Column(nullable = true, length = 15)
-    private String telCelSec;
-    
     @Column(length = 2)
     private Integer diaNasc;
     
-    @Column(length = 10)
+    @Column(length = 8)
     private String mesNasc;
-    
-    @Column(length = 2)
-    private Integer diaNascSec;
-    
-    @Column(length = 10)
-    private String mesNascSec;
     
     @ManyToOne
     @JoinColumn(nullable = false)
@@ -74,6 +67,9 @@ public class Dentista extends GenericDomain{
     @ManyToOne
     @JoinColumn(nullable = true)
     private Radiologia radiologia;
+    
+    @ManyToMany(mappedBy = "dentistas")
+    private List<Secretaria> secretaria;
 
     public String getNome() {
         return nome;
@@ -155,22 +151,14 @@ public class Dentista extends GenericDomain{
         this.cidade = cidade;
     }
 
-    public String getNomeSec() {
-        return nomeSec;
+    public Especial getEspecialidade() {
+        return especialidade;
     }
 
-    public void setNomeSec(String nomeSec) {
-        this.nomeSec = nomeSec;
+    public void setEspecialidade(Especial especialidade) {
+        this.especialidade = especialidade;
     }
 
-    public String getTelCelSec() {
-        return telCelSec;
-    }
-
-    public void setTelCelSec(String telCelSec) {
-        this.telCelSec = telCelSec;
-    }
-    
     public Integer getDiaNasc() {
         return diaNasc;
     }
@@ -187,35 +175,19 @@ public class Dentista extends GenericDomain{
         this.mesNasc = mesNasc;
     }
 
-    public Integer getDiaNascSec() {
-        return diaNascSec;
-    }
-
-    public void setDiaNascSec(Integer diaNascSec) {
-        this.diaNascSec = diaNascSec;
-    }
-
-    public String getMesNascSec() {
-        return mesNascSec;
-    }
-
-    public void setMesNascSec(String mesNascSec) {
-        this.mesNascSec = mesNascSec;
-    }
-
-    public Especial getEspecialidade() {
-        return especialidade;
-    }
-
-    public void setEspecialidade(Especial especialidade) {
-        this.especialidade = especialidade;
-    }
-
     public Radiologia getRadiologia() {
         return radiologia;
     }
 
     public void setRadiologia(Radiologia radiologia) {
         this.radiologia = radiologia;
+    }
+
+    public List<Secretaria> getSecretaria() {
+        return secretaria;
+    }
+
+    public void setSecretaria(List<Secretaria> secretaria) {
+        this.secretaria = secretaria;
     }
 }

@@ -35,10 +35,12 @@ import com.lowagie.text.PageSize;
 import br.com.nfsconsultoria.dentalcalendar.dao.DentistaDAO;
 import br.com.nfsconsultoria.dentalcalendar.dao.EspecialDAO;
 import br.com.nfsconsultoria.dentalcalendar.dao.RadiologiaDAO;
+import br.com.nfsconsultoria.dentalcalendar.dao.SecretariaDAO;
 import br.com.nfsconsultoria.dentalcalendar.domain.Datas;
 import br.com.nfsconsultoria.dentalcalendar.domain.Dentista;
 import br.com.nfsconsultoria.dentalcalendar.domain.Especial;
 import br.com.nfsconsultoria.dentalcalendar.domain.Radiologia;
+import br.com.nfsconsultoria.dentalcalendar.domain.Secretaria;
 import java.util.Arrays;
 
 /**
@@ -56,17 +58,20 @@ public class DentistaBean implements Serializable {
     private List<Datas> datas;
     private List<Radiologia> radiologias;
     private List<Especial> especiais;
+    private List<Secretaria> secretarias;
 
     public DentistaBean() {
         DentistaDAO dentDAO = new DentistaDAO();
         DatasDAO dataDAO = new DatasDAO();
         EspecialDAO especialDAO = new EspecialDAO();
         RadiologiaDAO radiologiaDAO = new RadiologiaDAO();
+        SecretariaDAO secDAO = new SecretariaDAO();
 
         this.dentistas = dentDAO.listar();
         this.datas = dataDAO.listar();
         this.especiais = especialDAO.listar();
         this.radiologias = radiologiaDAO.listar();
+        this.secretarias = secDAO.listar();
     }
 
     public Dentista getDentista() {
@@ -117,6 +122,14 @@ public class DentistaBean implements Serializable {
         this.datas = datas;
     }
 
+    public List<Secretaria> getSecretarias() {
+        return secretarias;
+    }
+
+    public void setSecretarias(List<Secretaria> secretarias) {
+        this.secretarias = secretarias;
+    }
+
     public List<Integer> getDiasMes() {
         Integer[] dias = new Integer[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
             16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31};
@@ -143,11 +156,14 @@ public class DentistaBean implements Serializable {
 
             RadiologiaDAO radiologiaDAO = new RadiologiaDAO();
             radiologiaDAO.listar();
+            
+            SecretariaDAO secDAO = new SecretariaDAO();
+            secDAO.listar();
 
             DatasDAO dataDAO = new DatasDAO();
             dataDAO.listar();
         } catch (RuntimeException erro) {
-            Messages.addGlobalError("Ocorreu o erro " +erro.getMessage()+ " ao tentar listar os dentistas");
+            Messages.addGlobalError("Ocorreu o erro " + erro.getMessage() + " ao tentar listar os dentistas");
         }
 
     }
@@ -182,23 +198,6 @@ public class DentistaBean implements Serializable {
                 Messages.addFlashGlobalWarn("Aniverssário de Dentista não foi salvo");
             }
         }
-        if (!this.getDentista().getNomeSec().isEmpty() && this.getDentista().getDiaNascSec() != null
-                && !this.getDentista().getMesNascSec().isEmpty()) {
-            try {
-                DatasDAO datasDAO = new DatasDAO();
-                data.setEvento("Aniverssário");
-                data.setNome("Secr(a). " + this.getDentista().getNomeSec());
-                data.setDia(this.getDentista().getDiaNascSec());
-                data.setMes(this.getDentista().getMesNascSec());
-                datasDAO.merge(data);
-                data = new Datas();
-                datas = datasDAO.listar();
-                Messages.addGlobalInfo("Aniverssário de Secretario(a) salvo com sucesso");
-            } catch (RuntimeException erro) {
-
-                Messages.addFlashGlobalWarn(" Aniverssário de Secretário(a) não foi salvo");
-            }
-        }
 
         try {
             DentistaDAO dentistaDAO = new DentistaDAO();
@@ -208,7 +207,7 @@ public class DentistaBean implements Serializable {
             dentistas = dentistaDAO.listar();
             Messages.addGlobalInfo("Dentista salvo com sucesso");
         } catch (RuntimeException erro) {
-            Messages.addFlashGlobalError("Ocorreu o erro " +erro.getMessage()+ " ao tentar salvar um novo Dentista");
+            Messages.addFlashGlobalError("Ocorreu o erro " + erro.getMessage() + " ao tentar salvar um novo Dentista");
         }
     }
 
@@ -224,7 +223,7 @@ public class DentistaBean implements Serializable {
 
             Messages.addGlobalInfo("Dentista removido com sucesso");
         } catch (RuntimeException erro) {
-            Messages.addFlashGlobalError("Ocorreu o erro " +erro.getMessage()+ " ao tentar remover o dentista");
+            Messages.addFlashGlobalError("Ocorreu o erro " + erro.getMessage() + " ao tentar remover o dentista");
         }
     }
 
@@ -235,11 +234,11 @@ public class DentistaBean implements Serializable {
 
             dentista = (Dentista) evento.getComponent().getAttributes().get("dentistaSelecionado");
         } catch (RuntimeException erro) {
-            Messages.addFlashGlobalError("Ocorreu o erro " +erro.getMessage()+ " ao tentar selecionar um dentista");
+            Messages.addFlashGlobalError("Ocorreu o erro " + erro.getMessage() + " ao tentar selecionar um dentista");
             erro.printStackTrace();
         }
     }
-  
+
     public void preProcessPDF(Object document) throws IOException, BadElementException, DocumentException {
         Document pdf = (Document) document;
         pdf.open();

@@ -180,15 +180,24 @@
                                  value="#{dentistaBean.dentista.email}" required="false"
                                  requiredMessage="O campo 'E-mail' é obrigatório" />
 
-                    <p:outputLabel for="nomeSec" value="Nome Secretaria:" />
-                    <p:inputText id="nomeSec" maxlength="50" size="30"
-                                 value="#{dentistaBean.dentista.nomeSec}" required="false"
-                                 requiredMessage="O campo 'NomeSec' é obrigatório" />
-
-                    <p:outputLabel for="telCelSec" value="Tel Cel Secretaria:" />
-                    <p:inputMask id="telCelSec" mask="(99) 99999-9999"
-                                 value="#{dentistaBean.dentista.telCelSec}" />
-
+                    <p:outputLabel for="nomeSec" value="Nome Secretária(o):" />
+                    <p:selectCheckboxMenu id="nomeSec" value="#{dentistaBean.dentista.secretaria}"
+                                     filter="true" required="true" 
+                                     requiredMessage="O campo secretária é obrigatório"
+                                     converterMessage="omnifaces.SelectItemsConverter"
+                                     label="Secretária(o)">                    
+                        <f:selectItems value="#{dentistaBean.secretarias}"
+                                       var="secretaria" itemValue="#{secretaria}"
+                                       itemLabel="#{secretaria.nome}"
+                    </p:selectCheckboxMenu>
+                    <p:commandLink id="listar" value="Listar" update="lista" />
+                    <p:outputPanel id="lista">
+                        <p:dataList value="#{dentistaBean.dentista.secretaria}" var="secreLista" 
+                                    emptyMessage="Nenhum(a) secretária(o) selecionada(o)">
+                            #{secreLista.nome}
+                        </p:dataList>
+                    </p:outputPanel>
+                                     
                     <p:outputLabel for="indicaRadio" value="Indicação" />
                     <p:selectOneMenu id="indicaRadio"
                                      value="#{dentistaBean.dentista.radiologia}" effect="fade"
@@ -224,29 +233,6 @@
                                      converter="omnifaces.SelectItemsConverter">
                         <f:selectItem noSelectionOption="true"
                                       itemLabel="Mês"/>
-                        <f:selectItems value="#{dentistaBean.mesAno}" var="mesNasc" itemValue="#{mesNasc}"/>
-                    </p:selectOneMenu>
-                   
-                    <p:outputLabel value="Aniver Sec:" style="font-weight: bold"/>
-                    <p:outputLabel for="diaNascSec" value="Dia:" />
-                    <p:selectOneMenu id="diaNascSec"
-                                     value="#{dentistaBean.dentista.diaNascSec}"
-                                     filter="true" required="false"
-                                     requiredMessage="O campo dia de nascimento é obrigatório "
-                                     converter="omnifaces.SelectItemsConverter" >
-                        <f:selectItem noSelectionOption="true"
-                                      itemLabel="Dia" />
-                        <f:selectItems value="#{dentistaBean.diasMes}" var="diaNasc" itemValue="#{diaNasc}"/>
-                    </p:selectOneMenu>
-
-                    <p:outputLabel for="mesNascSec" value="Mês:" />
-                    <p:selectOneMenu id="mesNascSec"
-                                     value="#{dentistaBean.dentista.mesNascSec}"
-                                     filter="true" required="false"
-                                     requiredMessage="O campo mês de nascimento é obrigatório "
-                                     converter="omnifaces.SelectItemsConverter" >
-                        <f:selectItem noSelectionOption="true"
-                                      itemLabel="Mês" />
                         <f:selectItems value="#{dentistaBean.mesAno}" var="mesNasc" itemValue="#{mesNasc}"/>
                     </p:selectOneMenu>
                 </h:panelGrid>
@@ -314,20 +300,7 @@
 
                     <p:outputLabel for="nomeSec" value="Nome Secretaria:"
                                    style="font-weight: bold" />
-                    <h:outputText id="nomeSec" value="#{dentistaBean.dentista.nomeSec}" />
-
-                    <p:outputLabel for="telCelSec" value="Tel Cel Secretaria:"
-                                   style="font-weight: bold" />
-                    <h:outputText id="telCelSec"
-                                  value="#{dentistaBean.dentista.telCelSec}" />
-
-                  <p:outputLabel for="niverdiasec" value="Dia Aniver Sec:"
-                                   style="font-weight: bold" />
-                  <h:outputText id="niverdiasec" value="#{dentistaBean.dentista.diaNascSec}" />
-                  
-                    <p:outputLabel for="nivermessec" value="Mês Aniver Sec:"
-                                   style="font-weight: bold" />
-                    <h:outputText id="nivermessec" value="#{dentistaBean.dentista.mesNascSec}" />
+                    <h:outputText id="nomeSec" value="#{dentistaBean.dentista.secretaria}" />
 
                     <p:outputLabel for="indicaRadio" value="Indicação"
                                    style="font-weight: bold" />

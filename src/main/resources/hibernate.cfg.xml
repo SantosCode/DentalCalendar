@@ -28,5 +28,7 @@
     <mapping class="br.com.nfsconsultoria.dentalcalendar.domain.Especial"/>
     <mapping class="br.com.nfsconsultoria.dentalcalendar.domain.Visita"/>
     <mapping class="br.com.nfsconsultoria.dentalcalendar.domain.GrupoDentista"/>
+    <mapping class="br.com.nfsconsultoria.dentalcalendar.domain.Secretaria"/>
+    <mapping class="br.com.nfsconsultoria.dentalcalendar.domain.mailServer"/>
   </session-factory>
 </hibernate-configuration>
