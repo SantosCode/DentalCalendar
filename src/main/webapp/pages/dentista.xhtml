@@ -99,7 +99,7 @@
 
                         <p:commandButton icon="ui-icon-info"
                                          actionListener="#{dentistaBean.editar}"
-                                         update=":mensagem :formListagem:tabela"
+                                         update=":mensagem :formVisu:painel"
                                          oncomplete="PF('dlgVisu').show();">
                             <f:attribute name="dentistaSelecionado" value="#{dentista}" />
                             <f:actionListener
@@ -139,7 +139,7 @@
                     </p:selectOneMenu>
 
                     <p:outputLabel for="cro" value="CRO-SP:" />
-                    <p:inputMask id="cro" mask="99.999"
+                    <p:inputMask id="cro" mask="99.999" required="true" requiredMessage="O campo CRO é obrigatório"
                                  value="#{dentistaBean.dentista.cro}" />
                     
                     <p:outputLabel for="telFixo" value="Tel Fixo:" />
@@ -202,13 +202,9 @@
                                        itemLabel="#{indicaRadio.nome}" />
                     </p:selectOneMenu>
 
-                    <p:outputLabel for="atende" value="Atende com quantos Dentistas?" />
-                    <p:spinner id="atende" value="#{dentistaBean.dentista.qntDent}"
-                               min="0" max="100" size="3" maxlength="3" />
-
                 </h:panelGrid>
                 <h:panelGrid id="nasc" columns="5">
-                    <p:outputLabel value="Aniverssário Dentista:" style="font-weight: bold"/>
+                    <p:outputLabel value="Aniver Dentista:" style="font-weight: bold"/>
                     <p:outputLabel for="diaNasc" value="Dia:" />
                     <p:selectOneMenu id="diaNasc"
                                      value="#{dentistaBean.dentista.diaNasc}" 
@@ -231,7 +227,7 @@
                         <f:selectItems value="#{dentistaBean.mesAno}" var="mesNasc" itemValue="#{mesNasc}"/>
                     </p:selectOneMenu>
                    
-                    <p:outputLabel value="Aniverssário Secretária:" style="font-weight: bold"/>
+                    <p:outputLabel value="Aniver Sec:" style="font-weight: bold"/>
                     <p:outputLabel for="diaNascSec" value="Dia:" />
                     <p:selectOneMenu id="diaNascSec"
                                      value="#{dentistaBean.dentista.diaNascSec}"
@@ -338,9 +334,6 @@
                     <h:outputText id="indicaRadio"
                                   value="#{dentistaBean.dentista.radiologia.nome}" />
 
-                    <p:outputLabel for="atende" value="At qtos Dentistas?"
-                                   style="font-weight: bold" />
-                    <h:outputText id="atende" value="#{dentistaBean.dentista.qntDent}" />
                 </h:panelGrid>
 
                 <h:panelGrid columns="2">

@@ -62,11 +62,6 @@
                         <h:outputText value="#{radio.rua}" />
                     </p:column>
                    
-                    <p:column headerText="Complemento" filterBy="#{radio.complemento}"
-                              filterMatchMode="contains"  sortBy="#{radio.complemento}">
-                        <h:outputText value="#{radio.complemento}" />
-                    </p:column>
-
                     <p:column headerText="Bairro" filterBy="#{radio.bairro}"
                               filterMatchMode="contains"  sortBy="#{radio.bairro}">
                         <h:outputText value="#{radio.bairro}" />
@@ -99,7 +94,7 @@
                         
                         <p:commandButton icon="ui-icon-info"
                                          actionListener="#{radiologiaBean.editar}"
-                                         update=":mensagem :formListagem:tabela" oncomplete="PF('dlgVisu').show();">
+                                         update=":mensagem :formVisu:painel" oncomplete="PF('dlgVisu').show();">
                             <f:attribute name="radiologiaSelecionada" value="#{radio}" />
                             <f:actionListener
                                 type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
@@ -184,6 +179,7 @@
                     
                     <p:outputLabel for="cidade" value="Cidade:" style="font-weight: bold"/>
                     <h:outputText id="cidade" value="#{radiologiaBean.radiologia.cidade}" />
+                   
                 </h:panelGrid>
                 
                 <h:panelGrid columns="2">    

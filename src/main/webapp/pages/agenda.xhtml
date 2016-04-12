@@ -88,7 +88,7 @@
 
                         <p:commandButton icon="ui-icon-info"
                                          actionListener="#{agendaBean.editar}"
-                                         update=":mensagem :formListagem:tabela" oncomplete="PF('dlgVisu').show();">
+                                         update=":mensagem :formVisu:painel" oncomplete="PF('dlgVisu').show();">
                             <f:attribute name="agendaSelecionada" value="#{agenda}" />
                             <f:actionListener
                                 type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />

@@ -121,11 +121,11 @@ public class AgendaBean implements Serializable {
             DentistaDAO dentistaDAO = new DentistaDAO();
 
             agendaDAO.merge(agenda);
-            agenda = new Agenda();
 
             agendas = agendaDAO.listar();
             representantes = representanteDAO.listar();
             dentistas = dentistaDAO.listar();
+            agenda = new Agenda();
             Messages.addGlobalInfo("Agenda salva com sucesso");
         } catch (RuntimeException erro) {
             Messages.addFlashGlobalError("Ocorreu um erro ao tentar salvar uma nova agenda");

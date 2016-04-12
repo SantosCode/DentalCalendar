@@ -9,7 +9,7 @@
 
     <ui:define name="conteudo">
         <h:form id="formListagem">
-            <p:panel header="Visita">
+            <p:panel header="Acordos">
                 <p:dataTable id="tabela" emptyMessage="Nenhum registro encontrado."
                              paginator="true" value="#{visitaBean.visitas}" var="visita"
                              rows="10" paginatorPosition="top" rendered="true"
@@ -88,7 +88,7 @@
 
                         <p:commandButton icon="ui-icon-info"
                                          actionListener="#{visitaBean.editar}"
-                                         update=":mensagem :formListagem:tabela"
+                                         update=":mensagem :formVisu:painel"
                                          oncomplete="PF('dlgVisu').show();">
                             <f:attribute name="visitaSelecionada" value="#{visita}" />
                             <f:actionListener
@@ -105,7 +105,7 @@
             </p:confirmDialog>
         </h:form>
 
-        <p:dialog header="Visita - Cadastro" widgetVar="dialogo"
+        <p:dialog header="Acordos - Cadastro" widgetVar="dialogo"
                   draggable="false" resizable="false" modal="true" closable="false"
                   appendTo="@(body)" showEffect="clip" responsive="true" dynamic="true">
             <h:form id="formCadastro">
@@ -125,8 +125,11 @@
                     <p:outputLabel for="acordo" value="Acordo:" />
                     <p:editor id="acordo" value="#{visitaBean.visita.acordo}"
                               required="true" requiredMessage="O campo acordo é obrigatório"/>
+                    
+                    <p:outputLabel for="mail" value="Enviar e-mail para o dentista?"/>
+                    <p:selectBooleanButton id="mail" onLabel="Sim" offLabel="Não"  valueChangeListener="#{visitaBean.mail}"/>
                 </h:panelGrid>
-                
+               
                 <h:panelGrid columns="2">
                     <p:commandButton value="Salvar"
                                      actionListener="#{visitaBean.salvar}"

@@ -43,22 +43,22 @@
 
 
                     </f:facet>
-                    <p:column headerText="Nome" filterBy="#{representante.nome}"
+                    <p:column headerText="Nome" filterBy="#{representante.nome}" filterMatchMode="contains"
                               sortBy="#{representante.nome}" colspan="1">
                         <h:outputText value="#{representante.nome}" />
                     </p:column>
 
-                    <p:column headerText="E-mail" filterBy="#{representante.email}"
+                    <p:column headerText="E-mail" filterBy="#{representante.email}" filterMatchMode="contains"
                               sortBy="#{representante.email}" colspan="2">
                         <h:outputText value="#{representante.email}" />
                     </p:column>
 
-                    <p:column headerText="Telefone" filterBy="#{representante.telcel}"
+                    <p:column headerText="Telefone" filterBy="#{representante.telcel}" filterMatchMode="contains"
                               sortBy="#{representante.telcel}">
                         <h:outputText value="#{representante.telcel}" />
                     </p:column>
 
-                    <p:column headerText="Login" filterBy="#{representante.login}"
+                    <p:column headerText="Login" filterBy="#{representante.login}" filterMatchMode="contains"
                               sortBy="#{representante.login}">
                         <h:outputText value="#{representante.login}" />
                     </p:column>
@@ -116,7 +116,9 @@
 
                     <p:outputLabel for="senha" value="Senha:"/>
                     <p:password id="senha" value="#{representanteBean.representante.senha}" feedback="true" 
-                                promptLabel="Digite uma senha forte" weakLabel="Senha Fraca" goodLabel="Senha média" strongLabel="Senha Forte" />
+                                required="true" requiredMessage="O campo senha é obrigatório"
+                                promptLabel="Digite uma senha forte" weakLabel="Senha Fraca" goodLabel="Senha média" 
+                                strongLabel="Senha Forte" />
                 </h:panelGrid>
 
                 <h:panelGrid columns="2">

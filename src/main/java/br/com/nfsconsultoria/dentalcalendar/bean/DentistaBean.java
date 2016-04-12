@@ -147,7 +147,7 @@ public class DentistaBean implements Serializable {
             DatasDAO dataDAO = new DatasDAO();
             dataDAO.listar();
         } catch (RuntimeException erro) {
-            Messages.addGlobalError("Ocorreu um erro ao tentar listar os dentistas");
+            Messages.addGlobalError("Ocorreu o erro " +erro.getMessage()+ " ao tentar listar os dentistas");
         }
 
     }
@@ -174,8 +174,8 @@ public class DentistaBean implements Serializable {
                 data.setDia(this.getDentista().getDiaNasc());
                 data.setMes(this.getDentista().getMesNasc());
                 datasDAO.merge(data);
-                data = new Datas();
                 datas = datasDAO.listar();
+                data = new Datas();
                 Messages.addGlobalInfo("Aniverssário de Dentista salvo com sucesso");
             } catch (RuntimeException erro) {
 
@@ -208,7 +208,7 @@ public class DentistaBean implements Serializable {
             dentistas = dentistaDAO.listar();
             Messages.addGlobalInfo("Dentista salvo com sucesso");
         } catch (RuntimeException erro) {
-            Messages.addFlashGlobalError("Ocorreu um erro ao tentar salvar um novo Dentista");
+            Messages.addFlashGlobalError("Ocorreu o erro " +erro.getMessage()+ " ao tentar salvar um novo Dentista");
         }
     }
 
@@ -224,7 +224,7 @@ public class DentistaBean implements Serializable {
 
             Messages.addGlobalInfo("Dentista removido com sucesso");
         } catch (RuntimeException erro) {
-            Messages.addFlashGlobalError("Ocorreu um erro ao tentar remover o dentista");
+            Messages.addFlashGlobalError("Ocorreu o erro " +erro.getMessage()+ " ao tentar remover o dentista");
         }
     }
 
@@ -235,11 +235,11 @@ public class DentistaBean implements Serializable {
 
             dentista = (Dentista) evento.getComponent().getAttributes().get("dentistaSelecionado");
         } catch (RuntimeException erro) {
-            Messages.addFlashGlobalError("Ocorreu um erro ao tentar selecionar um dentista");
+            Messages.addFlashGlobalError("Ocorreu o erro " +erro.getMessage()+ " ao tentar selecionar um dentista");
             erro.printStackTrace();
         }
     }
-
+  
     public void preProcessPDF(Object document) throws IOException, BadElementException, DocumentException {
         Document pdf = (Document) document;
         pdf.open();

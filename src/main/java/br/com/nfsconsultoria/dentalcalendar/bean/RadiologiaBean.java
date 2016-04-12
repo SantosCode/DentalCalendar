@@ -22,6 +22,8 @@ import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.Image;
 import com.lowagie.text.PageSize;
+import com.mysql.jdbc.exceptions.MySQLDataException;
+import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 import java.io.File;
 import java.io.IOException;
 import javax.faces.context.ExternalContext;
@@ -77,11 +79,11 @@ public class RadiologiaBean implements Serializable {
             RadiologiaDAO radiologiasDAO = new RadiologiaDAO();
             radiologiasDAO.merge(radiologia);
 
-            radiologia = new Radiologia();
             radiologias = radiologiasDAO.listar();
+            radiologia = new Radiologia();
             Messages.addGlobalInfo("Radiologia salva com sucesso");
         } catch (RuntimeException erro) {
-            Messages.addGlobalError("Ocorreu um erro ao tentar salvar a radiologia");
+            Messages.addGlobalError("Ocorreu o erro " +erro.getLocalizedMessage()+ " ao tentar salvar a radiologia");
             erro.printStackTrace();
         }
     }
@@ -97,7 +99,7 @@ public class RadiologiaBean implements Serializable {
 
             Messages.addGlobalInfo("Radiologia removido com sucesso");
         } catch (RuntimeException erro) {
-            Messages.addFlashGlobalError("Ocorreu um erro ao tentar remover a radiologia" +erro.getMessage());
+            Messages.addFlashGlobalError("Ocorreu o erro " +erro.getMessage()+ " ao tentar remover a radiologia" +erro.getMessage());
             erro.printStackTrace();
         }
     }
@@ -106,7 +108,7 @@ public class RadiologiaBean implements Serializable {
         try {
             radiologia = (Radiologia) evento.getComponent().getAttributes().get("radiologiaSelecionada");
         } catch (RuntimeException erro) {
-            Messages.addFlashGlobalError("Ocorreu um erro ao tentar selecionar uma radiologia");
+            Messages.addFlashGlobalError("Ocorreu o erro " +erro.getMessage()+ " ao tentar selecionar uma radiologia");
             erro.printStackTrace();
         }
     }
@@ -123,7 +125,7 @@ public class RadiologiaBean implements Serializable {
             }
 
         } catch (RuntimeException erro) {
-            Messages.addGlobalError("Ocorreu um erro ao tentar listar as radiologias");
+            Messages.addGlobalError("Ocorreu o erro " +erro.getMessage()+ " ao tentar listar as radiologias");
             erro.printStackTrace();
         }
 

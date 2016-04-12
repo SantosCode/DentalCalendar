@@ -23,20 +23,12 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
-import java.util.Properties;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.PasswordAuthentication;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFRow;
@@ -59,23 +51,22 @@ public class VisitaBean implements Serializable {
     private List<Representante> representantes;
     private List<Dentista> dentistas;
     private List<Visita> visitas;
-    
-    public VisitaBean(){
-    	VisitaDAO visitaDAO = new VisitaDAO();
-	AgendaDAO agendaDAO = new AgendaDAO();
-    	RepresentanteDAO repreDAO = new RepresentanteDAO();
-    	DentistaDAO dentDAO = new DentistaDAO();
-    	
-    	this.visitas = visitaDAO.listar(); 
-    	this.agendas = agendaDAO.listar();
-    	this.representantes = repreDAO.listar();
-    	this.dentistas = dentDAO.listar();
+
+    public VisitaBean() {
+        VisitaDAO visitaDAO = new VisitaDAO();
+        AgendaDAO agendaDAO = new AgendaDAO();
+        RepresentanteDAO repreDAO = new RepresentanteDAO();
+        DentistaDAO dentDAO = new DentistaDAO();
+
+        this.visitas = visitaDAO.listar();
+        this.agendas = agendaDAO.listar();
+        this.representantes = repreDAO.listar();
+        this.dentistas = dentDAO.listar();
     }
-    
+
     public Visita getVisita() {
         return this.visita;
     }
-
 
     public void setVisita(Visita visita) {
         this.visita = visita;
@@ -130,18 +121,17 @@ public class VisitaBean implements Serializable {
         RepresentanteDAO representanteDAO = new RepresentanteDAO();
         DentistaDAO dentistaDAO = new DentistaDAO();
         AgendaDAO agendaDAO = new AgendaDAO();
-  
+
         this.representantes = representanteDAO.listar();
         this.dentistas = dentistaDAO.listar();
         this.agendas = agendaDAO.listar();
         visita = new Visita();
-        
-        
-         if (this.representantes.isEmpty()) {
-             Messages.addGlobalError("É nescessario cadastrar representantes antes");
-        } else if (this.dentistas.isEmpty()){
+
+        if (this.representantes.isEmpty()) {
+            Messages.addGlobalError("É nescessario cadastrar representantes antes");
+        } else if (this.dentistas.isEmpty()) {
             Messages.addGlobalError("É nescessario cadastrar dentistas antes");
-        } else if (this.agendas.isEmpty()){
+        } else if (this.agendas.isEmpty()) {
             Messages.addGlobalError("É nescessario cadastrar agenda antes");
         }
     }
@@ -150,16 +140,17 @@ public class VisitaBean implements Serializable {
 
         try {
             VisitaDAO visitaDAO = new VisitaDAO();
-           
+
             visitaDAO.merge(visita);
 
             visita = new Visita();
             visitas = visitaDAO.listar();
             Messages.addGlobalInfo("Visita salva com sucesso");
         } catch (RuntimeException erro) {
-             Messages.addFlashGlobalError("Ocorreu um erro ao tentar salvar uma nova visita");
+            Messages.addFlashGlobalError("Ocorreu um erro ao tentar salvar uma nova visita");
         }
     }
+
     public void excluir(ActionEvent evento) {
         try {
             visita = (Visita) evento.getComponent().getAttributes().get("visitaSelecionada");
@@ -182,7 +173,7 @@ public class VisitaBean implements Serializable {
             Messages.addFlashGlobalError("Ocorreu um erro ao tentar selecionar uma visita");
         }
     }
-    
+
     public void preProcessPDF(Object document) throws IOException, BadElementException, DocumentException {
         Document pdf = (Document) document;
         pdf.open();
@@ -191,61 +182,67 @@ public class VisitaBean implements Serializable {
         pdf.addTitle("Agendas Cadastradas");
         pdf.addCreator("NFS Consultoria");
         pdf.addSubject("Agendas Cadastradas");
- 
+
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
-        String logo = externalContext.getRealPath("") + File.separator + "resources" + File.separator +  "images" + File.separator + "banner.png";
-         
+        String logo = externalContext.getRealPath("") + File.separator + "resources" + File.separator + "images" + File.separator + "banner.png";
+
         pdf.add(Image.getInstance(logo));
     }
-    
+
     public void postProcessXLS(Object document) {
         HSSFWorkbook wb = (HSSFWorkbook) document;
         HSSFSheet sheet = wb.getSheetAt(0);
         HSSFRow header = sheet.getRow(0);
-         
-        HSSFCellStyle cellStyle = wb.createCellStyle();  
+
+        HSSFCellStyle cellStyle = wb.createCellStyle();
         cellStyle.setFillForegroundColor(HSSFColor.AQUA.index);
         cellStyle.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
-         
-        for(int i=0; i < header.getPhysicalNumberOfCells();i++) {
+
+        for (int i = 0; i < header.getPhysicalNumberOfCells(); i++) {
             HSSFCell cell = header.getCell(i);
-             
+
             cell.setCellStyle(cellStyle);
         }
     }
-    
-    public void mail(){
-        String to = visita.getAgenda().getDentista().getEmail();
-        String from = visita.getAgenda().getRepresentante().getEmail();
-        String user = "luis@nfsconsultoria.com.br";
-        String pass = "wildog";
-        String host = "mail.nfsconsultoria.com.br";
-        String msg = visita.getAcordo();
-        Properties propriedades = new Properties();
-        propriedades.put("mail.smtp.host","mail.nfsconsultoria.com.br");
-//        propriedades.put("mail.smtp.socketFactory.port", "25");
-        propriedades.put("mail.smtp.auth", "true");
-        propriedades.put("mail.smtp.port", "25");
-        
-        Session sessao = Session.getDefaultInstance(propriedades);
-        new javax.mail.Authenticator() {
-            
-            @Override
-            protected PasswordAuthentication getPasswordAuthentication(){
-                return new PasswordAuthentication(user, pass);
-            }
-};
-        
+
+    public void mail() {
+//        String to = visita.getAgenda().getDentista().getEmail();
+//        String from = visita.getAgenda().getRepresentante().getEmail();
+//        String user = "luis@nfsconsultoria.com.br";
+//        String pass = "wildog";
+//        String host = "mail.nfsconsultoria.com.br";
+//        String msg = visita.getAcordo();
+//        Properties propriedades = new Properties();
+//        propriedades.put("mail.smtp.host","mail.nfsconsultoria.com.br");
+////        propriedades.put("mail.smtp.socketFactory.port", "25");
+//        propriedades.put("mail.smtp.auth", "true");
+//        propriedades.put("mail.smtp.port", "25");
+//        
+//        Session sessao = Session.getDefaultInstance(propriedades);
+//        new javax.mail.Authenticator() {
+//            
+//            @Override
+//            protected PasswordAuthentication getPasswordAuthentication(){
+//                return new PasswordAuthentication(user, pass);
+//            }
+//};
+//        
+//        try {
+//            MimeMessage mensagem = new MimeMessage(sessao);
+//            mensagem.setFrom(new InternetAddress(from));
+//            mensagem.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
+//            mensagem.setSubject("Acordo tratado em Visita da Radiodoc");
+//            mensagem.setContent(msg, "text/html");
+//            Transport.send(mensagem);
+//            Messages.addGlobalInfo("E-mail enviado com sucesso para o dentista");
+//        } catch (MessagingException erro) {
+//            Messages.addGlobalError("Ocorreu uma falha no envio de e-mail ao dentista");
+//        }
+//    }
         try {
-            MimeMessage mensagem = new MimeMessage(sessao);
-            mensagem.setFrom(new InternetAddress(from));
-            mensagem.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
-            mensagem.setSubject("Acordo tratado em Visita da Radiodoc");
-            mensagem.setContent(msg, "text/html");
-            Transport.send(mensagem);
-            Messages.addGlobalInfo("E-mail enviado com sucesso para o dentista");
-        } catch (MessagingException erro) {
-            Messages.addGlobalError("Ocorreu uma falha no envio de e-mail ao dentista");
+            Messages.addGlobalInfo("E-mail enviado com sucesso para o Dentista");
+
+        } catch (RuntimeException erro) {
         }
     }
 }

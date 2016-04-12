@@ -86,8 +86,8 @@ public class RepresentanteBean implements Serializable {
             RepresentanteDAO representanteDAO = new RepresentanteDAO();
             representanteDAO.merge(representante);
 
-            representante = new Representante();
             representantes = representanteDAO.listar();
+            representante = new Representante();
             Messages.addGlobalInfo("Representante salvo com sucesso");
         } catch (RuntimeException erro) {
             Messages.addFlashGlobalError("Ocorreu um erro ao tentar salvar o representante");

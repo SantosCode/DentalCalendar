@@ -9,6 +9,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.UniqueConstraint;
 
 /**
  *
@@ -18,10 +19,10 @@ import javax.persistence.ManyToOne;
 @Entity
 public class Dentista extends GenericDomain{
     
-    @Column(nullable = false, length = 45)
+    @Column(nullable = false, length = 45, unique = true)
     private String nome;
     
-    @Column(nullable = true, length = 6)
+    @Column(nullable = true, length = 6, unique = true)
     private String cro;
     
     @Column(nullable = false, length = 15)
@@ -53,9 +54,6 @@ public class Dentista extends GenericDomain{
    
     @Column(nullable = true, length = 15)
     private String telCelSec;
-    
-    @Column(nullable = true, length = 45)
-    private Integer qntDent;
     
     @Column(length = 2)
     private Integer diaNasc;
@@ -173,14 +171,6 @@ public class Dentista extends GenericDomain{
         this.telCelSec = telCelSec;
     }
     
-    public Integer getQntDent() {
-        return qntDent;
-    }
-
-    public void setQntDent(Integer qntDent) {
-        this.qntDent = qntDent;
-    }
-
     public Integer getDiaNasc() {
         return diaNasc;
     }

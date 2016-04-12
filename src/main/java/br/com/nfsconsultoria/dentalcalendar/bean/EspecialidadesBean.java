@@ -85,8 +85,8 @@ public class EspecialidadesBean implements Serializable{
             EspecialDAO especialDAO= new EspecialDAO();
             especialDAO.merge(especial);
             
-            especial = new Especial();
             especiais = especialDAO.listar();
+            especial = new Especial();
             Messages.addGlobalInfo("Especialidade salva com sucesso");
         } catch (RuntimeException erro) {
       Messages.addGlobalError("Ocorreu um erro ao tentar salvar a especialidade");
