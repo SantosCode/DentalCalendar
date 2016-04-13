@@ -6,12 +6,10 @@
 package br.com.nfsconsultoria.dentalcalendar.domain;
 
 import java.util.List;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.Table;
 
 /**
  *
@@ -36,10 +34,7 @@ public class Secretaria extends GenericDomain{
     @Column(length = 8)
     private String mesNasc;
     
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "Sec_Dent", joinColumns = 
-            @JoinColumn(name = "sec_codigo"), inverseJoinColumns = 
-                    @JoinColumn(name = "dent_codigo"))
+    @ManyToMany(mappedBy = "secretaria")
     private List<Dentista> dentistas;
 
     public String getNome() {

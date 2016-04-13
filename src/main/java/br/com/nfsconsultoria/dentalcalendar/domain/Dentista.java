@@ -11,6 +11,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -21,7 +22,6 @@ import javax.persistence.Table;
  */
 @SuppressWarnings("serial")
 @Entity
-@Table(name = "Dentista")
 public class Dentista extends GenericDomain{
     
     @Column(nullable = false, length = 45, unique = true)
@@ -60,6 +60,9 @@ public class Dentista extends GenericDomain{
     @Column(length = 8)
     private String mesNasc;
     
+    @Column
+    private Boolean cortesia;
+    
     @ManyToOne
     @JoinColumn(nullable = false)
     private Especial especialidade;
@@ -68,7 +71,10 @@ public class Dentista extends GenericDomain{
     @JoinColumn(nullable = true)
     private Radiologia radiologia;
     
-    @ManyToMany(mappedBy = "dentistas")
+  @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "Dent_Sec", joinColumns = 
+            @JoinColumn(name = "dent_codigo", referencedColumnName = "codigo"), inverseJoinColumns = 
+                    @JoinColumn(name = "sec_codigo", referencedColumnName = "codigo"))
     private List<Secretaria> secretaria;
 
     public String getNome() {
@@ -173,6 +179,14 @@ public class Dentista extends GenericDomain{
 
     public void setMesNasc(String mesNasc) {
         this.mesNasc = mesNasc;
+    }
+
+    public Boolean getCortesia() {
+        return cortesia;
+    }
+
+    public void setCortesia(Boolean cortesia) {
+        this.cortesia = cortesia;
     }
 
     public Radiologia getRadiologia() {

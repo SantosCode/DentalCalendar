@@ -175,7 +175,7 @@
                                  value="#{dentistaBean.dentista.email}" required="false"
                                  requiredMessage="O campo 'E-mail' é obrigatório" />
 
-                    <p:outputLabel for="nomeSec" value="Nome Secretária(o):" />
+                    <p:outputLabel for="nomeSec" value="Secretária(o):" />
                     <p:selectCheckboxMenu id="nomeSec" value="#{dentistaBean.dentista.secretaria}"
                                      filter="true" required="true" 
                                      requiredMessage="O campo secretária é obrigatório"
@@ -185,28 +185,22 @@
                                        var="secretaria" itemValue="#{secretaria}"
                                        itemLabel="#{secretaria.nome}"/>
                     </p:selectCheckboxMenu>
-                    <p:commandLink id="listar" value="Listar" update="lista" />
-                    <p:outputPanel id="lista">
-                        <p:dataList value="#{dentistaBean.dentista.secretaria}" var="secreLista" 
-                                    emptyMessage="Nenhum(a) secretária(o) selecionada(o)">
-                            #{secreLista}
-                        </p:dataList>
-                    </p:outputPanel>
+
                                      
-                    <p:outputLabel for="indicaRadio" value="Indicação" />
+                    <p:outputLabel for="indicaRadio" value="Indicação:" />
                     <p:selectOneMenu id="indicaRadio"
                                      value="#{dentistaBean.dentista.radiologia}" effect="fade"
                                      filter="true" required="true"
                                      requiredMessage="O campo indicação é obrigatório "
                                      converter="omnifaces.SelectItemsConverter">
                         <f:selectItem noSelectionOption="true"
-                                      itemLabel="Indica para qual Radiologia?" />
+                                      itemLabel="Radiologia" />
                         <f:selectItems value="#{dentistaBean.radiologias}"
                                        var="indicaRadio" itemValue="#{indicaRadio}"
                                        itemLabel="#{indicaRadio.nome}" />
                     </p:selectOneMenu>
-
                 </h:panelGrid>
+                
                 <h:panelGrid id="nasc" columns="5">
                     <p:outputLabel value="Aniverssário:" style="font-weight: bold"/>
                     <p:outputLabel for="diaNasc" value="Dia:" />
@@ -228,7 +222,7 @@
                                      converter="omnifaces.SelectItemsConverter">
                         <f:selectItem noSelectionOption="true"
                                       itemLabel="Mês"/>
-                        <f:selectItems value="#{dentistaBean.mesAno}" var="mesNasc" itemValue="#{mesNasc}"/>
+                        <f:selectItems value="#{dentistaBean.mesAno}" var="mesNasci" itemValue="#{mesNasci}"/>
                     </p:selectOneMenu>
                 </h:panelGrid>
 

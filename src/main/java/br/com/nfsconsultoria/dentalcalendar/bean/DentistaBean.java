@@ -208,6 +208,7 @@ public class DentistaBean implements Serializable {
             Messages.addGlobalInfo("Dentista salvo com sucesso");
         } catch (RuntimeException erro) {
             Messages.addFlashGlobalError("Ocorreu o erro " + erro.getMessage() + " ao tentar salvar um novo Dentista");
+            erro.printStackTrace();
         }
     }
 
