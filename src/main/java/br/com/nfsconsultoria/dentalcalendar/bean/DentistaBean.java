@@ -182,6 +182,7 @@ public class DentistaBean implements Serializable {
 
     public void salvar() {
 
+
         if (this.getDentista().getDiaNasc() != null && !this.getDentista().getMesNasc().isEmpty()) {
             try {
                 DatasDAO datasDAO = new DatasDAO();
@@ -194,11 +195,10 @@ public class DentistaBean implements Serializable {
                 data = new Datas();
                 Messages.addGlobalInfo("Aniverssário de Dentista salvo com sucesso");
             } catch (RuntimeException erro) {
-
+                
                 Messages.addFlashGlobalWarn("Aniverssário de Dentista não foi salvo");
             }
         }
-
         try {
             DentistaDAO dentistaDAO = new DentistaDAO();
             dentistaDAO.merge(dentista);

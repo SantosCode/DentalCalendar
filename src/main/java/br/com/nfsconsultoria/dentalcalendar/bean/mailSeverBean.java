@@ -100,26 +100,6 @@ public class mailSeverBean {
         }
     }
     
-    public void excluirObjeto(){
-        try {
-            mailServerDAO mailDAO = new mailServerDAO();
-            mailDAO.excluir(mailServer);
-            mailServer = new mailServer();
-            mailServer.setEmail("seu_email");
-            mailServer.setSenha("sua_senha");
-            mailServer.setPorta(25);
-            mailServer.setServidor("smtp.dominio.com.br");
-            mailServer.setTtls(Boolean.TRUE);
-            mailDAO.merge(mailServer);
-            mailServers = mailDAO.listar();
-            Messages.addGlobalInfo("Mail Server excluido com sucesso");
-        } catch (RuntimeException erro) {
-            Messages.addGlobalError("Ocorreu o erro " + erro.getMessage() 
-                    + " ao excluir mail server");
-            erro.printStackTrace();
-        }
-    }
-    
     public void editar(ActionEvent evento){
         try {
             mailServerDAO mailDAO = new mailServerDAO();

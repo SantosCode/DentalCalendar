@@ -51,11 +51,6 @@
                         <h:outputText value="#{dentista.nome}" />
                     </p:column>
                     
-                    <p:column headerText="Sec" filterBy="#{dentista.nomeSec}"
-                              sortBy="#{dentista.nomeSec}" filterMatchMode="contains">
-                        <h:outputText value="#{dentista.nomeSec}" />
-                    </p:column>
-
                     <p:column headerText="Espec"
                               filterBy="#{dentista.especialidade.descricao}" filterMatchMode="contains"
                               sortBy="#{dentista.especialidade.descricao}">
@@ -188,13 +183,13 @@
                                      label="Secretária(o)">                    
                         <f:selectItems value="#{dentistaBean.secretarias}"
                                        var="secretaria" itemValue="#{secretaria}"
-                                       itemLabel="#{secretaria.nome}"
+                                       itemLabel="#{secretaria.nome}"/>
                     </p:selectCheckboxMenu>
                     <p:commandLink id="listar" value="Listar" update="lista" />
                     <p:outputPanel id="lista">
                         <p:dataList value="#{dentistaBean.dentista.secretaria}" var="secreLista" 
                                     emptyMessage="Nenhum(a) secretária(o) selecionada(o)">
-                            #{secreLista.nome}
+                            #{secreLista}
                         </p:dataList>
                     </p:outputPanel>
                                      
@@ -213,7 +208,7 @@
 
                 </h:panelGrid>
                 <h:panelGrid id="nasc" columns="5">
-                    <p:outputLabel value="Aniver Dentista:" style="font-weight: bold"/>
+                    <p:outputLabel value="Aniverssário:" style="font-weight: bold"/>
                     <p:outputLabel for="diaNasc" value="Dia:" />
                     <p:selectOneMenu id="diaNasc"
                                      value="#{dentistaBean.dentista.diaNasc}" 
