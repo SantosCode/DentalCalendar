@@ -6,7 +6,6 @@
 package br.com.nfsconsultoria.dentalcalendar.domain;
 
 import java.util.List;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -23,7 +22,7 @@ public class GrupoDentista extends GenericDomain{
     @Column(nullable = false, length = 45, unique = true)
     private String nomeClinica;
     
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.EAGER)
     private List<Dentista> dentistas;
 
     public String getNomeClinica() {

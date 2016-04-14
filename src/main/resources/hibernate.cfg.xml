@@ -9,6 +9,8 @@
     <property name="connection.password">Aptech2016</property>
     <!-- Pool de Conexões -->
     <property name="connection.pool_size">5</property>
+    <!-- Sessão -->
+    <property name= "hibernate.current_sesion_context_class">org.hibernate.context.ThreadLocalSesionContext</property>     
     <!-- SQL dialect -->
     <property name="dialect">org.hibernate.dialect.MySQL5InnoDBDialect</property>
     <!-- Gerenciamento do Contexto das Sessões -->

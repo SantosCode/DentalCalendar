@@ -11,26 +11,25 @@ import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
 import org.hibernate.Session;
-import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Restrictions;
 
 /**
  *
  * @author luis
  */
-public class GrupoDentistaDAO extends GenericDAO<GrupoDentista>{
+public class GrupoDentistaDAO extends GenericDAO<GrupoDentista> {
+
     @SuppressWarnings("unchecked")
-	public List<GrupoDentista> listarLazy() {
-		Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
-		try {
-			Criteria consulta = sessao.createCriteria(GrupoDentista.class)
-                                .setFetchMode("dentistas", FetchMode.JOIN);
-			List<GrupoDentista> resultado = consulta.list();
-			return resultado;
-		} catch (RuntimeException erro) {
-			throw erro;
-		} finally {
-			sessao.close();
-		}
-	}
+    public List<GrupoDentista> listarLazy() {
+        Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
+        try {
+            Criteria consulta = sessao.createCriteria(GrupoDentista.class)
+                    .setFetchMode("dentistas", FetchMode.LAZY);
+            List<GrupoDentista> resultado = consulta.list();
+            return resultado;
+        } catch (RuntimeException erro) {
+            throw erro;
+        } finally {
+            sessao.close();
+        }
+    }
 }

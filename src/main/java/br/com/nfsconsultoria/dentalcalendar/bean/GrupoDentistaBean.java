@@ -5,10 +5,8 @@
  */
 package br.com.nfsconsultoria.dentalcalendar.bean;
 
-import br.com.nfsconsultoria.dentalcalendar.dao.DatasDAO;
 import br.com.nfsconsultoria.dentalcalendar.dao.DentistaDAO;
 import br.com.nfsconsultoria.dentalcalendar.dao.GrupoDentistaDAO;
-import br.com.nfsconsultoria.dentalcalendar.domain.Datas;
 import br.com.nfsconsultoria.dentalcalendar.domain.Dentista;
 import br.com.nfsconsultoria.dentalcalendar.domain.GrupoDentista;
 import com.lowagie.text.BadElementException;
@@ -51,7 +49,7 @@ public class GrupoDentistaBean implements Serializable{
        GrupoDentistaDAO grupoDAO = new GrupoDentistaDAO();
        DentistaDAO dentistaDAO = new DentistaDAO();
        this.gruposDentista = grupoDAO.listarLazy();
-       this.dentistas = dentistaDAO.listar();
+       this.dentistas = dentistaDAO.listarLazy();
    }
 
     public GrupoDentista getGrupoDentista() {
@@ -97,7 +95,7 @@ public class GrupoDentistaBean implements Serializable{
         try {
             GrupoDentistaDAO grupoDAO = new GrupoDentistaDAO();
             grupoDAO.merge(grupoDentista);
-            gruposDentista = grupoDAO.listar();
+            gruposDentista = grupoDAO.listarLazy();
             grupoDentista = new GrupoDentista();
             Messages.addGlobalInfo("Clinica salva com sucesso");
         } catch (RuntimeException erro) {
@@ -108,25 +106,28 @@ public class GrupoDentistaBean implements Serializable{
     
      public void excluir(ActionEvent evento) {
         try {
+            
             grupoDentista = (GrupoDentista) evento.getComponent().getAttributes().get("clinicaSelecionada");
-
+ 
             GrupoDentistaDAO grupoDAO = new GrupoDentistaDAO();
             grupoDAO.excluir(grupoDentista);
             
-          gruposDentista = grupoDAO.listar();
+          gruposDentista = grupoDAO.listarLazy();
             Messages.addGlobalInfo("Clinica removida com sucesso");
         } catch (RuntimeException erro) {
             Messages.addFlashGlobalError("Ocorreu o erro " +erro.getMessage()+ " ao tentar remover a clinica");
+            erro.printStackTrace();
         }
     }
 
     public void editar(ActionEvent evento) {
         try {
             GrupoDentistaDAO grupoDAO = new GrupoDentistaDAO();
-            grupoDAO.listar();
+            grupoDAO.listarLazy();
             grupoDentista = (GrupoDentista) evento.getComponent().getAttributes().get("clinicaSelecionada");
         } catch (RuntimeException erro) {
             Messages.addFlashGlobalError("Ocorreu o erro " +erro.getMessage()+ " ao tentar selecionar a clinica");
+            erro.printStackTrace();
         }
     }
 
