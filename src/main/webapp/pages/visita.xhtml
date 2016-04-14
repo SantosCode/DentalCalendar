@@ -67,6 +67,12 @@
                               sortBy="#{visita.agenda.dentista.nome}" filterMatchMode="contains">
                         <h:outputText value="#{visita.agenda.dentista.nome}" />
                     </p:column>
+                   
+                    <p:column headerText="E-Mail" filterBy="#{visita.email}"
+                              sortBy="#{visita.email}" filterMatchMode="contains">
+                        <p:selectBooleanButton onLabel="Enviado" offLabel="Não Enviado" 
+                                               value="#{visita.email}" disabled="true"/>
+                    </p:column>
 
                     <p:column headerText="Opções" exportable="false">
                         <p:commandButton icon="ui-icon-trash"
@@ -127,7 +133,8 @@
                               required="true" requiredMessage="O campo acordo é obrigatório"/>
                     
                     <p:outputLabel for="mail" value="Enviar e-mail para o dentista?"/>
-                    <p:selectBooleanButton id="mail" onLabel="Sim" offLabel="Não"  valueChangeListener="#{visitaBean.mail}"/>
+                    <p:selectBooleanButton id="mail" onLabel="Sim" offLabel="Não"  value="#{visitaBean.visita.email}" 
+                                           valueChangeListener="#{visitaBean.mail}"/>
                 </h:panelGrid>
                
                 <h:panelGrid columns="2">
@@ -167,6 +174,10 @@
                                    style="font-weight: bold" />
                     <p:editor id="acordo" widgetVar="editor" value="#{visitaBean.visita.acordo}" disabled="true" 
                               rendered="true" width="600" converter="omnifaces.SelectItemsConverter" />
+                    
+                    <p:outputLabel for="mail" value="Enviar e-mail para o dentista?"/>
+                    <p:selectBooleanButton id="mail" onLabel="Sim" offLabel="Não"  
+                                           value="#{visitaBean.visita.email}" disabled="true"/>
                 </h:panelGrid>
 
                 <h:panelGrid columns="2">

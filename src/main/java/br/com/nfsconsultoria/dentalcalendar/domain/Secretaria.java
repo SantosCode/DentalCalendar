@@ -5,11 +5,8 @@
  */
 package br.com.nfsconsultoria.dentalcalendar.domain;
 
-import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
 
 /**
  *
@@ -31,12 +28,9 @@ public class Secretaria extends GenericDomain{
     @Column(length = 2)
     private Integer diaNasc;
     
-    @Column(length = 8)
+    @Column(length = 15)
     private String mesNasc;
     
-    @ManyToMany(mappedBy = "secretaria")
-    private List<Dentista> dentistas;
-
     public String getNome() {
         return nome;
     }
@@ -77,13 +71,4 @@ public class Secretaria extends GenericDomain{
         this.mesNasc = mesNasc;
     }
 
-    public List<Dentista> getDentistas() {
-        return dentistas;
-    }
-
-    public void setDentistas(List<Dentista> dentistas) {
-        this.dentistas = dentistas;
-    }
-    
-    
 }

@@ -50,6 +50,14 @@
                               sortBy="#{dentista.nome}" filterMatchMode="contains">
                         <h:outputText value="#{dentista.nome}" />
                     </p:column>
+                  
+                    <p:column headerText="Sec" filterBy="#{dentista.secretaria1.nome} #{dentista.secretaria2.nome} 
+                              #{dentista.secretaria3.nome}"
+                              sortBy="#{dentista.secretaria1.nome} #{dentista.secretaria2.nome} 
+                              #{dentista.secretaria3.nome}" filterMatchMode="contains" width="20%">
+                        <h:outputText value="#{dentista.secretaria1.nome} #{dentista.secretaria2.nome} 
+                                      #{dentista.secretaria3.nome} #{dentista.secretaria4.nome}" />
+                    </p:column>
                     
                     <p:column headerText="Espec"
                               filterBy="#{dentista.especialidade.descricao}" filterMatchMode="contains"
@@ -71,6 +79,11 @@
                     <p:column headerText="Cidade" filterBy="#{dentista.cidade}" filterMatchMode="contains"
                               sortBy="#{dentista.cidade}">
                         <h:outputText value="#{dentista.cidade}" />
+                    </p:column>
+                    
+                    <p:column headerText="Cortesia" filterBy="#{dentista.cortesia}" filterMatchMode="contains"
+                              sortBy="#{dentista.cortesia}">
+                        <p:selectBooleanButton value="#{dentista.cortesia}" onLabel="Sim" offLabel="Não" disabled="true"/>
                     </p:column>
 
                     <p:column headerText="Opções" exportable="false">
@@ -113,7 +126,7 @@
 
         <p:dialog header="Dentista - Cadastro" widgetVar="dialogo"
                   draggable="false" resizable="false" modal="true" closable="false"
-                  appendTo="@(body)" showEffect="clip" responsive="true" dynamic="true">
+                  appendTo="@(body)" showEffect="clip" responsive="true" dynamic="true" fitViewport="true" positionType="absolute">
             <h:form id="formCadastro">
                 <h:panelGrid id="painel" columns="2">
                     <p:outputLabel for="nome" value="Nome:" />
@@ -175,18 +188,51 @@
                                  value="#{dentistaBean.dentista.email}" required="false"
                                  requiredMessage="O campo 'E-mail' é obrigatório" />
 
-                    <p:outputLabel for="nomeSec" value="Secretária(o):" />
-                    <p:selectCheckboxMenu id="nomeSec" value="#{dentistaBean.dentista.secretaria}"
-                                     filter="true" required="true" 
+                    <p:outputLabel for="nomeSec1" value="Secretária(o) 1:" />
+                    <p:selectOneMenu id="nomeSec1" value="#{dentistaBean.dentista.secretaria1}"
+                                     filter="true" required="false" effect="fade"
                                      requiredMessage="O campo secretária é obrigatório"
-                                     converterMessage="omnifaces.SelectItemsConverter"
-                                     label="Secretária(o)">                    
+                                     converter="omnifaces.SelectItemsConverter" >  
+                        <f:selectItem noSelectionOption="true"
+                                      itemLabel="Secretaria(o)1" />
                         <f:selectItems value="#{dentistaBean.secretarias}"
-                                       var="secretaria" itemValue="#{secretaria}"
-                                       itemLabel="#{secretaria.nome}"/>
-                    </p:selectCheckboxMenu>
-
-                                     
+                                       var="secretaria1" itemValue="#{secretaria1}"
+                                       itemLabel="#{secretaria1.nome}"/>
+                    </p:selectOneMenu>
+                    <p:outputLabel for="nomeSec2" value="Secretária(o) 2:" />
+                    <p:selectOneMenu id="nomeSec2" value="#{dentistaBean.dentista.secretaria2}"
+                                     filter="true" required="false" effect="fade"
+                                     requiredMessage="O campo secretária é obrigatório"
+                                     converter="omnifaces.SelectItemsConverter" >  
+                        <f:selectItem noSelectionOption="true"
+                                      itemLabel="Secretaria(o)2" />
+                        <f:selectItems value="#{dentistaBean.secretarias}"
+                                       var="secretaria2" itemValue="#{secretaria2}"
+                                       itemLabel="#{secretaria2.nome}"/>
+                    </p:selectOneMenu>
+                    <p:outputLabel for="nomeSec3" value="Secretária(o) 3:" />
+                    <p:selectOneMenu id="nomeSec3" value="#{dentistaBean.dentista.secretaria3}"
+                                     filter="true" required="false" effect="fade"
+                                     requiredMessage="O campo secretária é obrigatório"
+                                     converter="omnifaces.SelectItemsConverter" >  
+                        <f:selectItem noSelectionOption="true"
+                                      itemLabel="Secretaria(o)3" />
+                        <f:selectItems value="#{dentistaBean.secretarias}"
+                                       var="secretaria3" itemValue="#{secretaria3}"
+                                       itemLabel="#{secretaria3.nome}"/>
+                    </p:selectOneMenu>
+                    <p:outputLabel for="nomeSec4" value="Secretária(o) 4:" />
+                    <p:selectOneMenu id="nomeSec4" value="#{dentistaBean.dentista.secretaria4}"
+                                     filter="true" required="false" effect="fade"
+                                     requiredMessage="O campo secretária é obrigatório"
+                                     converter="omnifaces.SelectItemsConverter" >
+                        <f:selectItem noSelectionOption="true"
+                                      itemLabel="Secretaria(o)4" />
+                        <f:selectItems value="#{dentistaBean.secretarias}"
+                                       var="secretaria4" itemValue="#{secretaria4}"
+                                       itemLabel="#{secretaria4.nome}"/>
+                    </p:selectOneMenu>
+                    
                     <p:outputLabel for="indicaRadio" value="Indicação:" />
                     <p:selectOneMenu id="indicaRadio"
                                      value="#{dentistaBean.dentista.radiologia}" effect="fade"
@@ -225,11 +271,16 @@
                         <f:selectItems value="#{dentistaBean.mesAno}" var="mesNasci" itemValue="#{mesNasci}"/>
                     </p:selectOneMenu>
                 </h:panelGrid>
+                
+                <h:panelGrid id="cort" columns="2">
+                     <p:outputLabel for="corte" value="Cortesia:"/>
+                    <p:selectBooleanCheckbox id="corte" value="#{dentistaBean.dentista.cortesia}"/>
+                </h:panelGrid>
 
                 <h:panelGrid columns="2">
                     <p:commandButton value="Salvar"
                                      actionListener="#{dentistaBean.salvar}"
-                                     update=":mensagem :formCadastro:painel :formCadastro:nasc :formListagem:tabela" />
+                                     update=":mensagem :formCadastro:painel :formCadastro:nasc :formCadastro:cort :formListagem:tabela" />
                     <p:commandButton value="Fechar" oncomplete="PF('dialogo').hide();" />
                 </h:panelGrid>
             </h:form>
@@ -278,24 +329,50 @@
                     <p:outputLabel for="email" value="E-mail:"
                                    style="font-weight: bold" />
                     <h:outputText id="email" value="#{dentistaBean.dentista.email}" />
-
-                    <p:outputLabel for="niverdia" value="Dia Aniver:"
+                    
+                    <p:outputLabel for="sec1" value="Sec1:"
                                    style="font-weight: bold" />
-                    <h:outputText id="niverdia" value="#{dentistaBean.dentista.diaNasc}" />
-                   
-                    <p:outputLabel for="nivermes" value="Mês Aniver:"
+                    <h:outputText id="sec1" value="#{dentistaBean.dentista.secretaria1.nome}" />
+                    
+                    <p:outputLabel for="sec1tel" value="Sec1 Tel:"
                                    style="font-weight: bold" />
-                    <h:outputText id="nivermes" value="#{dentistaBean.dentista.mesNasc}" />
-
-                    <p:outputLabel for="nomeSec" value="Nome Secretaria:"
+                    <h:outputText id="sec1tel" value="#{dentistaBean.dentista.secretaria1.telefone}" />
+                    
+                    <p:outputLabel for="sec2" value="Sec2:"
                                    style="font-weight: bold" />
-                    <h:outputText id="nomeSec" value="#{dentistaBean.dentista.secretaria}" />
+                    <h:outputText id="sec2" value="#{dentistaBean.dentista.secretaria2.nome}" />
+                    
+                    <p:outputLabel for="sec2tel" value="Sec2 Tel:"
+                                   style="font-weight: bold" />
+                    <h:outputText id="sec2tel" value="#{dentistaBean.dentista.secretaria2.telefone}" />
+                    
+                    <p:outputLabel for="sec3" value="Sec3:"
+                                   style="font-weight: bold" />
+                    <h:outputText id="sec3" value="#{dentistaBean.dentista.secretaria3.nome}" />
+                    
+                    <p:outputLabel for="sec3tel" value="Sec3 Tel:"
+                                   style="font-weight: bold" />
+                    <h:outputText id="sec3tel" value="#{dentistaBean.dentista.secretaria3.telefone}" />
+                    
+                    <p:outputLabel for="sec4" value="Sec4:"
+                                   style="font-weight: bold" />
+                    <h:outputText id="sec4" value="#{dentistaBean.dentista.secretaria4.nome}" />
+                    
+                    <p:outputLabel for="sec4tel" value="Sec4 Tel:"
+                                   style="font-weight: bold" />
+                    <h:outputText id="sec4tel" value="#{dentistaBean.dentista.secretaria4.telefone}" />
+                    
+                    <p:outputLabel for="niver" value="Aniverssário:"
+                                   style="font-weight: bold" />
+                    <h:outputText id="niver" value="#{dentistaBean.dentista.diaNasc}/#{dentistaBean.dentista.mesNasc}" />
 
                     <p:outputLabel for="indicaRadio" value="Indicação"
                                    style="font-weight: bold" />
                     <h:outputText id="indicaRadio"
                                   value="#{dentistaBean.dentista.radiologia.nome}" />
-
+                    
+                    <p:outputLabel for="corte" value="Cortesia:" style="font-weight: bold"/>
+                    <p:selectBooleanCheckbox id="corte" value="#{dentistaBean.dentista.cortesia}" disabled="true"/>
                 </h:panelGrid>
 
                 <h:panelGrid columns="2">

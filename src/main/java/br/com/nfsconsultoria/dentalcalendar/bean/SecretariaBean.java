@@ -5,7 +5,9 @@
  */
 package br.com.nfsconsultoria.dentalcalendar.bean;
 
+import br.com.nfsconsultoria.dentalcalendar.dao.DatasDAO;
 import br.com.nfsconsultoria.dentalcalendar.dao.SecretariaDAO;
+import br.com.nfsconsultoria.dentalcalendar.domain.Datas;
 import br.com.nfsconsultoria.dentalcalendar.domain.Secretaria;
 import com.lowagie.text.BadElementException;
 import com.lowagie.text.Document;
@@ -41,12 +43,16 @@ import org.omnifaces.util.Messages;
 public class SecretariaBean implements Serializable {
 
     private Secretaria sec;
+    private Datas data;
     private List<Secretaria> secs;
+    private List<Datas> datas;
 
     public SecretariaBean() {
 
         SecretariaDAO secDAO = new SecretariaDAO();
+        DatasDAO dataDAO = new DatasDAO();
         this.secs = secDAO.listar();
+        this.datas = dataDAO.listar();
     }
 
     public Secretaria getSec() {
@@ -63,6 +69,22 @@ public class SecretariaBean implements Serializable {
 
     public void setSecs(List<Secretaria> secs) {
         this.secs = secs;
+    }
+
+    public Datas getData() {
+        return data;
+    }
+
+    public void setData(Datas data) {
+        this.data = data;
+    }
+
+    public List<Datas> getDatas() {
+        return datas;
+    }
+
+    public void setDatas(List<Datas> datas) {
+        this.datas = datas;
     }
     
     public List<Integer> getDiasMes() {
@@ -84,6 +106,8 @@ public class SecretariaBean implements Serializable {
 
         try {
             SecretariaDAO secDAO = new SecretariaDAO();
+            DatasDAO dataDAO = new DatasDAO();
+            dataDAO.listar();
             secDAO.listar();
         } catch (RuntimeException erro) {
             Messages.addGlobalError("Ocorreu o erro " + erro.getMessage() + 
@@ -95,9 +119,27 @@ public class SecretariaBean implements Serializable {
     
     public void novo(){
         sec = new Secretaria();
+        data = new Datas();
     }
     
     public void salvar(){
+        
+          if (this.getSec().getDiaNasc() != null && this.getSec().getMesNasc() != null) {
+            try {
+                DatasDAO datasDAO = new DatasDAO();
+                data.setEvento("Aniverssário");
+                data.setNome("Sec. " + this.getSec().getNome());
+                data.setDia(this.getSec().getDiaNasc());
+                data.setMes(this.getSec().getMesNasc());
+                datasDAO.merge(data);
+                datas = datasDAO.listar();
+                data = new Datas();
+                Messages.addGlobalInfo("Aniverssário de Secretária(o) salvo com sucesso");
+            } catch (RuntimeException erro) {
+                
+                Messages.addFlashGlobalWarn("Aniverssário de Secretária(o) não foi salvo");
+            }
+        }
         try {
             SecretariaDAO secDAO = new SecretariaDAO();
             secDAO.merge(sec);
@@ -107,6 +149,7 @@ public class SecretariaBean implements Serializable {
         } catch (RuntimeException erro) {
             Messages.addGlobalError("Ocorreu o erro " + erro.getMessage() + 
                     " ao tentar salvar a secretária(o)");
+            erro.printStackTrace();
         }
     }
     

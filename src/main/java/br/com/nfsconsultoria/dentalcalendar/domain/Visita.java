@@ -11,6 +11,9 @@ public class Visita extends GenericDomain {
 
     @Column(nullable = false, length = 300)
     private String acordo;
+    
+    @Column
+    private Boolean email;
 
     @ManyToOne
     @JoinColumn(nullable = false)
@@ -22,6 +25,14 @@ public class Visita extends GenericDomain {
 
     public void setAcordo(String acordo) {
         this.acordo = acordo;
+    }
+
+    public Boolean getEmail() {
+        return email;
+    }
+
+    public void setEmail(Boolean email) {
+        this.email = email;
     }
 
     public Agenda getAgenda() {

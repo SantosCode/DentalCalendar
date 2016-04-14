@@ -195,16 +195,15 @@ public class DentistaBean implements Serializable {
                 data = new Datas();
                 Messages.addGlobalInfo("Aniverssário de Dentista salvo com sucesso");
             } catch (RuntimeException erro) {
-                
                 Messages.addFlashGlobalWarn("Aniverssário de Dentista não foi salvo");
+                erro.printStackTrace();
             }
         }
         try {
             DentistaDAO dentistaDAO = new DentistaDAO();
             dentistaDAO.merge(dentista);
-
-            dentista = new Dentista();
             dentistas = dentistaDAO.listar();
+            dentista = new Dentista();
             Messages.addGlobalInfo("Dentista salvo com sucesso");
         } catch (RuntimeException erro) {
             Messages.addFlashGlobalError("Ocorreu o erro " + erro.getMessage() + " ao tentar salvar um novo Dentista");

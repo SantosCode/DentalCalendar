@@ -126,17 +126,15 @@
                   showEffect="clip" responsive="true" dynamic="true">
             <h:form id="formVisu">
                 <h:panelGrid id="painel" columns="2">
-                    <p:outputLabel for="dia" value="Dia:" style="font-weight: bold"/>
-                    <p:outputLabel id="dia" value="#{datasBean.data.dia}" />
-
-                    <p:outputLabel for="mes" value="Mes:" style="font-weight: bold"/>
-                    <p:outputLabel id="mes" value="#{datasBean.data.mes}" />
-
-                    <p:outputLabel for="evento" value="Evento:" style="font-weight: bold"/>
-                    <h:outputText id="evento" value="#{datasBean.data.evento}"/>
-
-                    <p:outputLabel for="nome" value="Nome:" style="font-weight: bold"/>
-                    <h:outputText  id="nome" value="#{datasBean.data.nome}" />
+                    <p:outputLabel for="nome" value="Clinica:" style="font-weight: bold"/>
+                    <p:outputLabel id="nome" value="#{grupoDentistaBean.grupoDentista.nomeClinica}" />
+                    
+                    <p:outputPanel id="lista">
+                        <p:dataList value="#{grupoDentistaBean.grupoDentista.dentistas}" var="dentistasLista" 
+                                    emptyMessage="Nenhum dentista selecionado">
+                            #{dentistasLista.nome}
+                        </p:dataList>
+                    </p:outputPanel>
                 </h:panelGrid>
 
                 <h:panelGrid columns="2">

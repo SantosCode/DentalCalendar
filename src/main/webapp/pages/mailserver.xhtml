@@ -38,6 +38,7 @@
                             <f:actionListener
                                 type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
                         </p:commandButton>
+                    </h:panelGrid>
                         <p:commandButton icon="ui-icon-trash" value="Excluir" 
                                          actionListener="#{mailSeverBean.excluir}"
                                          update=":mensagem :formCadastro:painel :formSMTP:data:painel">
@@ -45,13 +46,12 @@
                             <f:actionListener
                                 type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
                         </p:commandButton>
-                    </h:panelGrid>
                 </p:dataScroller>
             </p:panel>
         </h:form>
         <p:dialog header="SMTP - Cadastro" widgetVar="dialogo"
                   draggable="false" resizable="false" modal="true" closable="false" appendTo="@(body)" 
-                  showEffect="clip" responsive="true" dynamic="true">
+                  showEffect="clip" responsive="true" dynamic="true" onShow="true" onHide="false">
             <h:form id="formCadastro">
                 <p:panelGrid id="painel" columns="2">
                     <p:outputLabel for="mail" value="E-Mail:"/>

@@ -5,16 +5,10 @@
  */
 package br.com.nfsconsultoria.dentalcalendar.domain;
 
-import java.util.ArrayList;
-import java.util.List;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.Table;
 
 /**
  *
@@ -71,12 +65,22 @@ public class Dentista extends GenericDomain{
     @JoinColumn(nullable = true)
     private Radiologia radiologia;
     
-  @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "Dent_Sec", joinColumns = 
-            @JoinColumn(name = "dent_codigo", referencedColumnName = "codigo"), inverseJoinColumns = 
-                    @JoinColumn(name = "sec_codigo", referencedColumnName = "codigo"))
-    private List<Secretaria> secretaria;
-
+  @ManyToOne
+  @JoinColumn(nullable = true)
+  private Secretaria secretaria1;
+  
+  @ManyToOne
+  @JoinColumn(nullable = true)
+  private Secretaria secretaria2;
+  
+  @ManyToOne
+  @JoinColumn(nullable = true)
+  private Secretaria secretaria3;
+  
+  @ManyToOne
+  @JoinColumn(nullable = true)
+  private Secretaria secretaria4;
+ 
     public String getNome() {
         return nome;
     }
@@ -197,11 +201,36 @@ public class Dentista extends GenericDomain{
         this.radiologia = radiologia;
     }
 
-    public List<Secretaria> getSecretaria() {
-        return secretaria;
+    public Secretaria getSecretaria1() {
+        return secretaria1;
     }
 
-    public void setSecretaria(List<Secretaria> secretaria) {
-        this.secretaria = secretaria;
+    public void setSecretaria1(Secretaria secretaria1) {
+        this.secretaria1 = secretaria1;
     }
+
+    public Secretaria getSecretaria2() {
+        return secretaria2;
+    }
+
+    public void setSecretaria2(Secretaria secretaria2) {
+        this.secretaria2 = secretaria2;
+    }
+
+    public Secretaria getSecretaria3() {
+        return secretaria3;
+    }
+
+    public void setSecretaria3(Secretaria secretaria3) {
+        this.secretaria3 = secretaria3;
+    }
+
+    public Secretaria getSecretaria4() {
+        return secretaria4;
+    }
+
+    public void setSecretaria4(Secretaria secretaria4) {
+        this.secretaria4 = secretaria4;
+    }
+
 }
