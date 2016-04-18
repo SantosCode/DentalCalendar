@@ -5,10 +5,10 @@
  */
 package br.com.nfsconsultoria.dentalcalendar.bean;
 
+import br.com.nfsconsultoria.dentalcalendar.dao.ClinicaDAO;
 import br.com.nfsconsultoria.dentalcalendar.dao.DentistaDAO;
-import br.com.nfsconsultoria.dentalcalendar.dao.GrupoDentistaDAO;
+import br.com.nfsconsultoria.dentalcalendar.domain.Clinica;
 import br.com.nfsconsultoria.dentalcalendar.domain.Dentista;
-import br.com.nfsconsultoria.dentalcalendar.domain.GrupoDentista;
 import com.lowagie.text.BadElementException;
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
@@ -39,33 +39,33 @@ import org.omnifaces.util.Messages;
 @SuppressWarnings("serial")
 @ManagedBean
 @ViewScoped
-public class GrupoDentistaBean implements Serializable{
+public class ClinicaBean implements Serializable{
    
-   private GrupoDentista grupoDentista;
-   private List<GrupoDentista> gruposDentista;
+   private Clinica clinica;
+   private List<Clinica> clinicas;
    private List<Dentista> dentistas;
    
-   public GrupoDentistaBean(){
-       GrupoDentistaDAO grupoDAO = new GrupoDentistaDAO();
+   public ClinicaBean(){
+       ClinicaDAO clinicaDAO = new ClinicaDAO();
        DentistaDAO dentistaDAO = new DentistaDAO();
-       this.gruposDentista = grupoDAO.listarLazy();
+       this.clinicas = clinicaDAO.listarLazy();
        this.dentistas = dentistaDAO.listarLazy();
    }
 
-    public GrupoDentista getGrupoDentista() {
-        return grupoDentista;
+    public Clinica getClinica() {
+        return clinica;
     }
 
-    public void setGrupoDentista(GrupoDentista grupoDentista) {
-        this.grupoDentista = grupoDentista;
+    public void setClinica(Clinica clinica) {
+        this.clinica = clinica;
     }
 
-    public List<GrupoDentista> getGruposDentista() {
-        return gruposDentista;
+    public List<Clinica> getClinicas() {
+        return clinicas;
     }
 
-    public void setGruposDentista(List<GrupoDentista> gruposDentista) {
-        this.gruposDentista = gruposDentista;
+    public void setClinicas(List<Clinica> clinicas) {
+        this.clinicas = clinicas;
     }
 
     public List<Dentista> getDentistas() {
@@ -79,8 +79,8 @@ public class GrupoDentistaBean implements Serializable{
     @PostConstruct
     public void listar(){
         try {
-            GrupoDentistaDAO grupoDAO = new GrupoDentistaDAO();
-            grupoDAO.listar();
+            ClinicaDAO clinicaDAO = new ClinicaDAO();
+            clinicaDAO.listar();
         } catch (RuntimeException erro) {
             Messages.addGlobalError("Ocorreu um erro ao tentar listar as clinicas");
             erro.printStackTrace();
@@ -88,15 +88,15 @@ public class GrupoDentistaBean implements Serializable{
     }
     
     public void novo(){
-        grupoDentista = new GrupoDentista();
+        clinica = new Clinica();
     }
     
     public void salvar(){
         try {
-            GrupoDentistaDAO grupoDAO = new GrupoDentistaDAO();
-            grupoDAO.merge(grupoDentista);
-            gruposDentista = grupoDAO.listarLazy();
-            grupoDentista = new GrupoDentista();
+            ClinicaDAO clinicaDAO = new ClinicaDAO();
+            clinicaDAO.merge(clinica);
+            clinicas = clinicaDAO.listarLazy();
+            clinica = new Clinica();
             Messages.addGlobalInfo("Clinica salva com sucesso");
         } catch (RuntimeException erro) {
             Messages.addGlobalError("Ocorreu o erro " +erro.getMessage()+ " ao tentar salvar a clinica");
@@ -107,12 +107,12 @@ public class GrupoDentistaBean implements Serializable{
      public void excluir(ActionEvent evento) {
         try {
             
-            grupoDentista = (GrupoDentista) evento.getComponent().getAttributes().get("clinicaSelecionada");
+            clinica = (Clinica) evento.getComponent().getAttributes().get("clinicaSelecionada");
  
-            GrupoDentistaDAO grupoDAO = new GrupoDentistaDAO();
-            grupoDAO.excluir(grupoDentista);
+            ClinicaDAO clinicaDAO = new ClinicaDAO();
+            clinicaDAO.excluir(clinica);
             
-          gruposDentista = grupoDAO.listarLazy();
+            clinicas = clinicaDAO.listarLazy();
             Messages.addGlobalInfo("Clinica removida com sucesso");
         } catch (RuntimeException erro) {
             Messages.addFlashGlobalError("Ocorreu o erro " +erro.getMessage()+ " ao tentar remover a clinica");
@@ -122,9 +122,9 @@ public class GrupoDentistaBean implements Serializable{
 
     public void editar(ActionEvent evento) {
         try {
-            GrupoDentistaDAO grupoDAO = new GrupoDentistaDAO();
-            grupoDAO.listarLazy();
-            grupoDentista = (GrupoDentista) evento.getComponent().getAttributes().get("clinicaSelecionada");
+            ClinicaDAO clinicaDAO = new ClinicaDAO();
+            clinicaDAO.listarLazy();
+            clinica = (Clinica) evento.getComponent().getAttributes().get("clinicaSelecionada");
         } catch (RuntimeException erro) {
             Messages.addFlashGlobalError("Ocorreu o erro " +erro.getMessage()+ " ao tentar selecionar a clinica");
             erro.printStackTrace();

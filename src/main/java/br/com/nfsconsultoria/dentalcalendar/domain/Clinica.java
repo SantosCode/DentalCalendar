@@ -28,8 +28,8 @@ public class Clinica extends GenericDomain{
 		return dentistas;
 	}
 
-	public void setDentsitas(List<Dentista> dentsitas) {
-		this.dentistas = dentsitas;
+	public void setDentsitas(List<Dentista> dentistas) {
+		this.dentistas = dentistas;
 	}
 	
 	
