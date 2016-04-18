@@ -5,6 +5,8 @@
  */
 package br.com.nfsconsultoria.dentalcalendar.domain;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -64,6 +66,10 @@ public class Dentista extends GenericDomain{
     @ManyToOne
     @JoinColumn(nullable = true)
     private Radiologia radiologia;
+    
+    @ManyToOne
+    @JoinColumn(nullable = false)
+    List<Clinica> clinicas;
     
   @ManyToOne
   @JoinColumn(nullable = true)
@@ -232,5 +238,13 @@ public class Dentista extends GenericDomain{
     public void setSecretaria4(Secretaria secretaria4) {
         this.secretaria4 = secretaria4;
     }
+
+	public List<Clinica> getClinicas() {
+		return clinicas;
+	}
+
+	public void setClinicas(List<Clinica> clinicas) {
+		this.clinicas = clinicas;
+	}
 
 }

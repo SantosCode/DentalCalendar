@@ -34,7 +34,7 @@ import org.omnifaces.util.Messages;
 
 /**
  *
- * @author luis
+ * @author luissantos
  */
 @SuppressWarnings("serial")
 @ManagedBean

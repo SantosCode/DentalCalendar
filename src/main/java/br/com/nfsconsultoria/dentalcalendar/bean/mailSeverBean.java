@@ -5,22 +5,22 @@
  */
 package br.com.nfsconsultoria.dentalcalendar.bean;
 
-import br.com.nfsconsultoria.dentalcalendar.dao.SecretariaDAO;
-import br.com.nfsconsultoria.dentalcalendar.dao.mailServerDAO;
-import br.com.nfsconsultoria.dentalcalendar.domain.Secretaria;
-import br.com.nfsconsultoria.dentalcalendar.domain.mailServer;
 import java.util.List;
+
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.event.ActionEvent;
+
 import org.omnifaces.util.Messages;
+
+import br.com.nfsconsultoria.dentalcalendar.dao.mailServerDAO;
+import br.com.nfsconsultoria.dentalcalendar.domain.mailServer;
 
 /**
  *
  * @author luissantos
  */
-@SuppressWarnings("serial")
 @ManagedBean
 @ViewScoped
 public class mailSeverBean {

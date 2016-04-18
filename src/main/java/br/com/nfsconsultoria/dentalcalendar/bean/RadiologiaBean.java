@@ -22,8 +22,6 @@ import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.Image;
 import com.lowagie.text.PageSize;
-import com.mysql.jdbc.exceptions.MySQLDataException;
-import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 import java.io.File;
 import java.io.IOException;
 import javax.faces.context.ExternalContext;

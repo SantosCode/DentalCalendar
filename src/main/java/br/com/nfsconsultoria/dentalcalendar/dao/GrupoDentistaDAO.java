@@ -22,7 +22,8 @@ public class GrupoDentistaDAO extends GenericDAO<GrupoDentista> {
     public List<GrupoDentista> listarLazy() {
         Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
         try {
-            Criteria consulta = sessao.createCriteria(GrupoDentista.class)
+            @SuppressWarnings("deprecation")
+			Criteria consulta = sessao.createCriteria(GrupoDentista.class)
                     .setFetchMode("dentistas", FetchMode.LAZY);
             List<GrupoDentista> resultado = consulta.list();
             return resultado;

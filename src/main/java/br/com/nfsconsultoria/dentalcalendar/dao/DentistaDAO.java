@@ -6,7 +6,6 @@
 package br.com.nfsconsultoria.dentalcalendar.dao;
 
 import br.com.nfsconsultoria.dentalcalendar.domain.Dentista;
-import br.com.nfsconsultoria.dentalcalendar.domain.GrupoDentista;
 import br.com.nfsconsultoria.dentalcalendar.util.HibernateUtil;
 import java.util.List;
 import org.hibernate.Criteria;
@@ -37,9 +36,11 @@ public class DentistaDAO extends GenericDAO<Dentista> {
     public List<Dentista> listarLazy() {
         Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
         try {
-            Criteria consulta = sessao.createCriteria(Dentista.class)
+            @SuppressWarnings("deprecation")
+			Criteria consulta = sessao.createCriteria(Dentista.class)
                     .setFetchMode("dentistas", FetchMode.EAGER);
-            List<Dentista> resultado = consulta.list();
+            @SuppressWarnings("unchecked")
+			List<Dentista> resultado = consulta.list();
             return resultado;
         } catch (RuntimeException erro) {
             throw erro;
