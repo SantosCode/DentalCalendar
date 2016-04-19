@@ -24,7 +24,7 @@ public class ClinicaDAO extends GenericDAO<Clinica> {
         try {
             @SuppressWarnings("deprecation")
 			Criteria consulta = sessao.createCriteria(Clinica.class)
-                    .setFetchMode("dentistas", FetchMode.LAZY);
+                    .setFetchMode("dentista", FetchMode.LAZY);
             List<Clinica> resultado = consulta.list();
             return resultado;
         } catch (RuntimeException erro) {

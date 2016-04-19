@@ -15,12 +15,12 @@
                     <p:outputLabel for="login" value="Login:" />
                     <p:inputText id="login"  size="10"
                                  required="true" requiredMessage="O campo Login é obrigatório"
-                                 value="#{autenticaBean.user}" />
+                                 value="#{autenticaBean.representante.login}" />
 
                     <p:outputLabel for="senha" value="Senha:" />
                     <p:password id="senha" maxlength="8" size="10" required="true"
                                 requiredMessage="O campo Senha é obrigatório"
-                                value="#{autenticaBean.pass}" />
+                                value="#{autenticaBean.representante.senha}" />
                 </h:panelGrid>
 
                 <h:panelGrid columns="1">

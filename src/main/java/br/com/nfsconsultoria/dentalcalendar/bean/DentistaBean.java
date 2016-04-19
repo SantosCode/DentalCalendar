@@ -5,6 +5,7 @@
  */
 package br.com.nfsconsultoria.dentalcalendar.bean;
 
+import br.com.nfsconsultoria.dentalcalendar.dao.ClinicaDAO;
 import br.com.nfsconsultoria.dentalcalendar.dao.DatasDAO;
 import java.io.File;
 import java.io.IOException;
@@ -36,12 +37,14 @@ import br.com.nfsconsultoria.dentalcalendar.dao.DentistaDAO;
 import br.com.nfsconsultoria.dentalcalendar.dao.EspecialDAO;
 import br.com.nfsconsultoria.dentalcalendar.dao.RadiologiaDAO;
 import br.com.nfsconsultoria.dentalcalendar.dao.SecretariaDAO;
+import br.com.nfsconsultoria.dentalcalendar.domain.Clinica;
 import br.com.nfsconsultoria.dentalcalendar.domain.Datas;
 import br.com.nfsconsultoria.dentalcalendar.domain.Dentista;
 import br.com.nfsconsultoria.dentalcalendar.domain.Especial;
 import br.com.nfsconsultoria.dentalcalendar.domain.Radiologia;
 import br.com.nfsconsultoria.dentalcalendar.domain.Secretaria;
 import java.util.Arrays;
+import javax.faces.bean.SessionScoped;
 
 /**
  *
@@ -50,15 +53,18 @@ import java.util.Arrays;
 @SuppressWarnings("serial")
 @ManagedBean
 @ViewScoped
+@SessionScoped
 public class DentistaBean implements Serializable {
 
     private Dentista dentista;
     private Datas data;
+    private Clinica clinica;
     private List<Dentista> dentistas;
     private List<Datas> datas;
     private List<Radiologia> radiologias;
     private List<Especial> especiais;
     private List<Secretaria> secretarias;
+    private List<Clinica> clinicas;
 
     public DentistaBean() {
         DentistaDAO dentDAO = new DentistaDAO();
@@ -66,12 +72,14 @@ public class DentistaBean implements Serializable {
         EspecialDAO especialDAO = new EspecialDAO();
         RadiologiaDAO radiologiaDAO = new RadiologiaDAO();
         SecretariaDAO secDAO = new SecretariaDAO();
+        ClinicaDAO cliDAO = new ClinicaDAO();
 
         this.dentistas = dentDAO.listar();
         this.datas = dataDAO.listar();
         this.especiais = especialDAO.listar();
         this.radiologias = radiologiaDAO.listar();
-        this.secretarias = secDAO.listar();
+        this.secretarias = secDAO.listarLazy();
+        this.clinicas = cliDAO.listarLazy();
     }
 
     public Dentista getDentista() {
@@ -130,6 +138,22 @@ public class DentistaBean implements Serializable {
         this.secretarias = secretarias;
     }
 
+    public Clinica getClinica() {
+        return clinica;
+    }
+
+    public void setClinica(Clinica clinica) {
+        this.clinica = clinica;
+    }
+
+    public List<Clinica> getClinicas() {
+        return clinicas;
+    }
+
+    public void setClinicas(List<Clinica> clinicas) {
+        this.clinicas = clinicas;
+    }
+
     public List<Integer> getDiasMes() {
         Integer[] dias = new Integer[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
             16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31};
@@ -179,6 +203,10 @@ public class DentistaBean implements Serializable {
             Messages.addGlobalError("É nescessario cadastrar especialidades antes");
         }
     }
+    
+    public void novaCli(){
+        clinica = new Clinica();
+    }
 
     public void salvar() {
 
@@ -207,6 +235,19 @@ public class DentistaBean implements Serializable {
             Messages.addGlobalInfo("Dentista salvo com sucesso");
         } catch (RuntimeException erro) {
             Messages.addFlashGlobalError("Ocorreu o erro " + erro.getMessage() + " ao tentar salvar um novo Dentista");
+            erro.printStackTrace();
+        }
+    }
+    
+    public void criar(){
+         try {
+             ClinicaDAO cliDAO = new ClinicaDAO();
+            cliDAO.merge(clinica);
+            clinicas = cliDAO.listar();
+            clinica = new Clinica();
+            Messages.addGlobalInfo("Clinica criada com sucesso");
+        } catch (RuntimeException erro) {
+            Messages.addFlashGlobalError("Ocorreu o erro " + erro.getMessage() + " ao tentar salvar a clinica");
             erro.printStackTrace();
         }
     }

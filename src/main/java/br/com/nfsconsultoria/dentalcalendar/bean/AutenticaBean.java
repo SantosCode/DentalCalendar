@@ -24,9 +24,14 @@ import org.omnifaces.util.Messages;
 public class AutenticaBean {
 
     private Representante representante;
+    private Representante representanteLogado;
+   
     private List<Representante> representantes;
-    private String user;
-    private String pass;
+    
+    public AutenticaBean(){
+        RepresentanteDAO repreDAO = new RepresentanteDAO();
+        this.representantes = repreDAO.listar();
+    }
 
     public Representante getRepresentante() {
         return representante;
@@ -44,40 +49,40 @@ public class AutenticaBean {
         this.representantes = representantes;
     }
 
-    public String getUser() {
-        return user;
+    public Representante getRepresentanteLogado() {
+        return representanteLogado;
     }
 
-    public void setUser(String user) {
-        this.user = user;
+    public void setRepresentanteLogado(Representante representanteLogado) {
+        this.representanteLogado = representanteLogado;
     }
-
-    public String getPass() {
-        return pass;
-    }
-
-    public void setPass(String pass) {
-        this.pass = pass;
+    
+    public boolean isLogado(){
+        return false;
     }
 
     @PostConstruct
     public void iniciar() {
          
         representante = new Representante();
+        representanteLogado = new Representante();
     }
 
-    public void autenticar() throws IOException {
+    public void autenticar(){
         try {
             RepresentanteDAO repreDAO = new RepresentanteDAO();
-            this.representantes = repreDAO.listar();
-            if (user.equals(representante.getLogin())
-                    && pass.equals(representante.getSenha())) {
-                Faces.redirect("./pages/index.xhtml");
-                Messages.addGlobalInfo("Seja bem vindo " + representante.getNome());
+            representanteLogado = repreDAO.autenticar(representante.getLogin(), representante.getSenha());
+           
+            if (representanteLogado == null){
+                  
+                Messages.addGlobalError(" Representante e/ou senha incorretos ");
+                return;
             } else {
-                Messages.addGlobalError("Usuário ou senha invalida");
+                Messages.addGlobalInfo("Seja bem vindo " + representante.getNome());
+              isLogado();
+                Faces.redirect("./pages/index.xhtml");
             }
-        } catch (RuntimeException erro) {
+        } catch (IOException erro) {
             erro.printStackTrace();
             Messages.addGlobalError(erro.getMessage());
         }

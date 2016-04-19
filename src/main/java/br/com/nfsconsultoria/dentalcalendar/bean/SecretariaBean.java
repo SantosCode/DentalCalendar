@@ -6,8 +6,10 @@
 package br.com.nfsconsultoria.dentalcalendar.bean;
 
 import br.com.nfsconsultoria.dentalcalendar.dao.DatasDAO;
+import br.com.nfsconsultoria.dentalcalendar.dao.DentistaDAO;
 import br.com.nfsconsultoria.dentalcalendar.dao.SecretariaDAO;
 import br.com.nfsconsultoria.dentalcalendar.domain.Datas;
+import br.com.nfsconsultoria.dentalcalendar.domain.Dentista;
 import br.com.nfsconsultoria.dentalcalendar.domain.Secretaria;
 import com.lowagie.text.BadElementException;
 import com.lowagie.text.Document;
@@ -46,13 +48,17 @@ public class SecretariaBean implements Serializable {
     private Datas data;
     private List<Secretaria> secs;
     private List<Datas> datas;
+    private List<Dentista> dentistas;
 
     public SecretariaBean() {
 
         SecretariaDAO secDAO = new SecretariaDAO();
         DatasDAO dataDAO = new DatasDAO();
-        this.secs = secDAO.listar();
+        DentistaDAO dentiDAO = new DentistaDAO();
+        
+        this.secs = secDAO.listarLazy();
         this.datas = dataDAO.listar();
+        this.dentistas = dentiDAO.listarLazy();
     }
 
     public Secretaria getSec() {
@@ -86,6 +92,14 @@ public class SecretariaBean implements Serializable {
     public void setDatas(List<Datas> datas) {
         this.datas = datas;
     }
+
+    public List<Dentista> getDentistas() {
+        return dentistas;
+    }
+
+    public void setDentistas(List<Dentista> dentistas) {
+        this.dentistas = dentistas;
+    }
     
     public List<Integer> getDiasMes() {
         Integer[] dias = new Integer[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
@@ -108,7 +122,7 @@ public class SecretariaBean implements Serializable {
             SecretariaDAO secDAO = new SecretariaDAO();
             DatasDAO dataDAO = new DatasDAO();
             dataDAO.listar();
-            secDAO.listar();
+            secDAO.listarLazy();
         } catch (RuntimeException erro) {
             Messages.addGlobalError("Ocorreu o erro " + erro.getMessage() + 
                     " ao tentar listar secretárias");
@@ -143,7 +157,7 @@ public class SecretariaBean implements Serializable {
         try {
             SecretariaDAO secDAO = new SecretariaDAO();
             secDAO.merge(sec);
-            secs = secDAO.listar();
+            secs = secDAO.listarLazy();
             sec = new Secretaria();
             Messages.addGlobalInfo("Secretária(o) salvo com sucesso");
         } catch (RuntimeException erro) {
@@ -159,7 +173,7 @@ public class SecretariaBean implements Serializable {
                     .get("secSelecionada");
             SecretariaDAO secDAO = new SecretariaDAO();
             secDAO.excluir(sec);
-            secs = secDAO.listar();
+            secs = secDAO.listarLazy();
         } catch (RuntimeException erro) {
             Messages.addGlobalError("Ocorreu o erro " + erro.getMessage() 
                     + " ao tentar excluir secretária");

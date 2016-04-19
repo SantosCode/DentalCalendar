@@ -1,36 +1,36 @@
 package br.com.nfsconsultoria.dentalcalendar.domain;
 
-import java.util.List;
 
+import java.util.List;
 import javax.persistence.Column;
-import javax.persistence.JoinColumn;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 
 @SuppressWarnings("serial")
-public class Clinica extends GenericDomain{
+@Entity
+public class Clinica extends GenericDomain {
 
-	@Column(nullable = false)
-	String nome;
-	
-	@OneToMany(mappedBy = "clinicas")
-	@JoinColumn(nullable = true)
-	List<Dentista> dentistas;
+    @Column(nullable = false, unique = true)
+    private String nome;
+    
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "clinica")
+//    @JoinColumn(nullable = true)
+    private List<Dentista> dentista;
 
-	public String getNome() {
-		return nome;
-	}
+    public String getNome() {
+        return nome;
+    }
+    
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
 
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
+    public List<Dentista> getDentista() {
+        return dentista;
+    }
 
-	public List<Dentista> getDentsitas() {
-		return dentistas;
-	}
-
-	public void setDentsitas(List<Dentista> dentistas) {
-		this.dentistas = dentistas;
-	}
-	
-	
+    public void setDentista(List<Dentista> dentista) {
+        this.dentista = dentista;
+    }
 }

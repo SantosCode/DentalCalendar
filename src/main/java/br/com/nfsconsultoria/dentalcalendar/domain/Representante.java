@@ -29,7 +29,7 @@ public class Representante extends GenericDomain{
     @Column(nullable = false, length = 20, unique = true)
     private String login;
     
-    @Column(nullable = false, length = 20)
+    @Column(nullable = false, length = 32)
     private String senha;
 
     public String getNome() {

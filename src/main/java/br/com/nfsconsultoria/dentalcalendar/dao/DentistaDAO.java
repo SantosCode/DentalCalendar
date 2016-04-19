@@ -38,7 +38,7 @@ public class DentistaDAO extends GenericDAO<Dentista> {
         try {
             @SuppressWarnings("deprecation")
 			Criteria consulta = sessao.createCriteria(Dentista.class)
-                    .setFetchMode("dentistas", FetchMode.EAGER);
+                    .setFetchMode("dentista", FetchMode.EAGER);
             @SuppressWarnings("unchecked")
 			List<Dentista> resultado = consulta.list();
             return resultado;

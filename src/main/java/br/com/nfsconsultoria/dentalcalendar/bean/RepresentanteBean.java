@@ -28,6 +28,7 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
+import org.apache.shiro.crypto.hash.SimpleHash;
 import org.omnifaces.util.Messages;
 
 /**
@@ -84,6 +85,8 @@ public class RepresentanteBean implements Serializable {
 
         try {
             RepresentanteDAO representanteDAO = new RepresentanteDAO();
+            SimpleHash hash = new SimpleHash("md5", representante.getSenha());
+            representante.setSenha(hash.toHex());
             representanteDAO.merge(representante);
 
             representantes = representanteDAO.listar();

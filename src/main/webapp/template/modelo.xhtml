@@ -25,14 +25,14 @@
                     <h:form id="formMenu">
                         <p:menu toggleable="true" style="size: auto">
                                 <p:submenu label="Arquivo">
-                                    <p:menuitem value="Sair" />
+                                    <p:menuitem value="Sair" url="/pages/login.xhtml" />
                                 </p:submenu>
 
                                 <p:submenu label="Cadastros">
                                     <p:menuitem value="Representantes" url="/pages/representante.xhtml" />
                                     <p:menuitem value="Secretaria(o)" url="/pages/secretaria.xhtml" />
                                     <p:menuitem value="Dentistas" url="/pages/dentista.xhtml" />
-                                    <p:menuitem value="Clinicas" url="/pages/grupodentistas.xhtml" />
+                                    <p:menuitem value="Clinicas" url="/pages/clinica.xhtml" />
                                     <p:menuitem value="Agenda" url="/pages/agenda.xhtml" />
                                     <p:menuitem value="Acordos" url="/pages/visita.xhtml" />
                                     <p:menuitem value="Datas" url="/pages/datas.xhtml" />
@@ -53,6 +53,8 @@
                         </p:layoutUnit>
                 <div id="conteudo" class="left_content">
                     <p:layoutUnit position="center" resizable="true">
+                        <h:outputText value="Bem vindo #{autenticaBean.representanteLogado.nome}." 
+                                      style="font-family: initial; font: bold; color: blue; "/>
                     <ui:insert name="conteudo" />
                 </p:layoutUnit>
                 </div>
