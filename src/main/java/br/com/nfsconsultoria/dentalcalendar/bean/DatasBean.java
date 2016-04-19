@@ -44,6 +44,7 @@ public class DatasBean implements Serializable {
     private List<Datas> datas;
 
     public DatasBean() {
+        
         DatasDAO dataDAO = new DatasDAO();
         this.datas = dataDAO.listar();
     }
@@ -82,6 +83,7 @@ public class DatasBean implements Serializable {
     @PostConstruct
     public void listar() {
 
+        
         try {
             DatasDAO datasDAO = new DatasDAO();
             datasDAO.listar();

@@ -25,10 +25,11 @@ public class AutenticaBean {
 
     private Representante representante;
     private Representante representanteLogado;
-   
+    private Boolean isLogado;
+
     private List<Representante> representantes;
-    
-    public AutenticaBean(){
+
+    public AutenticaBean() {
         RepresentanteDAO repreDAO = new RepresentanteDAO();
         this.representantes = repreDAO.listar();
     }
@@ -56,35 +57,44 @@ public class AutenticaBean {
     public void setRepresentanteLogado(Representante representanteLogado) {
         this.representanteLogado = representanteLogado;
     }
-    
-    public boolean isLogado(){
-        return false;
+
+    public Boolean getIsLogado() {
+        return isLogado;
     }
 
+    public void setIsLogado(Boolean isLogado) {
+        this.isLogado = isLogado;
+    }
+
+    
     @PostConstruct
     public void iniciar() {
-         
+
         representante = new Representante();
         representanteLogado = new Representante();
+        representanteLogado = null;
+        isLogado = false;
     }
 
-    public void autenticar(){
+    public void autenticar() {
         try {
             RepresentanteDAO repreDAO = new RepresentanteDAO();
-            representanteLogado = repreDAO.autenticar(representante.getLogin(), representante.getSenha());
-           
-            if (representanteLogado == null){
-                  
+            representanteLogado = repreDAO.autenticar(representante.getLogin(), 
+                    representante.getSenha());
+
+            if (representanteLogado == null) {
+
                 Messages.addGlobalError(" Representante e/ou senha incorretos ");
+                isLogado = false;
                 return;
             } else {
                 Messages.addGlobalInfo("Seja bem vindo " + representante.getNome());
-              isLogado();
                 Faces.redirect("./pages/index.xhtml");
+                isLogado = true;
             }
         } catch (IOException erro) {
-            erro.printStackTrace();
             Messages.addGlobalError(erro.getMessage());
         }
     }
 }
+

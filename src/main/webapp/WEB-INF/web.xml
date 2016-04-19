@@ -17,12 +17,22 @@
     <session-timeout>30</session-timeout>
   </session-config>
   <welcome-file-list>
-    <welcome-file>pages/index.xhtml</welcome-file>
+    <welcome-file>login.xhtml</welcome-file>
   </welcome-file-list>
   <context-param>
     <param-name>primefaces.THEME</param-name>
     <param-value>start</param-value>
   </context-param>
+  
+  <!-- Login Filter -->
+  <filter>
+      <filter-name>LoginFilter</filter-name>
+      <filter-class>br.com.nfsconsultoria.dentalcalendar.util.LoginFilter</filter-class>
+  </filter>
+  <filter-mapping>
+      <filter-name>LoginFilter</filter-name>
+      <url-pattern>/pages/*</url-pattern>
+  </filter-mapping>
   
   <listener>
     <listener-class>br.com.nfsconsultoria.dentalcalendar.util.HibernateContexto</listener-class>

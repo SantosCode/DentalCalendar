@@ -1,12 +1,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>br.com.nfsconsultoria</groupId>
-  <artifactId>dentalcalendar</artifactId>
-  <version>1.0-BETA</version>
-  <packaging>war</packaging>
-  <name>DentalCalendar</name>
-  <description>Calendario de Visitas Odontologicas</description>
-  <!-- Codificação dos caracteres -->
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>br.com.nfsconsultoria</groupId>
+    <artifactId>dentalcalendar</artifactId>
+    <version>1.0-BETA</version>
+    <packaging>war</packaging>
+    <name>DentalCalendar</name>
+    <description>Calendario de Visitas Odontologicas</description>
+    <!-- Codificação dos caracteres -->
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
@@ -135,28 +135,21 @@
             <version>6.1.1</version>
         </dependency>
         
-        <!-- Spring -->
+        <!-- Expressoes EL -->
         <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-web</artifactId>
-            <version>4.0.4.RELEASE</version>
+            <groupId>javax.el</groupId>
+            <artifactId>el-api</artifactId>
+            <version>2.2</version>
         </dependency>
+        
+        <!-- Login Handler -->
         <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-config</artifactId>
-            <version>4.0.4.RELEASE</version>
+            <groupId>org.apache.beehive</groupId>
+            <artifactId>beehive-netui-core</artifactId>
+            <version>1.0.2</version>
         </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-jdbc</artifactId>
-            <version>4.2.5.RELEASE</version>
-        </dependency>
-        <dependency>
-            <groupId>commons-logging</groupId>
-            <artifactId>commons-logging</artifactId>
-            <version>1.2</version>
-        </dependency>
-         <!-- XML -->
+
+        <!-- XML -->
         <dependency>
             <groupId>org.apache.xmlbeans</groupId>
             <artifactId>xmlbeans</artifactId>
@@ -169,11 +162,11 @@
             <artifactId>shiro-core</artifactId>
             <version>1.2.4</version>
         </dependency>
-         <dependency>
-	<groupId>org.apache.poi</groupId>
-	<artifactId>poi</artifactId>
-	<version>3.14</version>
-</dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>3.14</version>
+        </dependency>
 
     </dependencies>
     <url>http://www.nfsconsultoria.com.br</url>
