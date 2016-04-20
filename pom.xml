@@ -85,6 +85,11 @@
             <artifactId>primefaces</artifactId>
             <version>5.3</version>
         </dependency>
+        <dependency>
+            <groupId>org.primefaces.extensions</groupId>
+            <artifactId>primefaces-extensions</artifactId>
+            <version>4.0.0</version>
+        </dependency>
 
         <!-- PrimeFaces Themes -->
         <dependency>
@@ -100,11 +105,11 @@
             <version>1.12.1</version>
         </dependency>
         
-        <!--JavaMail-->
+        <!--Commons Mail-->
         <dependency>
-            <groupId>javax.mail</groupId>
-            <artifactId>mail</artifactId>
-            <version>1.4.7</version>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-email</artifactId>
+            <version>1.4</version>
         </dependency>
 
         <!-- Servlet -->
@@ -135,27 +140,13 @@
             <version>6.1.1</version>
         </dependency>
         
-        <!-- Expressoes EL -->
-        <dependency>
-            <groupId>javax.el</groupId>
-            <artifactId>el-api</artifactId>
-            <version>2.2</version>
-        </dependency>
-        
-        <!-- Login Handler -->
-        <dependency>
-            <groupId>org.apache.beehive</groupId>
-            <artifactId>beehive-netui-core</artifactId>
-            <version>1.0.2</version>
-        </dependency>
-
         <!-- XML -->
         <dependency>
             <groupId>org.apache.xmlbeans</groupId>
             <artifactId>xmlbeans</artifactId>
             <version>2.6.0</version>
         </dependency>
-        
+    
         <!-- Apache Shiro Core -->
         <dependency>
             <groupId>org.apache.shiro</groupId>

@@ -52,17 +52,6 @@
                         <h:outputText value="#{dentista.nome}" />
                     </p:column>
 
-                    <p:column headerText="Sec"
-                              filterBy="#{dentista.secretaria1.nome} #{dentista.secretaria2.nome} 
-                              #{dentista.secretaria3.nome}"
-                              sortBy="#{dentista.secretaria1.nome} #{dentista.secretaria2.nome} 
-                              #{dentista.secretaria3.nome}"
-                              filterMatchMode="contains" width="20%">
-                        <h:outputText
-                            value="#{dentista.secretaria1.nome} #{dentista.secretaria2.nome} 
-                            #{dentista.secretaria3.nome} #{dentista.secretaria4.nome}" />
-                    </p:column>
-
                     <p:column headerText="Espec"
                               filterBy="#{dentista.especialidade.descricao}"
                               filterMatchMode="contains"

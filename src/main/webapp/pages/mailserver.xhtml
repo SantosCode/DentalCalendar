@@ -25,8 +25,8 @@
                         <p:outputLabel for="porta" value="Porta:"/>
                         <h:outputText id="porta" value="#{mail.porta}"/>
 
-                        <p:outputLabel for="ttls" value="TTLS:"/>
-                        <p:selectBooleanCheckbox id="ttls" value="#{mail.ttls}" 
+                        <p:outputLabel for="ssl" value="SSL:"/>
+                        <p:selectBooleanCheckbox id="ssl" value="#{mail.tssl}" 
                                                  disabled="true"/>
                     </p:panelGrid>
                     <h:panelGrid columns="2">
@@ -38,7 +38,6 @@
                             <f:actionListener
                                 type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
                         </p:commandButton>
-                    </h:panelGrid>
                         <p:commandButton icon="ui-icon-trash" value="Excluir" 
                                          actionListener="#{mailSeverBean.excluir}"
                                          update=":mensagem :formCadastro:painel :formSMTP:data:painel">
@@ -46,6 +45,7 @@
                             <f:actionListener
                                 type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
                         </p:commandButton>
+                    </h:panelGrid>
                 </p:dataScroller>
             </p:panel>
         </h:form>
@@ -71,8 +71,8 @@
                                maxlength="3" required="true" min="25"  
                                  requiredMessage="O campo porta é obrigatório"/>
 
-                    <p:outputLabel for="ttls" value="TTLS:"/>
-                    <p:selectBooleanCheckbox id="ttls" value="#{mailSeverBean.mailServer.ttls}"/>
+                    <p:outputLabel for="ssl" value="SSL:"/>
+                    <p:selectBooleanCheckbox id="ssl" value="#{mailSeverBean.mailServer.tssl}"/>
                 </p:panelGrid>
 
                 <h:panelGrid columns="2">

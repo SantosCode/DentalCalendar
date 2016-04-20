@@ -5,7 +5,6 @@
  */
 package br.com.nfsconsultoria.dentalcalendar.domain;
 
-import br.com.nfsconsultoria.dentalcalendar.domain.GenericDomain;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 
@@ -15,9 +14,12 @@ import javax.persistence.Entity;
  */
 @SuppressWarnings("serial")
 @Entity
-public class mailServer extends GenericDomain {
+public class MailServer extends GenericDomain {
+    
+    @Column(nullable = false, length = 30, unique = true)
+    private String nome;
 
-    @Column(nullable = false, length = 45, unique = true)
+    @Column(nullable = false, length = 45)
     private String email;
 
     @Column(length = 45)
@@ -27,10 +29,18 @@ public class mailServer extends GenericDomain {
     private String servidor;
 
     @Column(nullable = false, length = 5)    
-    private Integer porta;
+    private String porta;
     
     @Column
-    private Boolean ttls;
+    private Boolean tssl;
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
 
     public String getEmail() {
         return email;
@@ -56,22 +66,19 @@ public class mailServer extends GenericDomain {
         this.servidor = servidor;
     }
 
-    public Integer getPorta() {
+    public String getPorta() {
         return porta;
     }
 
-    public void setPorta(Integer porta) {
+    public void setPorta(String porta) {
         this.porta = porta;
+    }   
+
+    public Boolean getTssl() {
+        return tssl;
     }
 
-    public Boolean getTtls() {
-        return ttls;
+    public void setTssl(Boolean tssl) {
+        this.tssl = tssl;
     }
-
-    public void setTtls(Boolean ttls) {
-        this.ttls = ttls;
-    }
-    
-    
-
 }

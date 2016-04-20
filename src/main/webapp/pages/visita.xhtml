@@ -4,6 +4,7 @@
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:p="http://primefaces.org/ui"
+                xmlns:pe="http://primefaces.org/ui/extensions"
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
                 template="/template/modelo.xhtml">
 
@@ -113,7 +114,8 @@
 
         <p:dialog header="Acordos - Cadastro" widgetVar="dialogo"
                   draggable="false" resizable="false" modal="true" closable="false"
-                  appendTo="@(body)" showEffect="clip" responsive="true" dynamic="true">
+                  appendTo="@(body)" showEffect="clip" responsive="true" dynamic="true" positionType="absolute"
+                  fitViewport="true">
             <h:form id="formCadastro">
                 <h:panelGrid id="painel" columns="2">
                     
@@ -130,11 +132,11 @@
                     
                     <p:outputLabel for="acordo" value="Acordo:" />
                     <p:editor id="acordo" value="#{visitaBean.visita.acordo}"
-                              required="true" requiredMessage="O campo acordo é obrigatório"/>
+                              required="true" requiredMessage="O campo acordo é obrigatório"  
+                              rendered="true" maxlength="300" />
                     
                     <p:outputLabel for="mail" value="Enviar e-mail para o dentista?"/>
-                    <p:selectBooleanButton id="mail" onLabel="Sim" offLabel="Não"  value="#{visitaBean.visita.email}" 
-                                           valueChangeListener="#{visitaBean.mail}"/>
+                    <p:selectBooleanButton id="mail" onLabel="Sim" offLabel="Não"  value="#{visitaBean.visita.email}"/>
                 </h:panelGrid>
                
                 <h:panelGrid columns="2">

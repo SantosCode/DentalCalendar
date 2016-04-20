@@ -9,10 +9,13 @@ import br.com.nfsconsultoria.dentalcalendar.dao.AgendaDAO;
 import br.com.nfsconsultoria.dentalcalendar.dao.DentistaDAO;
 import br.com.nfsconsultoria.dentalcalendar.dao.RepresentanteDAO;
 import br.com.nfsconsultoria.dentalcalendar.dao.VisitaDAO;
+import br.com.nfsconsultoria.dentalcalendar.dao.mailServerDAO;
 import br.com.nfsconsultoria.dentalcalendar.domain.Agenda;
 import br.com.nfsconsultoria.dentalcalendar.domain.Dentista;
 import br.com.nfsconsultoria.dentalcalendar.domain.Representante;
 import br.com.nfsconsultoria.dentalcalendar.domain.Visita;
+import br.com.nfsconsultoria.dentalcalendar.domain.MailServer;
+import br.com.nfsconsultoria.dentalcalendar.util.EmailUtil;
 
 import com.lowagie.text.BadElementException;
 import com.lowagie.text.Document;
@@ -22,10 +25,12 @@ import com.lowagie.text.PageSize;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
+import java.text.MessageFormat;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.component.html.HtmlOutputText;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
@@ -36,6 +41,7 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.omnifaces.util.Messages;
+import org.primefaces.component.editor.Editor;
 
 /**
  *
@@ -51,17 +57,21 @@ public class VisitaBean implements Serializable {
     private List<Representante> representantes;
     private List<Dentista> dentistas;
     private List<Visita> visitas;
+    private MailServer mail;
+    private List<MailServer> mails;
 
     public VisitaBean() {
         VisitaDAO visitaDAO = new VisitaDAO();
         AgendaDAO agendaDAO = new AgendaDAO();
         RepresentanteDAO repreDAO = new RepresentanteDAO();
         DentistaDAO dentDAO = new DentistaDAO();
+        mailServerDAO mailDAO = new mailServerDAO();
 
         this.visitas = visitaDAO.listar();
         this.agendas = agendaDAO.listar();
         this.representantes = repreDAO.listar();
         this.dentistas = dentDAO.listar();
+        this.mails = mailDAO.listar();
     }
 
     public Visita getVisita() {
@@ -104,12 +114,28 @@ public class VisitaBean implements Serializable {
         this.visitas = visitas;
     }
 
+    public MailServer getMail() {
+        return mail;
+    }
+
+    public void setMail(MailServer mail) {
+        this.mail = mail;
+    }
+
+    public List<MailServer> getMails() {
+        return mails;
+    }
+
+    public void setMails(List<MailServer> mails) {
+        this.mails = mails;
+    }
+
     @PostConstruct
     public void listar() {
 
         try {
             VisitaDAO visitaDAO = new VisitaDAO();
-            visitaDAO.listar();
+            this.visitas = visitaDAO.listar();
         } catch (RuntimeException erro) {
             Messages.addGlobalError("Ocorreu um erro ao tentar listar as visitas");
         }
@@ -139,10 +165,13 @@ public class VisitaBean implements Serializable {
     public void salvar() {
 
         try {
+            if (visita.getEmail()){
+            EmailUtil email = new EmailUtil();
+            email.EnviarEmail("luis@nfsconsultoria.com.br", visita.getAgenda().getDentista().getEmail(), 
+                    visita.getAgenda().getRepresentante().getEmail(),"Acordo RadioDoc", visita.getAcordo());
+            }
             VisitaDAO visitaDAO = new VisitaDAO();
-
             visitaDAO.merge(visita);
-
             visita = new Visita();
             visitas = visitaDAO.listar();
             Messages.addGlobalInfo("Visita salva com sucesso");
@@ -188,8 +217,8 @@ public class VisitaBean implements Serializable {
 
         ExternalContext externalContext = FacesContext.getCurrentInstance()
                 .getExternalContext();
-        String logo = externalContext.getRealPath("") + File.separator 
-                + "resources" + File.separator + "images" + File.separator 
+        String logo = externalContext.getRealPath("") + File.separator
+                + "resources" + File.separator + "images" + File.separator
                 + "banner.png";
 
         pdf.add(Image.getInstance(logo));
@@ -208,47 +237,6 @@ public class VisitaBean implements Serializable {
             HSSFCell cell = header.getCell(i);
 
             cell.setCellStyle(cellStyle);
-        }
-    }
-
-    public void mail() {
-//        String to = visita.getAgenda().getDentista().getEmail();
-//        String from = visita.getAgenda().getRepresentante().getEmail();
-//        String user = "luis@nfsconsultoria.com.br";
-//        String pass = "wildog";
-//        String host = "mail.nfsconsultoria.com.br";
-//        String msg = visita.getAcordo();
-//        Properties propriedades = new Properties();
-//        propriedades.put("mail.smtp.host","mail.nfsconsultoria.com.br");
-////        propriedades.put("mail.smtp.socketFactory.port", "25");
-//        propriedades.put("mail.smtp.auth", "true");
-//        propriedades.put("mail.smtp.port", "25");
-//        
-//        Session sessao = Session.getDefaultInstance(propriedades);
-//        new javax.mail.Authenticator() {
-//            
-//            @Override
-//            protected PasswordAuthentication getPasswordAuthentication(){
-//                return new PasswordAuthentication(user, pass);
-//            }
-//};
-//        
-//        try {
-//            MimeMessage mensagem = new MimeMessage(sessao);
-//            mensagem.setFrom(new InternetAddress(from));
-//            mensagem.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
-//            mensagem.setSubject("Acordo tratado em Visita da Radiodoc");
-//            mensagem.setContent(msg, "text/html");
-//            Transport.send(mensagem);
-//            Messages.addGlobalInfo("E-mail enviado com sucesso para o dentista");
-//        } catch (MessagingException erro) {
-//            Messages.addGlobalError("Ocorreu uma falha no envio de e-mail ao dentista");
-//        }
-//    }
-        try {
-            Messages.addGlobalInfo("E-mail enviado com sucesso para o Dentista");
-
-        } catch (RuntimeException erro) {
         }
     }
 }

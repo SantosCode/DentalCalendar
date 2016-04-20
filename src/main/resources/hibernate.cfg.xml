@@ -31,6 +31,6 @@
     <mapping class="br.com.nfsconsultoria.dentalcalendar.domain.Visita"/>
     <mapping class="br.com.nfsconsultoria.dentalcalendar.domain.Clinica"/>
     <mapping class="br.com.nfsconsultoria.dentalcalendar.domain.Secretaria"/>
-    <mapping class="br.com.nfsconsultoria.dentalcalendar.domain.mailServer"/>
+    <mapping class="br.com.nfsconsultoria.dentalcalendar.domain.MailServer"/>
   </session-factory>
 </hibernate-configuration>

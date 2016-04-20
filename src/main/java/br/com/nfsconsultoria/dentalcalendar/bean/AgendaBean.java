@@ -11,6 +11,7 @@ import br.com.nfsconsultoria.dentalcalendar.dao.RepresentanteDAO;
 import br.com.nfsconsultoria.dentalcalendar.domain.Agenda;
 import br.com.nfsconsultoria.dentalcalendar.domain.Dentista;
 import br.com.nfsconsultoria.dentalcalendar.domain.Representante;
+import br.com.nfsconsultoria.dentalcalendar.util.EmailUtil;
 import com.lowagie.text.BadElementException;
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
@@ -116,6 +117,16 @@ public class AgendaBean implements Serializable {
     public void salvar() {
 
         try {
+            
+            String msg = agenda.getRepresentante().getNome()+ " você tem uma visita agendada dia "
+                    +agenda.getDia()+ ", hora " + agenda.getHora()+ ", com o Dr(a). " +agenda.getDentista().getNome()+
+                    ", na Rua " +agenda.getDentista().getRua()+ ", bairro " +agenda.getDentista().getBairro()+ ", na cidade de "
+                    +agenda.getDentista().getCidade();
+            
+            EmailUtil mail = new EmailUtil();
+            mail.EnviarEmail(null, agenda.getRepresentante().getEmail(), null, "Nova visita Agendada", 
+                    msg);
+            
             AgendaDAO agendaDAO = new AgendaDAO();
             RepresentanteDAO representanteDAO = new RepresentanteDAO();
             DentistaDAO dentistaDAO = new DentistaDAO();
