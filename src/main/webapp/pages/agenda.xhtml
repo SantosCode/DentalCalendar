@@ -106,7 +106,8 @@
 
         <p:dialog header="Agenda - Cadastro" widgetVar="dialogo"
                   draggable="false" resizable="false" modal="true" closable="false" appendTo="@(body)" 
-                  showEffect="clip" responsive="true" dynamic="true">
+                  showEffect="clip" responsive="true" dynamic="true"
+                  fitViewport="true" positionType="absolute">
             <h:form id="formCadastro">
                 <h:panelGrid id="painel" columns="2">
                     <p:outputLabel for="dia" value="Dia:" />
@@ -148,7 +149,7 @@
 
         <p:dialog header="Agenda" widgetVar="dlgVisu"
                   draggable="false" resizable="false" modal="true" closable="false" appendTo="@(body)" 
-                  showEffect="clip" responsive="true" dynamic="true" positionType="absolute">
+                  showEffect="clip" responsive="true" dynamic="true" positionType="absolute" fitViewport="true" >
             <h:form id="formVisu">
                 <h:panelGrid id="painel" columns="2">
                     <p:outputLabel for="dia" value="Dia:" style="font-weight: bold"/>

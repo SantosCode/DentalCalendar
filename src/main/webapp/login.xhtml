@@ -8,6 +8,9 @@
                 template="/template/modelo.xhtml">
 
     <ui:define name="conteudo">
+        <f:metadata>
+            <f:event type="preRenderView" listener="#{autenticaBean.iniciar()}"/>
+        </f:metadata>
         <p:dialog header="Autenticação" closable="false" draggable="false" appendTo="@(body)"
                   resizable="false" modal="true" visible="true" widgetVar="dlg">
             <h:form>

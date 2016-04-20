@@ -52,6 +52,13 @@
                         <h:outputText value="#{dentista.nome}" />
                     </p:column>
 
+                    <p:column headerText="CRO"
+                              filterBy="#{dentista.cro}"
+                              filterMatchMode="contains"
+                              sortBy="#{dentista.cro}">
+                        <h:outputText value="#{dentista.cro}" />
+                    </p:column>
+                    
                     <p:column headerText="Espec"
                               filterBy="#{dentista.especialidade.descricao}"
                               filterMatchMode="contains"
@@ -303,7 +310,8 @@
 
         <p:dialog header="Dentista" widgetVar="dlgVisu" draggable="false"
                   resizable="false" modal="true" closable="false" appendTo="@(body)"
-                  showEffect="clip" responsive="true" dynamic="true">
+                  showEffect="clip" responsive="true" dynamic="true"
+                  fitViewport="true" positionType="absolute">
             <h:form id="formVisu">
 
                 <h:panelGrid id="painel" columns="2">
