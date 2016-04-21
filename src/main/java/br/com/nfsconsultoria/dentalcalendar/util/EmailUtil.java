@@ -37,9 +37,11 @@ public class EmailUtil {
             } else{
                 email.setFrom(smtp.getEmail(), "RadioDoc");
             }
+            if (resp != null){
+                email.addReplyTo(resp);
+            }
             email.setDebug(true);
             email.addTo(para);
-            email.addReplyTo(resp);
             email.setSubject(assunto);
             email.setHtmlMsg(mensagem);
             email.send();
