@@ -17,7 +17,6 @@ import org.hibernate.criterion.Restrictions;
  */
 public class mailServerDAO extends GenericDAO<MailServer>{
     
-    @SuppressWarnings("unchecked")
     public MailServer buscar(String nome) {
         Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
         try {

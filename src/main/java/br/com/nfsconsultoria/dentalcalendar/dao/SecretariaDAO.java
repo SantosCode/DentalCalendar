@@ -25,11 +25,14 @@ public class SecretariaDAO extends GenericDAO<Secretaria> {
             @SuppressWarnings("deprecation")
             Criteria consulta1 = sessao.createCriteria(Secretaria.class)
                     .setFetchMode("dentista1", FetchMode.LAZY);
-            Criteria consulta2 = sessao.createCriteria(Secretaria.class)
+            @SuppressWarnings("deprecation")
+			Criteria consulta2 = sessao.createCriteria(Secretaria.class)
                     .setFetchMode("dentista2", FetchMode.LAZY);
-            Criteria consulta3 = sessao.createCriteria(Secretaria.class)
+            @SuppressWarnings("deprecation")
+			Criteria consulta3 = sessao.createCriteria(Secretaria.class)
                     .setFetchMode("dentista3", FetchMode.LAZY);
-            Criteria consulta4 = sessao.createCriteria(Secretaria.class)
+            @SuppressWarnings("deprecation")
+			Criteria consulta4 = sessao.createCriteria(Secretaria.class)
                     .setFetchMode("dentista4", FetchMode.LAZY);
             List<Secretaria> resultado1 = consulta1.list();
             List<Secretaria> resultado2 = consulta2.list();
