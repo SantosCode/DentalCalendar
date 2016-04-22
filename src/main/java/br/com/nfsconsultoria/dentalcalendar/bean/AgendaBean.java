@@ -129,10 +129,11 @@ public class AgendaBean implements Serializable {
 			stringBuilder.append(agenda.getDia().getMonth()+1);
 			stringBuilder.append("/");
 			stringBuilder.append(agenda.getDia().getYear()+1900);
-			stringBuilder.append(" ás ");
+			stringBuilder.append(" as ");
 			stringBuilder.append(agenda.getHora().getHours());
 			stringBuilder.append(":");
 			stringBuilder.append(agenda.getHora().getMinutes());
+			stringBuilder.append(" hrs ");
 			stringBuilder.append(", com o Dr(a). ");
 			stringBuilder.append(agenda.getDentista().getNome());
 			stringBuilder.append(", na Rua ");
