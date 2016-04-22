@@ -45,179 +45,183 @@ import org.omnifaces.util.Messages;
 @ViewScoped
 public class AgendaBean implements Serializable {
 
-	private Agenda agenda;
-	private List<Agenda> agendas;
-	private List<Representante> representantes;
-	private List<Dentista> dentistas;
+    private Agenda agenda;
+    private List<Agenda> agendas;
+    private List<Representante> representantes;
+    private List<Dentista> dentistas;
 
-	public AgendaBean() {
-		AgendaDAO agendaDAO = new AgendaDAO();
-		RepresentanteDAO repreDAO = new RepresentanteDAO();
-		DentistaDAO dentDAO = new DentistaDAO();
-		this.agendas = agendaDAO.listar();
-		this.representantes = repreDAO.listar();
-		this.dentistas = dentDAO.listar();
+    public AgendaBean() {
+	AgendaDAO agendaDAO = new AgendaDAO();
+	RepresentanteDAO repreDAO = new RepresentanteDAO();
+	DentistaDAO dentDAO = new DentistaDAO();
+	this.agendas = agendaDAO.listar();
+	this.representantes = repreDAO.listar();
+	this.dentistas = dentDAO.listar();
+    }
+
+    public Agenda getAgenda() {
+	return agenda;
+    }
+
+    public void setAgenda(Agenda agenda) {
+	this.agenda = agenda;
+    }
+
+    public List<Agenda> getAgendas() {
+	return agendas;
+    }
+
+    public void setAgendas(List<Agenda> agendas) {
+	this.agendas = agendas;
+    }
+
+    public List<Representante> getRepresentantes() {
+	return representantes;
+    }
+
+    public void setRepresentantes(List<Representante> representantes) {
+	this.representantes = representantes;
+    }
+
+    public List<Dentista> getDentistas() {
+	return dentistas;
+    }
+
+    public void setDentistas(List<Dentista> dentistas) {
+	this.dentistas = dentistas;
+    }
+
+    @PostConstruct
+    public void listar() {
+
+	try {
+	    AgendaDAO agendaDAO = new AgendaDAO();
+	    agendaDAO.listar();
+	} catch (RuntimeException erro) {
+	    Messages.addGlobalError("Ocorreu um erro ao tentar listar os agendas");
+	    erro.printStackTrace();
 	}
 
-	public Agenda getAgenda() {
-		return agenda;
+    }
+
+    public void novo() {
+
+	agenda = new Agenda();
+
+	if (this.representantes.isEmpty()) {
+	    Messages.addGlobalError("É nescessario cadastrar representantes antes");
 	}
-
-	public void setAgenda(Agenda agenda) {
-		this.agenda = agenda;
+	if (this.dentistas.isEmpty()) {
+	    Messages.addGlobalError("É nescessario cadastrar dentistas antes");
 	}
+    }
 
-	public List<Agenda> getAgendas() {
-		return agendas;
+    @SuppressWarnings("deprecation")
+    public void salvar() {
+
+	try {
+
+	    StringBuilder stringBuilder = new StringBuilder();
+	    stringBuilder.append(agenda.getRepresentante().getNome());
+	    stringBuilder.append(" você tem uma visita agendada dia ");
+	    stringBuilder.append(agenda.getDia().getDate());
+	    stringBuilder.append("/");
+	    stringBuilder.append(agenda.getDia().getMonth() + 1);
+	    stringBuilder.append("/");
+	    stringBuilder.append(agenda.getDia().getYear() + 1900);
+	    stringBuilder.append(" as ");
+	    stringBuilder.append(agenda.getHora().getHours());
+	    stringBuilder.append(":");
+	    stringBuilder.append(agenda.getHora().getMinutes());
+	    stringBuilder.append(" horas ");
+	    stringBuilder.append(", com o Dr(a). ");
+	    stringBuilder.append(agenda.getDentista().getNome());
+	    stringBuilder.append(", na Rua ");
+	    stringBuilder.append(agenda.getDentista().getRua());
+	    if (!agenda.getDentista().getComplemento().isEmpty()) {
+		stringBuilder.append(", complemento ");
+		stringBuilder.append(agenda.getDentista().getComplemento());
+	    }
+	    stringBuilder.append(", bairro ");
+	    stringBuilder.append(agenda.getDentista().getBairro());
+	    stringBuilder.append(", na cidade de ");
+	    stringBuilder.append(agenda.getDentista().getCidade());
+	    String msg = stringBuilder.toString();
+
+	    EmailUtil mail = new EmailUtil();
+	    mail.EnviarEmail(null, agenda.getRepresentante().getEmail(), null, "Nova visita Agendada", msg);
+
+	    AgendaDAO agendaDAO = new AgendaDAO();
+	    RepresentanteDAO representanteDAO = new RepresentanteDAO();
+	    DentistaDAO dentistaDAO = new DentistaDAO();
+
+	    agendaDAO.merge(agenda);
+
+	    agendas = agendaDAO.listar();
+	    representantes = representanteDAO.listar();
+	    dentistas = dentistaDAO.listar();
+	    agenda = new Agenda();
+	    Messages.addGlobalInfo("Agenda salva com sucesso");
+	} catch (RuntimeException erro) {
+	    Messages.addFlashGlobalError("Ocorreu um erro ao tentar salvar uma nova agenda");
+	    erro.printStackTrace();
 	}
+    }
 
-	public void setAgendas(List<Agenda> agendas) {
-		this.agendas = agendas;
+    public void excluir(ActionEvent evento) {
+	try {
+	    agenda = (Agenda) evento.getComponent().getAttributes().get("agendaSelecionada");
+
+	    AgendaDAO agendaDAO = new AgendaDAO();
+	    agendaDAO.excluir(agenda);
+
+	    agendas = agendaDAO.listar();
+
+	    Messages.addGlobalInfo("Agenda removida com sucesso");
+	} catch (RuntimeException erro) {
+	    Messages.addFlashGlobalError("Ocorreu um erro ao tentar remover a agenda");
+	    erro.printStackTrace();
 	}
+    }
 
-	public List<Representante> getRepresentantes() {
-		return representantes;
+    public void editar(ActionEvent evento) {
+	try {
+	    agenda = (Agenda) evento.getComponent().getAttributes().get("agendaSelecionada");
+	} catch (RuntimeException erro) {
+	    Messages.addFlashGlobalError("Ocorreu um erro ao tentar selecionar uma agenda");
+	    erro.printStackTrace();
 	}
+    }
 
-	public void setRepresentantes(List<Representante> representantes) {
-		this.representantes = representantes;
+    public void preProcessPDF(Object document) throws IOException, BadElementException, DocumentException {
+	Document pdf = (Document) document;
+	pdf.open();
+	pdf.setPageSize(PageSize.A4);
+	pdf.addAuthor("Luis Carlos Santos");
+	pdf.addTitle("Agendas Cadastradas");
+	pdf.addCreator("NFS Consultoria");
+	pdf.addSubject("Agendas Cadastradas");
+
+	ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+	String logo = externalContext.getRealPath("") + File.separator + "resources" + File.separator + "images"
+		+ File.separator + "banner.png";
+
+	pdf.add(Image.getInstance(logo));
+    }
+
+    public void postProcessXLS(Object document) {
+	HSSFWorkbook wb = (HSSFWorkbook) document;
+	HSSFSheet sheet = wb.getSheetAt(0);
+	HSSFRow header = sheet.getRow(0);
+
+	HSSFCellStyle cellStyle = wb.createCellStyle();
+	cellStyle.setFillForegroundColor(HSSFColor.AQUA.index);
+	cellStyle.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+
+	for (int i = 0; i < header.getPhysicalNumberOfCells(); i++) {
+	    HSSFCell cell = header.getCell(i);
+
+	    cell.setCellStyle(cellStyle);
 	}
-
-	public List<Dentista> getDentistas() {
-		return dentistas;
-	}
-
-	public void setDentistas(List<Dentista> dentistas) {
-		this.dentistas = dentistas;
-	}
-
-	@PostConstruct
-	public void listar() {
-
-		try {
-			AgendaDAO agendaDAO = new AgendaDAO();
-			agendaDAO.listar();
-		} catch (RuntimeException erro) {
-			Messages.addGlobalError("Ocorreu um erro ao tentar listar os agendas");
-			erro.printStackTrace();
-		}
-
-	}
-
-	public void novo() {
-
-		agenda = new Agenda();
-
-		if (this.representantes.isEmpty()) {
-			Messages.addGlobalError("É nescessario cadastrar representantes antes");
-		}
-		if (this.dentistas.isEmpty()) {
-			Messages.addGlobalError("É nescessario cadastrar dentistas antes");
-		}
-	}
-
-	@SuppressWarnings("deprecation")
-	public void salvar() {
-
-		try {
-
-			StringBuilder stringBuilder = new StringBuilder();
-			stringBuilder.append(agenda.getRepresentante().getNome());
-			stringBuilder.append(" você tem uma visita agendada dia ");
-			stringBuilder.append(agenda.getDia().getDate());
-			stringBuilder.append("/");
-			stringBuilder.append(agenda.getDia().getMonth()+1);
-			stringBuilder.append("/");
-			stringBuilder.append(agenda.getDia().getYear()+1900);
-			stringBuilder.append(" as ");
-			stringBuilder.append(agenda.getHora().getHours());
-			stringBuilder.append(":");
-			stringBuilder.append(agenda.getHora().getMinutes());
-			stringBuilder.append(" horas ");
-			stringBuilder.append(", com o Dr(a). ");
-			stringBuilder.append(agenda.getDentista().getNome());
-			stringBuilder.append(", na Rua ");
-			stringBuilder.append(agenda.getDentista().getRua());
-			stringBuilder.append(", bairro ");
-			stringBuilder.append(agenda.getDentista().getBairro());
-			stringBuilder.append(", na cidade de ");
-			stringBuilder.append(agenda.getDentista().getCidade());
-			String msg = stringBuilder.toString();
-
-			EmailUtil mail = new EmailUtil();
-			mail.EnviarEmail(null, agenda.getRepresentante().getEmail(), null, "Nova visita Agendada", msg);
-
-			AgendaDAO agendaDAO = new AgendaDAO();
-			RepresentanteDAO representanteDAO = new RepresentanteDAO();
-			DentistaDAO dentistaDAO = new DentistaDAO();
-
-			agendaDAO.merge(agenda);
-
-			agendas = agendaDAO.listar();
-			representantes = representanteDAO.listar();
-			dentistas = dentistaDAO.listar();
-			agenda = new Agenda();
-			Messages.addGlobalInfo("Agenda salva com sucesso");
-		} catch (RuntimeException erro) {
-			Messages.addFlashGlobalError("Ocorreu um erro ao tentar salvar uma nova agenda");
-			erro.printStackTrace();
-		}
-	}
-
-	public void excluir(ActionEvent evento) {
-		try {
-			agenda = (Agenda) evento.getComponent().getAttributes().get("agendaSelecionada");
-
-			AgendaDAO agendaDAO = new AgendaDAO();
-			agendaDAO.excluir(agenda);
-
-			agendas = agendaDAO.listar();
-
-			Messages.addGlobalInfo("Agenda removida com sucesso");
-		} catch (RuntimeException erro) {
-			Messages.addFlashGlobalError("Ocorreu um erro ao tentar remover a agenda");
-			erro.printStackTrace();
-		}
-	}
-
-	public void editar(ActionEvent evento) {
-		try {
-			agenda = (Agenda) evento.getComponent().getAttributes().get("agendaSelecionada");
-		} catch (RuntimeException erro) {
-			Messages.addFlashGlobalError("Ocorreu um erro ao tentar selecionar uma agenda");
-			erro.printStackTrace();
-		}
-	}
-
-	public void preProcessPDF(Object document) throws IOException, BadElementException, DocumentException {
-		Document pdf = (Document) document;
-		pdf.open();
-		pdf.setPageSize(PageSize.A4);
-		pdf.addAuthor("Luis Carlos Santos");
-		pdf.addTitle("Agendas Cadastradas");
-		pdf.addCreator("NFS Consultoria");
-		pdf.addSubject("Agendas Cadastradas");
-
-		ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
-		String logo = externalContext.getRealPath("") + File.separator + "resources" + File.separator + "images"
-				+ File.separator + "banner.png";
-
-		pdf.add(Image.getInstance(logo));
-	}
-
-	public void postProcessXLS(Object document) {
-		HSSFWorkbook wb = (HSSFWorkbook) document;
-		HSSFSheet sheet = wb.getSheetAt(0);
-		HSSFRow header = sheet.getRow(0);
-
-		HSSFCellStyle cellStyle = wb.createCellStyle();
-		cellStyle.setFillForegroundColor(HSSFColor.AQUA.index);
-		cellStyle.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
-
-		for (int i = 0; i < header.getPhysicalNumberOfCells(); i++) {
-			HSSFCell cell = header.getCell(i);
-
-			cell.setCellStyle(cellStyle);
-		}
-	}
+    }
 }

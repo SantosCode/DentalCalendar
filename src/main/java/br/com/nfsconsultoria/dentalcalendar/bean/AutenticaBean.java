@@ -70,7 +70,6 @@ public class AutenticaBean {
 	public void iniciar() {
 
 		representante = new Representante();
-		representanteLogado = new Representante();
 		representanteLogado = null;
 		isLogado = false;
 	}
