@@ -239,19 +239,6 @@ public class DentistaBean implements Serializable {
         }
     }
     
-    public void criar(){
-         try {
-             ClinicaDAO cliDAO = new ClinicaDAO();
-            cliDAO.merge(clinica);
-            clinicas = cliDAO.listar();
-            clinica = new Clinica();
-            Messages.addGlobalInfo("Clinica criada com sucesso");
-        } catch (RuntimeException erro) {
-            Messages.addFlashGlobalError("Ocorreu o erro " + erro.getMessage() + " ao tentar salvar a clinica");
-            erro.printStackTrace();
-        }
-    }
-
     public void excluir(ActionEvent evento) {
         try {
             dentista = (Dentista) evento.getComponent().getAttributes().get("dentistaSelecionado");

@@ -18,38 +18,34 @@ import org.hibernate.Session;
  */
 public class SecretariaDAO extends GenericDAO<Secretaria> {
 
-    @SuppressWarnings("unchecked")
-    public List<Secretaria> listarLazy() {
-        Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
-        try {
-            @SuppressWarnings("deprecation")
-            Criteria consulta1 = sessao.createCriteria(Secretaria.class)
-                    .setFetchMode("dentista1", FetchMode.LAZY);
-            @SuppressWarnings("deprecation")
-			Criteria consulta2 = sessao.createCriteria(Secretaria.class)
-                    .setFetchMode("dentista2", FetchMode.LAZY);
-            @SuppressWarnings("deprecation")
-			Criteria consulta3 = sessao.createCriteria(Secretaria.class)
-                    .setFetchMode("dentista3", FetchMode.LAZY);
-            @SuppressWarnings("deprecation")
-			Criteria consulta4 = sessao.createCriteria(Secretaria.class)
-                    .setFetchMode("dentista4", FetchMode.LAZY);
-            List<Secretaria> resultado1 = consulta1.list();
-            List<Secretaria> resultado2 = consulta2.list();
-            List<Secretaria> resultado3 = consulta3.list();
-            List<Secretaria> resultado4 = consulta4.list();
-            if (!resultado1.isEmpty()) {
-                return resultado1;
-            } else if (!resultado2.isEmpty()) {
-                return resultado2;
-            } else if (!resultado3.isEmpty()) {
-                return resultado3;
-            } else 
-                return resultado4;     
-        } catch (RuntimeException erro) {
-            throw erro;
-        } finally {
-            sessao.close();
-        }
-    }
+	@SuppressWarnings("unchecked")
+	public List<Secretaria> listarLazy() {
+		Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
+		try {
+			@SuppressWarnings("deprecation")
+			Criteria consulta1 = sessao.createCriteria(Secretaria.class).setFetchMode("dentista1", FetchMode.LAZY);
+			@SuppressWarnings("deprecation")
+			Criteria consulta2 = sessao.createCriteria(Secretaria.class).setFetchMode("dentista2", FetchMode.LAZY);
+			@SuppressWarnings("deprecation")
+			Criteria consulta3 = sessao.createCriteria(Secretaria.class).setFetchMode("dentista3", FetchMode.LAZY);
+			@SuppressWarnings("deprecation")
+			Criteria consulta4 = sessao.createCriteria(Secretaria.class).setFetchMode("dentista4", FetchMode.LAZY);
+			List<Secretaria> resultado1 = consulta1.list();
+			List<Secretaria> resultado2 = consulta2.list();
+			List<Secretaria> resultado3 = consulta3.list();
+			List<Secretaria> resultado4 = consulta4.list();
+			if (!resultado1.isEmpty()) {
+				return resultado1;
+			} else if (!resultado2.isEmpty()) {
+				return resultado2;
+			} else if (!resultado3.isEmpty()) {
+				return resultado3;
+			} else
+				return resultado4;
+		} catch (RuntimeException erro) {
+			throw erro;
+		} finally {
+			sessao.close();
+		}
+	}
 }

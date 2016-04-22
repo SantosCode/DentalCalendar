@@ -40,117 +40,131 @@ import org.omnifaces.util.Messages;
 @ViewScoped
 public class RepresentanteBean implements Serializable {
 
-    private Representante representante;
-    private List<Representante> representantes;
+	private Representante representante;
+	private List<Representante> representantes;
+	private String rSenha;
 
-    public RepresentanteBean() {
-        RepresentanteDAO repreDAO = new RepresentanteDAO();
-        this.representantes = repreDAO.listar();
-    }
+	public RepresentanteBean() {
+		RepresentanteDAO repreDAO = new RepresentanteDAO();
+		this.representantes = repreDAO.listar();
+	}
 
-    public Representante getRepresentante() {
-        return representante;
-    }
+	public Representante getRepresentante() {
+		return representante;
+	}
 
-    public void setRepresentante(Representante representante) {
-        this.representante = representante;
-    }
+	public void setRepresentante(Representante representante) {
+		this.representante = representante;
+	}
 
-    public List<Representante> getRepresentantes() {
-        return representantes;
-    }
+	public List<Representante> getRepresentantes() {
+		return representantes;
+	}
 
-    public void setRepresentantes(List<Representante> representantes) {
-        this.representantes = representantes;
-    }
+	public void setRepresentantes(List<Representante> representantes) {
+		this.representantes = representantes;
+	}
 
-    @PostConstruct
-    public void listar() {
+	public String getrSenha() {
+		return rSenha;
+	}
 
-        try {
-            RepresentanteDAO representanteDAO = new RepresentanteDAO();
-            representanteDAO.listar("nome");
-        } catch (RuntimeException erro) {
-            Messages.addGlobalError("Ocorreu um erro ao tentar listar os representantes");
-            erro.printStackTrace();
-        }
+	public void setrSenha(String rSenha) {
+		this.rSenha = rSenha;
+	}
 
-    }
+	@PostConstruct
+	public void listar() {
 
-    public void novo() {
-        representante = new Representante();
-    }
+		try {
+			RepresentanteDAO representanteDAO = new RepresentanteDAO();
+			representanteDAO.listar("nome");
+		} catch (RuntimeException erro) {
+			Messages.addGlobalError("Ocorreu um erro ao tentar listar os representantes");
+			erro.printStackTrace();
+		}
 
-    public void salvar() {
+	}
 
-        try {
-            RepresentanteDAO representanteDAO = new RepresentanteDAO();
-            SimpleHash hash = new SimpleHash("md5", representante.getSenha());
-            representante.setSenha(hash.toHex());
-            representanteDAO.merge(representante);
+	public void novo() {
+		representante = new Representante();
+	}
 
-            representantes = representanteDAO.listar();
-            representante = new Representante();
-            Messages.addGlobalInfo("Representante salvo com sucesso");
-        } catch (RuntimeException erro) {
-            Messages.addFlashGlobalError("Ocorreu um erro ao tentar salvar o representante");
-            erro.printStackTrace();
-        }
-    }
+	public void salvar() {
 
-    public void excluir(ActionEvent evento) {
-        try {
-            representante = (Representante) evento.getComponent().getAttributes().get("representanteSelecionado");
+		try {
+			RepresentanteDAO representanteDAO = new RepresentanteDAO();
+			if (!representante.getSenha().equals(rSenha)) {
+				Messages.addGlobalError("O campo senha e repetir senha não conferem");
+				return;
+			}
+			SimpleHash hash = new SimpleHash("md5", representante.getSenha());
+			representante.setSenha(hash.toHex());
+			representanteDAO.merge(representante);
 
-            RepresentanteDAO representanteDAO = new RepresentanteDAO();
-            representanteDAO.excluir(representante);
+			representantes = representanteDAO.listar();
+			representante = new Representante();
+			Messages.addGlobalInfo("Representante salvo com sucesso");
+		} catch (RuntimeException erro) {
+			Messages.addFlashGlobalError("Ocorreu um erro ao tentar salvar o representante");
+			erro.printStackTrace();
+		}
+	}
 
-            representantes = representanteDAO.listar();
+	public void excluir(ActionEvent evento) {
+		try {
+			representante = (Representante) evento.getComponent().getAttributes().get("representanteSelecionado");
 
-            Messages.addGlobalInfo("Representante removido com sucesso");
-        } catch (RuntimeException erro) {
-            Messages.addFlashGlobalError("Ocorreu um erro ao tentar remover o representante");
-            erro.printStackTrace();
-        }
-    }
+			RepresentanteDAO representanteDAO = new RepresentanteDAO();
+			representanteDAO.excluir(representante);
 
-    public void editar(ActionEvent evento) {
-        try {
-            representante = (Representante) evento.getComponent().getAttributes().get("representanteSelecionado");
-        } catch (RuntimeException erro) {
-            Messages.addFlashGlobalError("Ocorreu um erro ao tentar selecionar um representante");
-            erro.printStackTrace();
-        }
-    }
+			representantes = representanteDAO.listar();
 
-    public void preProcessPDF(Object document) throws IOException, BadElementException, DocumentException {
-        Document pdf = (Document) document;
-        pdf.open();
-        pdf.setPageSize(PageSize.A4);
-        pdf.addAuthor("Luis Carlos Santos");
-        pdf.addTitle("Representantes Cadastrados");
-        pdf.addCreator("NFS Consultoria");
-        pdf.addSubject("Representantes Cadastrados");
+			Messages.addGlobalInfo("Representante removido com sucesso");
+		} catch (RuntimeException erro) {
+			Messages.addFlashGlobalError("Ocorreu um erro ao tentar remover o representante");
+			erro.printStackTrace();
+		}
+	}
 
-        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
-        String logo = externalContext.getRealPath("") + File.separator + "resources" + File.separator + "images" + File.separator + "banner.png";
+	public void editar(ActionEvent evento) {
+		try {
+			representante = (Representante) evento.getComponent().getAttributes().get("representanteSelecionado");
+		} catch (RuntimeException erro) {
+			Messages.addFlashGlobalError("Ocorreu um erro ao tentar selecionar um representante");
+			erro.printStackTrace();
+		}
+	}
 
-        pdf.add(Image.getInstance(logo));
-    }
+	public void preProcessPDF(Object document) throws IOException, BadElementException, DocumentException {
+		Document pdf = (Document) document;
+		pdf.open();
+		pdf.setPageSize(PageSize.A4);
+		pdf.addAuthor("Luis Carlos Santos");
+		pdf.addTitle("Representantes Cadastrados");
+		pdf.addCreator("NFS Consultoria");
+		pdf.addSubject("Representantes Cadastrados");
 
-    public void postProcessXLS(Object document) {
-        HSSFWorkbook wb = (HSSFWorkbook) document;
-        HSSFSheet sheet = wb.getSheetAt(0);
-        HSSFRow header = sheet.getRow(0);
+		ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+		String logo = externalContext.getRealPath("") + File.separator + "resources" + File.separator + "images"
+				+ File.separator + "banner.png";
 
-        HSSFCellStyle cellStyle = wb.createCellStyle();
-        cellStyle.setFillForegroundColor(HSSFColor.AQUA.index);
-        cellStyle.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+		pdf.add(Image.getInstance(logo));
+	}
 
-        for (int i = 0; i < header.getPhysicalNumberOfCells(); i++) {
-            HSSFCell cell = header.getCell(i);
+	public void postProcessXLS(Object document) {
+		HSSFWorkbook wb = (HSSFWorkbook) document;
+		HSSFSheet sheet = wb.getSheetAt(0);
+		HSSFRow header = sheet.getRow(0);
 
-            cell.setCellStyle(cellStyle);
-        }
-    }
+		HSSFCellStyle cellStyle = wb.createCellStyle();
+		cellStyle.setFillForegroundColor(HSSFColor.AQUA.index);
+		cellStyle.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+
+		for (int i = 0; i < header.getPhysicalNumberOfCells(); i++) {
+			HSSFCell cell = header.getCell(i);
+
+			cell.setCellStyle(cellStyle);
+		}
+	}
 }
