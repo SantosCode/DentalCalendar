@@ -15,7 +15,9 @@ import com.lowagie.text.PageSize;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -133,6 +135,45 @@ public class DatasBean implements Serializable {
 		} catch (RuntimeException erro) {
 			Messages.addFlashGlobalError("Ocorreu um erro ao tentar selecionar uma data");
 		}
+	}
+	
+	public Datas mesAtual(){
+		try {
+			Date hoje = new Date();
+			String formato = "MM";
+			SimpleDateFormat dataFormatada = new SimpleDateFormat(formato);
+			Long compara = Long.parseLong(dataFormatada.format(hoje));
+			
+			switch (compara.toString()) {
+			case "1":
+				DatasDAO data1DAO = new DatasDAO();
+				Datas data1 = data1DAO.buscar("Janeiro");
+				return data1;
+			case "2":
+				DatasDAO data2DAO = new DatasDAO();
+				Datas data2 = data2DAO.buscar("Fevereiro");
+				data2.getNome();
+				break;
+			case "3":
+				DatasDAO data3DAO = new DatasDAO();
+				Datas data3 = data3DAO.buscar("Março");
+				data3DAO.listar();
+				break;
+			case "4":
+				DatasDAO data4DAO = new DatasDAO();
+				Datas data4 = data4DAO.buscar("Abril");
+				data4DAO.listar();
+				break;
+
+			default:
+				
+				break;
+			}
+			
+		} catch (RuntimeException erro) {
+			erro.printStackTrace();
+		}
+		return data;
 	}
 
 	public void preProcessPDF(Object document) throws IOException, BadElementException, DocumentException {
