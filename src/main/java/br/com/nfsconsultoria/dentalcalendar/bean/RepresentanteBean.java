@@ -8,32 +8,25 @@ package br.com.nfsconsultoria.dentalcalendar.bean;
 import br.com.nfsconsultoria.dentalcalendar.dao.RepresentanteDAO;
 import br.com.nfsconsultoria.dentalcalendar.domain.Representante;
 import br.com.nfsconsultoria.dentalcalendar.util.RecUtil;
-import com.lowagie.text.BadElementException;
-import com.lowagie.text.Document;
-import com.lowagie.text.DocumentException;
-import com.lowagie.text.Image;
-import com.lowagie.text.PageSize;
-import java.io.File;
-import java.io.IOException;
-import java.io.Serializable;
-import java.util.List;
+import com.lowagie.text.*;
+import org.apache.poi.hssf.usermodel.*;
+import org.apache.poi.hssf.util.HSSFColor;
+import org.apache.shiro.crypto.hash.SimpleHash;
+import org.omnifaces.util.Messages;
+
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFCellStyle;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.hssf.util.HSSFColor;
-import org.apache.shiro.crypto.hash.SimpleHash;
-import org.omnifaces.util.Messages;
+import java.io.File;
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.Arrays;
+import java.util.List;
 
 /**
- *
  * @author luis
  */
 @SuppressWarnings("serial")
@@ -48,7 +41,8 @@ public class RepresentanteBean implements Serializable {
     public RepresentanteBean() {
         RepresentanteDAO repreDAO = new RepresentanteDAO();
         AutenticaBean login = (AutenticaBean) RecUtil.getObjectSession("autenticaBean");
-        if (login.getRepresentanteLogado().getAdmin()) {
+        if (login.getRepresentanteLogado().getAdmin().equals("Admin")
+                || login.getRepresentanteLogado().getAdmin().equals("Analista")) {
             this.representantes = repreDAO.listar();
         } else {
             this.representantes = repreDAO.listarCod(login.getRepresentanteLogado().getCodigo());
@@ -79,32 +73,39 @@ public class RepresentanteBean implements Serializable {
         this.rSenha = rSenha;
     }
 
+    public List<String> getNivel() {
+        String[] nivel = new String[]{"Admin", "Representante", "Analista"};
+        return Arrays.asList(nivel);
+
+    }
+
     @PostConstruct
     public void listar() {
-AutenticaBean login = (AutenticaBean) RecUtil.getObjectSession("autenticaBean");
-        if (login.getRepresentanteLogado().getAdmin()) {
-        try {
-            RepresentanteDAO representanteDAO = new RepresentanteDAO();
-            representanteDAO.listar();
-        } catch (RuntimeException erro) {
-            Messages.addGlobalError("Ocorreu um erro ao tentar listar os representantes");
-            erro.printStackTrace();
-        }
+        AutenticaBean login = (AutenticaBean) RecUtil.getObjectSession("autenticaBean");
+        if (login.getRepresentanteLogado().getAdmin().equals("Admin")
+                || login.getRepresentanteLogado().getAdmin().equals("Analista")) {
+            try {
+                RepresentanteDAO representanteDAO = new RepresentanteDAO();
+                representanteDAO.listar();
+            } catch (RuntimeException erro) {
+                Messages.addGlobalError("Ocorreu um erro ao tentar listar os representantes");
+                erro.printStackTrace();
+            }
         } else {
             try {
-            RepresentanteDAO representanteDAO = new RepresentanteDAO();
-            representanteDAO.listarCod(login.getRepresentanteLogado().getCodigo());
-        } catch (RuntimeException erro) {
-            Messages.addGlobalError("Ocorreu um erro ao tentar listar os representantes");
-            erro.printStackTrace();
-        }
+                RepresentanteDAO representanteDAO = new RepresentanteDAO();
+                representanteDAO.listarCod(login.getRepresentanteLogado().getCodigo());
+            } catch (RuntimeException erro) {
+                Messages.addGlobalError("Ocorreu um erro ao tentar listar os representantes");
+                erro.printStackTrace();
+            }
         }
 
     }
 
     public void novo() {
         AutenticaBean login = (AutenticaBean) RecUtil.getObjectSession("autenticaBean");
-        if (login.getRepresentanteLogado().getAdmin()) {
+        if (login.getRepresentanteLogado().getAdmin().equals("Admin")) {
 
             representante = new Representante();
         } else {
@@ -115,6 +116,8 @@ AutenticaBean login = (AutenticaBean) RecUtil.getObjectSession("autenticaBean");
 
     public void salvar() {
 
+        AutenticaBean login = (AutenticaBean) RecUtil.getObjectSession("autenticaBean");
+
         try {
             RepresentanteDAO representanteDAO = new RepresentanteDAO();
             if (!representante.getSenha().equals(rSenha)) {
@@ -123,10 +126,19 @@ AutenticaBean login = (AutenticaBean) RecUtil.getObjectSession("autenticaBean");
             }
             SimpleHash hash = new SimpleHash("md5", representante.getSenha());
             representante.setSenha(hash.toHex());
+
+            if (login.getRepresentanteLogado().getAdmin().equals("Representante")
+                    || login.getRepresentanteLogado().getAdmin().equals("Analista")) {
+                representante.setAdmin(login.getRepresentanteLogado().getAdmin());
+            }
             representanteDAO.merge(representante);
 
-            representantes = representanteDAO.listar();
-            representante = new Representante();
+            if (login.getRepresentanteLogado().getAdmin().equals("Admin")) {
+                representantes = representanteDAO.listar();
+                representante = new Representante();
+            } else {
+                representantes = representanteDAO.listarCod(login.getRepresentanteLogado().getCodigo());
+            }
             Messages.addGlobalInfo("Representante salvo com sucesso");
         } catch (RuntimeException erro) {
             Messages.addFlashGlobalError("Ocorreu um erro ao tentar salvar o representante");
@@ -136,7 +148,7 @@ AutenticaBean login = (AutenticaBean) RecUtil.getObjectSession("autenticaBean");
 
     public void excluir(ActionEvent evento) {
         AutenticaBean login = (AutenticaBean) RecUtil.getObjectSession("autenticaBean");
-        if (login.getRepresentanteLogado().getAdmin()) {
+        if (login.getRepresentanteLogado().getAdmin().equals("Admin")) {
             try {
                 representante = (Representante) evento.getComponent().getAttributes().get("representanteSelecionado");
 
@@ -150,16 +162,26 @@ AutenticaBean login = (AutenticaBean) RecUtil.getObjectSession("autenticaBean");
                 Messages.addFlashGlobalError("Ocorreu um erro ao tentar remover o representante");
                 erro.printStackTrace();
             }
+        } else {
+            Messages.addGlobalError("Você não possui permissões administrativas");
         }
     }
 
     public void editar(ActionEvent evento) {
 
-        try {
-            representante = (Representante) evento.getComponent().getAttributes().get("representanteSelecionado");
-        } catch (RuntimeException erro) {
-            Messages.addFlashGlobalError("Ocorreu um erro ao tentar selecionar um representante");
-            erro.printStackTrace();
+        AutenticaBean login = (AutenticaBean) RecUtil.getObjectSession("autenicaBean");
+
+        if (login.getRepresentanteLogado().getAdmin().equals("Admin")
+                || login.getRepresentanteLogado().getAdmin().equals("Representante")) {
+
+            try {
+                representante = (Representante) evento.getComponent().getAttributes().get("representanteSelecionado");
+            } catch (RuntimeException erro) {
+                Messages.addFlashGlobalError("Ocorreu um erro ao tentar selecionar um representante");
+                erro.printStackTrace();
+            }
+        } else {
+            Messages.addGlobalError("Você não possui permissões administrativas");
         }
     }
 

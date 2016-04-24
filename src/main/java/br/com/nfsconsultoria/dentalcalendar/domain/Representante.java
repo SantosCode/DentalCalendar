@@ -31,9 +31,9 @@ public class Representante extends GenericDomain{
     
     @Column(nullable = false, length = 32)
     private String senha;
-    
-    @Column
-    private Boolean admin;
+
+    @Column(nullable = false)
+    private String admin;
 
     public String getNome() {
         return nome;
@@ -75,11 +75,11 @@ public class Representante extends GenericDomain{
         this.senha = senha;
     }
 
-    public Boolean getAdmin() {
+    public String getAdmin() {
         return admin;
     }
 
-    public void setAdmin(Boolean admin) {
+    public void setAdmin(String admin) {
         this.admin = admin;
     }
 }

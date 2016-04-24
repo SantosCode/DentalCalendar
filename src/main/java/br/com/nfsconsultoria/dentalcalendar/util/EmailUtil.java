@@ -35,7 +35,7 @@ public class EmailUtil {
             if (de != null ) {
                 email.setFrom(de, "Radiodoc");
             } else{
-                email.setFrom(smtp.getEmail(), "RadioDoc");
+                email.setFrom(smtp.getEmail(), "Radiodoc");
             }
             if (resp != null){
                 email.addReplyTo(resp);

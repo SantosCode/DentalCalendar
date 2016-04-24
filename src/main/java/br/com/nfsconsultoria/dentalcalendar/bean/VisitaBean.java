@@ -5,44 +5,27 @@
  */
 package br.com.nfsconsultoria.dentalcalendar.bean;
 
-import br.com.nfsconsultoria.dentalcalendar.dao.AgendaDAO;
-import br.com.nfsconsultoria.dentalcalendar.dao.DentistaDAO;
-import br.com.nfsconsultoria.dentalcalendar.dao.RepresentanteDAO;
-import br.com.nfsconsultoria.dentalcalendar.dao.VisitaDAO;
-import br.com.nfsconsultoria.dentalcalendar.dao.mailServerDAO;
-import br.com.nfsconsultoria.dentalcalendar.domain.Agenda;
-import br.com.nfsconsultoria.dentalcalendar.domain.Dentista;
-import br.com.nfsconsultoria.dentalcalendar.domain.Representante;
-import br.com.nfsconsultoria.dentalcalendar.domain.Visita;
-import br.com.nfsconsultoria.dentalcalendar.domain.MailServer;
+import br.com.nfsconsultoria.dentalcalendar.dao.*;
+import br.com.nfsconsultoria.dentalcalendar.domain.*;
 import br.com.nfsconsultoria.dentalcalendar.util.EmailUtil;
 import br.com.nfsconsultoria.dentalcalendar.util.RecUtil;
+import com.lowagie.text.*;
+import org.apache.poi.hssf.usermodel.*;
+import org.apache.poi.hssf.util.HSSFColor;
+import org.omnifaces.util.Messages;
 
-import com.lowagie.text.BadElementException;
-import com.lowagie.text.Document;
-import com.lowagie.text.DocumentException;
-import com.lowagie.text.Image;
-import com.lowagie.text.PageSize;
-import java.io.File;
-import java.io.IOException;
-import java.io.Serializable;
-import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFCellStyle;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.hssf.util.HSSFColor;
-import org.omnifaces.util.Messages;
+import java.io.File;
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.List;
 
 /**
- *
  * @author luis
  */
 @SuppressWarnings("serial")
@@ -66,16 +49,16 @@ public class VisitaBean implements Serializable {
         mailServerDAO mailDAO = new mailServerDAO();
 
         AutenticaBean login = (AutenticaBean) RecUtil.getObjectSession("autenticaBean");
-        Agenda agenCod = agendaDAO.buscarRep(login.getRepresentanteLogado().getCodigo());
 
-        if (login.getRepresentanteLogado().getAdmin()) {
+        if (login.getRepresentanteLogado().getAdmin().equals("Admin")
+                || login.getRepresentanteLogado().getAdmin().equals("Analista")) {
             this.visitas = visitaDAO.listar();
             this.agendas = agendaDAO.listar();
             this.representantes = repreDAO.listar();
             this.dentistas = dentDAO.listar();
             this.mails = mailDAO.listar();
         } else {
-            this.visitas = visitaDAO.listarAgen(agenCod.getCodigo());
+            this.visitas = visitaDAO.listarRep(login.getRepresentanteLogado().getCodigo());
             this.agendas = agendaDAO.listarRep(login.getRepresentanteLogado().getCodigo());
             this.representantes = repreDAO.listarCod(login.getRepresentanteLogado().getCodigo());
             this.dentistas = dentDAO.listar();
@@ -142,14 +125,13 @@ public class VisitaBean implements Serializable {
     @PostConstruct
     public void listar() {
         AutenticaBean login = (AutenticaBean) RecUtil.getObjectSession("autenticaBean");
-        AgendaDAO agendaDAO = new AgendaDAO();
-        Agenda agenCod = agendaDAO.buscarRep(login.getRepresentanteLogado().getCodigo());
         try {
             VisitaDAO visitaDAO = new VisitaDAO();
-            if (login.getRepresentanteLogado().getAdmin()) {
+            if (login.getRepresentanteLogado().getAdmin().equals("Admin")
+                    || login.getRepresentanteLogado().getAdmin().equals("Analista")) {
                 this.visitas = visitaDAO.listar();
             } else {
-                this.visitas = visitaDAO.listarAgen(agenCod.getCodigo());
+                this.visitas = visitaDAO.listarRep(login.getRepresentanteLogado().getCodigo());
             }
         } catch (RuntimeException erro) {
             Messages.addGlobalError("Ocorreu um erro ao tentar listar os acordos");
@@ -159,78 +141,91 @@ public class VisitaBean implements Serializable {
 
     public void novo() {
 
-        RepresentanteDAO representanteDAO = new RepresentanteDAO();
-        DentistaDAO dentistaDAO = new DentistaDAO();
-        AgendaDAO agendaDAO = new AgendaDAO();
         AutenticaBean login = (AutenticaBean) RecUtil.getObjectSession("autenticaBean");
-        if (login.getRepresentanteLogado().getAdmin()) {
-            this.representantes = representanteDAO.listar();
+
+        if (login.getRepresentanteLogado().getAdmin().equals("Admin")
+                || login.getRepresentanteLogado().getAdmin().equals("Representante")) {
+            RepresentanteDAO representanteDAO = new RepresentanteDAO();
+            DentistaDAO dentistaDAO = new DentistaDAO();
+            AgendaDAO agendaDAO = new AgendaDAO();
+            if (login.getRepresentanteLogado().getAdmin().equals("Admin")) {
+                this.representantes = representanteDAO.listar();
+                this.agendas = agendaDAO.listar();
+            } else if (login.getRepresentanteLogado().getAdmin().equals("Representante")) {
+                this.representantes = representanteDAO.listarCod(login.getRepresentanteLogado().getCodigo());
+                this.agendas = agendaDAO.listarRep(login.getRepresentanteLogado().getCodigo());
+            }
             this.dentistas = dentistaDAO.listar();
-            this.agendas = agendaDAO.listar();
+            visita = new Visita();
+            if (this.representantes.isEmpty()) {
+                Messages.addGlobalError("É nescessario cadastrar representantes antes");
+            }
+            if (this.dentistas.isEmpty()) {
+                Messages.addGlobalError("É nescessario cadastrar dentistas antes");
+            }
+            if (this.agendas.isEmpty()) {
+                Messages.addGlobalError("É nescessario cadastrar agenda antes");
+            }
         } else {
-            this.representantes = representanteDAO.listarCod(login.getRepresentanteLogado().getCodigo());
-            this.dentistas = dentistaDAO.listar();
-            this.agendas = agendaDAO.listarRep(login.getRepresentanteLogado().getCodigo());
-        }
-        visita = new Visita();
-        if (this.representantes.isEmpty()) {
-            Messages.addGlobalError("É nescessario cadastrar representantes antes");
-        }
-        if (this.dentistas.isEmpty()) {
-            Messages.addGlobalError("É nescessario cadastrar dentistas antes");
-        }
-        if (this.agendas.isEmpty()) {
-            Messages.addGlobalError("É nescessario cadastrar agenda antes");
+            Messages.addGlobalError("Você não possui permissões administrativas");
         }
     }
 
     public void salvar() {
         AgendaDAO agendaDAO = new AgendaDAO();
         AutenticaBean login = (AutenticaBean) RecUtil.getObjectSession("autenticaBean");
-        Agenda agenCod = agendaDAO.buscarRep(login.getRepresentanteLogado().getCodigo());
 
-        try {
-            if (visita.getEmail()) {
-                if (!visita.getAgenda().getDentista().getEmail().isEmpty()) {
-                    EmailUtil email = new EmailUtil();
-                    email.EnviarEmail(null, visita.getAgenda().getDentista().getEmail(),
-                            visita.getAgenda().getRepresentante().getEmail(), "Radiodoc", visita.getAcordo());
-                } else {
-                    Messages.addGlobalError("Dentista não possui e-mail cadastrado");
+        if (login.getRepresentanteLogado().getAdmin().equals("Admin")
+                || login.getRepresentanteLogado().getAdmin().equals("Representante")) {
+            try {
+                if (visita.getEmail()) {
+                    if (!visita.getAgenda().getDentista().getEmail().isEmpty()) {
+                        EmailUtil email = new EmailUtil();
+                        email.EnviarEmail(null, visita.getAgenda().getDentista().getEmail(),
+                                visita.getAgenda().getRepresentante().getEmail(), "Radiodoc", visita.getAcordo());
+                    } else {
+                        Messages.addGlobalError("Dentista não possui e-mail cadastrado");
+                    }
                 }
+                VisitaDAO visitaDAO = new VisitaDAO();
+                visita.setRepresentante(visita.getAgenda().getRepresentante());
+                visitaDAO.merge(visita);
+                visita = new Visita();
+                if (login.getRepresentanteLogado().getAdmin().equals("Admin")) {
+                    visitas = visitaDAO.listar();
+                } else if (login.getRepresentanteLogado().getAdmin().equals("Representante")) {
+                    visitas = visitaDAO.listarRep(login.getRepresentanteLogado().getCodigo());
+                }
+                Messages.addGlobalInfo("Visita salva com sucesso");
+            } catch (RuntimeException erro) {
+                Messages.addFlashGlobalError("Ocorreu um erro ao tentar salvar uma novo acordo");
             }
-            VisitaDAO visitaDAO = new VisitaDAO();
-            visitaDAO.merge(visita);
-            visita = new Visita();
-            if (login.getRepresentanteLogado().getAdmin()) {
-                visitas = visitaDAO.listar();
-            } else {
-                visitas = visitaDAO.listarAgen(agenCod.getCodigo());
-            }
-            Messages.addGlobalInfo("Visita salva com sucesso");
-        } catch (RuntimeException erro) {
-            Messages.addFlashGlobalError("Ocorreu um erro ao tentar salvar uma novo acordo");
+        } else {
+            Messages.addGlobalError("Você não possui permissões administrativas");
         }
     }
 
     public void excluir(ActionEvent evento) {
         AgendaDAO agendaDAO = new AgendaDAO();
         AutenticaBean login = (AutenticaBean) RecUtil.getObjectSession("autenticaBean");
-        Agenda agenCod = agendaDAO.buscarRep(login.getRepresentanteLogado().getCodigo());
+        if (login.getRepresentanteLogado().getAdmin().equals("Admin")
+                || login.getRepresentanteLogado().getAdmin().equals("Representante")) {
+            try {
+                visita = (Visita) evento.getComponent().getAttributes().get("visitaSelecionada");
 
-        try {
-            visita = (Visita) evento.getComponent().getAttributes().get("visitaSelecionada");
-
-            VisitaDAO visitaDAO = new VisitaDAO();
-            visitaDAO.excluir(visita);
-            if (login.getRepresentanteLogado().getAdmin()) {
-                visitas = visitaDAO.listar();
-            } else {
-                visitas = visitaDAO.listarAgen(agenCod.getCodigo());
+                VisitaDAO visitaDAO = new VisitaDAO();
+                visitaDAO.excluir(visita);
+                if (login.getRepresentanteLogado().getAdmin().equals("Admin")) {
+                    visitas = visitaDAO.listar();
+                } else if (login.getRepresentanteLogado().getAdmin().equals("Representante")) {
+                    visitas = visitaDAO.listarRep(login.getRepresentanteLogado().getCodigo());
+                }
+                Messages.addGlobalInfo("Visita removida com sucesso");
+            } catch (RuntimeException erro) {
+                Messages.addFlashGlobalError("Ocorreu um erro ao tentar remover o acordo");
             }
-            Messages.addGlobalInfo("Visita removida com sucesso");
-        } catch (RuntimeException erro) {
-            Messages.addFlashGlobalError("Ocorreu um erro ao tentar remover o acordo");
+        } else {
+            Messages.addGlobalError("Você não possui permissões administrativas");
         }
     }
 

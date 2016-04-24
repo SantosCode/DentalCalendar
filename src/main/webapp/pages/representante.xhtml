@@ -141,8 +141,19 @@
                                 promptLabel="Digite uma senha forte" weakLabel="Senha Fraca"
                                 goodLabel="Senha média" strongLabel="Senha Forte" />
 
-                    <p:outputLabel for="admin" value="Administrador:" />
-                    <p:selectBooleanCheckbox id="admin" value="#{representanteBean.representante.admin}"/> 
+                    <p:outputLabel for="admin" value="Nivel:"/>
+                    <p:selectOneMenu id="admin" value="#{representanteBean.representante.admin}"
+                                     effect="fade" filter="true" required="true"
+                                     requiredMessage="O campo nivel é obrigatório"
+                                     converter="omnifaces.SelectItemsConverter">
+
+                        <f:selectItem noSelectionOption="true"
+                                      itemLabel="Selecione um Nivel"/>
+                        <f:selectItems value="#{representanteBean.nivel}" var="nivel"
+                                       itemValue="#{nivel}"
+                                       itemLabel="#{nivel}"/>
+                    </p:selectOneMenu>
+
                 </h:panelGrid>
 
                 <h:panelGrid columns="2">

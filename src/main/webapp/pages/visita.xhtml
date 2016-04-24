@@ -1,10 +1,10 @@
 <?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:p="http://primefaces.org/ui"
-                xmlns:pe="http://primefaces.org/ui/extensions"
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
                 template="/template/modelo.xhtml">
 
@@ -21,57 +21,57 @@
                                          oncomplete="PF('dialogo').show();"
                                          update=":mensagem :formCadastro:painel">
                             <f:actionListener
-                                type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+                                    type="org.omnifaces.eventlistener.ResetInputAjaxActionListener"/>
                         </p:commandButton>
 
                         <h:commandLink>
-                            <p:graphicImage name="/images/excel.png" width="24" />
+                            <p:graphicImage name="/images/excel.png" width="24"/>
                             <p:dataExporter type="xls" target="tabela" fileName="acordo"
-                                            postProcessor="#{visitaBean.postProcessXLS}" />
+                                            postProcessor="#{visitaBean.postProcessXLS}"/>
                         </h:commandLink>
 
                         <h:commandLink>
-                            <p:graphicImage name="/images/pdf.png" width="24" />
+                            <p:graphicImage name="/images/pdf.png" width="24"/>
                             <p:dataExporter type="pdf" target="tabela" fileName="acordo"
-                                            preProcessor="#{visitaBean.preProcessPDF}" />
+                                            preProcessor="#{visitaBean.preProcessPDF}"/>
                         </h:commandLink>
 
                         <h:commandLink>
-                            <p:graphicImage name="/images/csv.png" width="24" />
-                            <p:dataExporter type="csv" target="tabela" fileName="acordo" />
+                            <p:graphicImage name="/images/csv.png" width="24"/>
+                            <p:dataExporter type="csv" target="tabela" fileName="acordo"/>
                         </h:commandLink>
 
                         <h:commandLink>
-                            <p:graphicImage name="/images/xml.png" width="24" />
-                            <p:dataExporter type="xml" target="tabela" fileName="acordo" />
+                            <p:graphicImage name="/images/xml.png" width="24"/>
+                            <p:dataExporter type="xml" target="tabela" fileName="acordo"/>
                         </h:commandLink>
 
                     </f:facet>
 
                     <p:column headerText="Agenda" filterBy="#{visita.agenda.dia}"
                               sortBy="#{visita.agenda.dia}" filterMatchMode="contains">
-                        <h:outputText value="#{visita.agenda.dia}" />
+                        <h:outputText value="#{visita.agenda.dia}"/>
                     </p:column>
 
                     <p:column headerText="Hora" filterBy="#{visita.agenda.hora}"
                               sortBy="#{visita.agenda.hora}" filterMatchMode="contains">
-                        <h:outputText value="#{visita.agenda.hora}" />
+                        <h:outputText value="#{visita.agenda.hora}"/>
                     </p:column>
 
                     <p:column headerText="Representante"
-                              filterBy="#{visita.agenda.representante.nome}"
-                              sortBy="#{visita.agenda.representante.nome}" filterMatchMode="contains">
-                        <h:outputText value="#{visita.agenda.representante.nome}" />
+                              filterBy="#{visita.representante.nome}"
+                              sortBy="#{visita.representante.nome}" filterMatchMode="contains">
+                        <h:outputText value="#{visita.representante.nome}"/>
                     </p:column>
 
                     <p:column headerText="Dentista" filterBy="#{visita.agenda.dentista.nome}"
                               sortBy="#{visita.agenda.dentista.nome}" filterMatchMode="contains">
-                        <h:outputText value="#{visita.agenda.dentista.nome}" />
+                        <h:outputText value="#{visita.agenda.dentista.nome}"/>
                     </p:column>
 
                     <p:column headerText="E-Mail" filterBy="#{visita.email}"
                               sortBy="#{visita.email}" filterMatchMode="contains">
-                        <p:selectBooleanButton onLabel="Enviado" offLabel="Não Enviado" 
+                        <p:selectBooleanButton onLabel="Enviado" offLabel="Não Enviado"
                                                value="#{visita.email}" disabled="true"/>
                     </p:column>
 
@@ -80,35 +80,35 @@
                                          actionListener="#{visitaBean.excluir}"
                                          update=":mensagem :formListagem:tabela">
                             <p:confirm header="Confirmação"
-                                       message="Deseja excluir a visita?" icon="ui-icon-alert" />
-                            <f:attribute name="visitaSelecionada" value="#{visita}" />
+                                       message="Deseja excluir a visita?" icon="ui-icon-alert"/>
+                            <f:attribute name="visitaSelecionada" value="#{visita}"/>
                         </p:commandButton>
 
                         <p:commandButton icon="ui-icon-pencil"
                                          actionListener="#{visitaBean.editar}"
                                          update=":mensagem :formCadastro:painel"
                                          oncomplete="PF('dialogo').show();">
-                            <f:attribute name="visitaSelecionada" value="#{visita}" />
+                            <f:attribute name="visitaSelecionada" value="#{visita}"/>
                             <f:actionListener
-                                type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+                                    type="org.omnifaces.eventlistener.ResetInputAjaxActionListener"/>
                         </p:commandButton>
 
                         <p:commandButton icon="ui-icon-info"
                                          actionListener="#{visitaBean.editar}"
                                          update=":mensagem :formVisu:painel"
                                          oncomplete="PF('dlgVisu').show();">
-                            <f:attribute name="visitaSelecionada" value="#{visita}" />
+                            <f:attribute name="visitaSelecionada" value="#{visita}"/>
                             <f:actionListener
-                                type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+                                    type="org.omnifaces.eventlistener.ResetInputAjaxActionListener"/>
                         </p:commandButton>
                     </p:column>
                 </p:dataTable>
             </p:panel>
             <p:confirmDialog global="true">
                 <p:commandButton value="Sim" type="button"
-                                 styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                 styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>
                 <p:commandButton value="Não" type="button"
-                                 styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                                 styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>
             </p:confirmDialog>
         </h:form>
 
@@ -119,32 +119,34 @@
             <h:form id="formCadastro">
                 <h:panelGrid id="painel" columns="2">
 
-                    <p:outputLabel for="agenda" value="Agenda:" />
+                    <p:outputLabel for="agenda" value="Agenda:"/>
                     <p:selectOneMenu id="agenda" value="#{visitaBean.visita.agenda}"
                                      effect="fade" filter="true" required="true"
                                      requiredMessage="O campo agenda é obrigatório "
-                                     converter="omnifaces.SelectItemsConverter" onchange="">
+                                     converter="omnifaces.SelectItemsConverter">
                         <f:selectItem noSelectionOption="true"
-                                      itemLabel="Selecione uma agenda" />
+                                      itemLabel="Selecione uma agenda"/>
                         <f:selectItems value="#{visitaBean.agendas}" var="agen"
-                                       itemValue="#{agen}" itemLabel="#{agen.dia} às #{agen.hora} Dr(a). #{agen.dentista.nome}" />
+                                       itemValue="#{agen}"
+                                       itemLabel="#{agen.dia} às #{agen.hora} Dr(a). #{agen.dentista.nome}
+                                       Rep #{agen.representante.nome}"/>
                     </p:selectOneMenu>
-            
-                    <p:outputLabel for="acordo" value="Acordo:" />
+
+                    <p:outputLabel for="acordo" value="Acordo:"/>
                     <p:editor id="acordo" value="#{visitaBean.visita.acordo}"
-                              required="true" requiredMessage="O campo acordo é obrigatório"  
-                              rendered="true" maxlength="3000" />
+                              required="true" requiredMessage="O campo acordo é obrigatório"
+                              rendered="true"/>
 
                     <p:outputLabel for="mail" value="Enviar e-mail para o dentista?"/>
-                    <p:selectBooleanButton id="mail" onLabel="Sim" offLabel="Não"  value="#{visitaBean.visita.email}"/>
+                    <p:selectBooleanButton id="mail" onLabel="Sim" offLabel="Não" value="#{visitaBean.visita.email}"/>
                 </h:panelGrid>
 
                 <h:panelGrid columns="2">
                     <p:commandButton value="Salvar"
                                      actionListener="#{visitaBean.salvar}"
-                                     update=":mensagem :formCadastro:painel :formListagem:tabela" />
+                                     update=":mensagem :formCadastro:painel :formListagem:tabela"/>
 
-                    <p:commandButton value="Fechar" oncomplete="PF('dialogo').hide();" />
+                    <p:commandButton value="Fechar" oncomplete="PF('dialogo').hide();"/>
                 </h:panelGrid>
             </h:form>
         </p:dialog>
@@ -154,39 +156,39 @@
                   showEffect="clip" responsive="true" dynamic="true" fitViewport="true" positionType="absolute">
             <h:form id="formVisu">
                 <h:panelGrid id="painel" columns="2">
-                    <p:outputLabel for="dia" value="Dia:" style="font-weight: bold" />
+                    <p:outputLabel for="dia" value="Dia:" style="font-weight: bold"/>
                     <p:calendar id="dia" value="#{visitaBean.visita.agenda.dia}"
-                                pattern="yyyy-MM-dd" mask="true" readonly="true" showOn="false" />
+                                pattern="yyyy-MM-dd" mask="true" readonly="true" showOn="false"/>
 
-                    <p:outputLabel for="hora" value="Hora:" style="font-weight: bold" />
+                    <p:outputLabel for="hora" value="Hora:" style="font-weight: bold"/>
                     <p:calendar id="hora" value="#{visitaBean.visita.agenda.hora}"
-                                pattern="HH:mm" timeOnly="true" readonly="true" showOn="false" />
+                                pattern="HH:mm" timeOnly="true" readonly="true" showOn="false"/>
 
                     <p:outputLabel for="dentista" value="Dentista:"
-                                   style="font-weight: bold" />
+                                   style="font-weight: bold"/>
                     <h:outputText id="dentista"
-                                  value="#{visitaBean.visita.agenda.dentista.nome}" />
+                                  value="#{visitaBean.visita.agenda.dentista.nome}"/>
 
                     <p:outputLabel for="representante" value="Representante:"
-                                   style="font-weight: bold" />
+                                   style="font-weight: bold"/>
                     <h:outputText id="representante"
-                                  value="#{visitaBean.visita.agenda.representante.nome}" />
+                                  value="#{visitaBean.visita.agenda.representante.nome}"/>
 
                     <p:outputLabel for="acordo" value="Acordo:"
-                                   style="font-weight: bold" />
-                    <p:editor id="acordo" widgetVar="editor" value="#{visitaBean.visita.acordo}" disabled="true" 
-                              rendered="true" width="600" converter="omnifaces.SelectItemsConverter" />
+                                   style="font-weight: bold"/>
+                    <p:editor id="acordo" widgetVar="editor" value="#{visitaBean.visita.acordo}" disabled="true"
+                              rendered="true" width="600" converter="omnifaces.SelectItemsConverter"/>
 
                     <p:outputLabel for="mail" value="Enviar e-mail para o dentista?"/>
-                    <p:selectBooleanButton id="mail" onLabel="Sim" offLabel="Não"  
+                    <p:selectBooleanButton id="mail" onLabel="Sim" offLabel="Não"
                                            value="#{visitaBean.visita.email}" disabled="true"/>
                 </h:panelGrid>
 
                 <h:panelGrid columns="2">
-                    <p:commandButton value="Fechar" oncomplete="PF('dlgVisu').hide();" />
+                    <p:commandButton value="Fechar" oncomplete="PF('dlgVisu').hide();"/>
                     <p:commandButton value="Imprimir" type="button"
                                      icon="ui-icon-print">
-                        <p:printer target="formVisu" />
+                        <p:printer target="formVisu"/>
                     </p:commandButton>
                 </h:panelGrid>
             </h:form>

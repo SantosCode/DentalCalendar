@@ -9,15 +9,19 @@ import javax.persistence.ManyToOne;
 @Entity
 public class Visita extends GenericDomain {
 
-    @Column(nullable = false, length = 3000)
+    @Column(nullable = false, length = 30000)
     private String acordo;
-    
+
     @Column
     private Boolean email;
 
     @ManyToOne
     @JoinColumn(nullable = false)
     private Agenda agenda;
+
+    @ManyToOne
+    @JoinColumn(nullable = false)
+    private Representante representante;
 
     public String getAcordo() {
         return acordo;
@@ -41,5 +45,13 @@ public class Visita extends GenericDomain {
 
     public void setAgenda(Agenda agenda) {
         this.agenda = agenda;
+    }
+
+    public Representante getRepresentante() {
+        return representante;
+    }
+
+    public void setRepresentante(Representante representante) {
+        this.representante = representante;
     }
 }

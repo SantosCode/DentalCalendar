@@ -13,32 +13,23 @@ import br.com.nfsconsultoria.dentalcalendar.domain.Dentista;
 import br.com.nfsconsultoria.dentalcalendar.domain.Representante;
 import br.com.nfsconsultoria.dentalcalendar.util.EmailUtil;
 import br.com.nfsconsultoria.dentalcalendar.util.RecUtil;
+import com.lowagie.text.*;
+import org.apache.poi.hssf.usermodel.*;
+import org.apache.poi.hssf.util.HSSFColor;
+import org.omnifaces.util.Messages;
 
-import com.lowagie.text.BadElementException;
-import com.lowagie.text.Document;
-import com.lowagie.text.DocumentException;
-import com.lowagie.text.Image;
-import com.lowagie.text.PageSize;
-import java.io.File;
-import java.io.IOException;
-import java.io.Serializable;
-import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFCellStyle;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.hssf.util.HSSFColor;
-import org.omnifaces.util.Messages;
+import java.io.File;
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.List;
 
 /**
- *
  * @author luis
  */
 @SuppressWarnings("serial")
@@ -56,15 +47,16 @@ public class AgendaBean implements Serializable {
         RepresentanteDAO repreDAO = new RepresentanteDAO();
         DentistaDAO dentDAO = new DentistaDAO();
         AutenticaBean login = (AutenticaBean) RecUtil.getObjectSession("autenticaBean");
-        if (login.getRepresentanteLogado().getAdmin()) {
+
+        if (login.getRepresentanteLogado().getAdmin().equals("Analista")
+                || login.getRepresentanteLogado().getAdmin().equals("Admin")) {
             this.agendas = agendaDAO.listar();
             this.representantes = repreDAO.listar();
-            this.dentistas = dentDAO.listar();
-        } else {
+        } else if (login.getRepresentanteLogado().getAdmin().equals("Representante")) {
             this.agendas = agendaDAO.listarRep(login.getRepresentanteLogado().getCodigo());
             this.representantes = repreDAO.listarCod(login.getRepresentanteLogado().getCodigo());
-            this.dentistas = dentDAO.listar();
         }
+        this.dentistas = dentDAO.listar();
     }
 
     public Agenda getAgenda() {
@@ -103,22 +95,21 @@ public class AgendaBean implements Serializable {
     public void listar() {
 
         AutenticaBean login = (AutenticaBean) RecUtil.getObjectSession("autenticaBean");
-        if (login.getRepresentanteLogado().getAdmin()) {
-            try {
-                AgendaDAO agendaDAO = new AgendaDAO();
-                agendaDAO.listar();
-            } catch (RuntimeException erro) {
-                Messages.addGlobalError("Ocorreu um erro ao tentar listar os agendas");
-                erro.printStackTrace();
+
+        try {
+            AgendaDAO agendaDAO = new AgendaDAO();
+            RepresentanteDAO repDAO = new RepresentanteDAO();
+            if (login.getRepresentanteLogado().getAdmin().equals("Analista")
+                    || login.getRepresentanteLogado().getAdmin().equals("Admin")) {
+                agendas = agendaDAO.listar();
+                representantes = repDAO.listar();
+            } else if (login.getRepresentanteLogado().getAdmin().equals("Representante")) {
+                agendas = agendaDAO.listarRep(login.getRepresentanteLogado().getCodigo());
+                representantes = repDAO.listarCod(login.getRepresentanteLogado().getCodigo());
             }
-        } else {
-            try {
-                AgendaDAO agendaDAO = new AgendaDAO();
-                agendaDAO.listarRep(login.getRepresentanteLogado().getCodigo());
-            } catch (RuntimeException erro) {
-                Messages.addGlobalError("Ocorreu um erro ao tentar listar os agendas");
-                erro.printStackTrace();
-            }
+        } catch (RuntimeException erro) {
+            Messages.addGlobalError("Ocorreu um erro ao tentar listar os agendas");
+            erro.printStackTrace();
         }
     }
 
@@ -131,13 +122,13 @@ public class AgendaBean implements Serializable {
         }
         if (this.dentistas.isEmpty()) {
             Messages.addGlobalError("É nescessario cadastrar dentistas antes");
+
         }
     }
 
-    @SuppressWarnings("deprecation")
     public void salvar() {
-        
-        AutenticaBean login = (AutenticaBean)RecUtil.getObjectSession("autenticaBean");
+
+        AutenticaBean login = (AutenticaBean) RecUtil.getObjectSession("autenticaBean");
 
         try {
 
@@ -151,10 +142,9 @@ public class AgendaBean implements Serializable {
             stringBuilder.append(agenda.getDia().getYear() + 1900);
             stringBuilder.append(" as ");
             stringBuilder.append(agenda.getHora().getHours());
-            stringBuilder.append(":");
+            stringBuilder.append(" horas e ");
             stringBuilder.append(agenda.getHora().getMinutes());
-            stringBuilder.append(" horas ");
-            stringBuilder.append(", com o Dr(a). ");
+            stringBuilder.append(" minutos, com o/a Dr(a). ");
             stringBuilder.append(agenda.getDentista().getNome());
             stringBuilder.append(", na Rua ");
             stringBuilder.append(agenda.getDentista().getRua());
@@ -176,15 +166,15 @@ public class AgendaBean implements Serializable {
             DentistaDAO dentistaDAO = new DentistaDAO();
 
             agendaDAO.merge(agenda);
-            if (login.getRepresentanteLogado().getAdmin()){
-            agendas = agendaDAO.listar();
-            representantes = representanteDAO.listar();
-            dentistas = dentistaDAO.listar();
-            } else {
+            if (login.getRepresentanteLogado().getAdmin().equals("Admin")
+                    || login.getRepresentanteLogado().getAdmin().equals("Analista")) {
+                agendas = agendaDAO.listar();
+                representantes = representanteDAO.listar();
+            } else if (login.getRepresentanteLogado().getAdmin().equals("Representante")) {
                 agendas = agendaDAO.listarRep(login.getRepresentanteLogado().getCodigo());
                 representantes = representanteDAO.listarCod(login.getRepresentanteLogado().getCodigo());
-                dentistas = dentistaDAO.listar();
             }
+            dentistas = dentistaDAO.listar();
             agenda = new Agenda();
             Messages.addGlobalInfo("Agenda salva com sucesso");
         } catch (RuntimeException erro) {
@@ -193,17 +183,20 @@ public class AgendaBean implements Serializable {
         }
     }
 
+
     public void excluir(ActionEvent evento) {
-        AutenticaBean login = (AutenticaBean)RecUtil.getObjectSession("autenticaBean");
+        AutenticaBean login = (AutenticaBean) RecUtil.getObjectSession("autenticaBean");
+
         try {
             agenda = (Agenda) evento.getComponent().getAttributes().get("agendaSelecionada");
 
             AgendaDAO agendaDAO = new AgendaDAO();
             agendaDAO.excluir(agenda);
 
-            if (login.getRepresentanteLogado().getAdmin()){
-            agendas = agendaDAO.listar();
-            } else {
+            if (login.getRepresentanteLogado().getAdmin().equals("Admin")
+                    || login.getRepresentanteLogado().getAdmin().equals("Analista")) {
+                agendas = agendaDAO.listar();
+            } else if (login.getRepresentanteLogado().getAdmin().equals("Representante")) {
                 agendas = agendaDAO.listarRep(login.getRepresentanteLogado().getCodigo());
             }
             Messages.addGlobalInfo("Agenda removida com sucesso");
@@ -213,7 +206,9 @@ public class AgendaBean implements Serializable {
         }
     }
 
+
     public void editar(ActionEvent evento) {
+
         try {
             agenda = (Agenda) evento.getComponent().getAttributes().get("agendaSelecionada");
         } catch (RuntimeException erro) {
