@@ -59,9 +59,24 @@ public class GenericDAO<Entidade> {
             sessao.close();
         }
     }
+    
+    @SuppressWarnings("unchecked")
+    public List<Entidade> listarCod(Long codigo) {
+        Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
+        try {
+            Criteria consulta = sessao.createCriteria(classe);
+            consulta.add(Restrictions.eq("codigo", codigo));
+            List<Entidade> resultado = consulta.list();
+            return resultado;
+        } catch (RuntimeException erro) {
+            throw erro;
+        } finally {
+            sessao.close();
+        }
+    }
 
     @SuppressWarnings("unchecked")
-    public List<Entidade> listar(String campoOrdenacao) {
+    public List<Entidade> listarOrd(String campoOrdenacao) {
         Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
         try {
             Criteria consulta = sessao.createCriteria(classe);

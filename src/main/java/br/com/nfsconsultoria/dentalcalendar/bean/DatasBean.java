@@ -15,9 +15,7 @@ import com.lowagie.text.PageSize;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -42,169 +40,130 @@ import org.omnifaces.util.Messages;
 @ViewScoped
 public class DatasBean implements Serializable {
 
-	private Datas data;
-	private List<Datas> datas;
+    private Datas data;
+    private List<Datas> datas;
 
-	public DatasBean() {
+    public DatasBean() {
 
-		DatasDAO dataDAO = new DatasDAO();
-		this.datas = dataDAO.listar();
-	}
+        DatasDAO dataDAO = new DatasDAO();
+        this.datas = dataDAO.listar();
+    }
 
-	public Datas getData() {
-		return data;
-	}
+    public Datas getData() {
+        return data;
+    }
 
-	public void setData(Datas data) {
-		this.data = data;
-	}
+    public void setData(Datas data) {
+        this.data = data;
+    }
 
-	public List<Datas> getDatas() {
-		return datas;
-	}
+    public List<Datas> getDatas() {
+        return datas;
+    }
 
-	public void setDatas(List<Datas> datas) {
-		this.datas = datas;
-	}
+    public void setDatas(List<Datas> datas) {
+        this.datas = datas;
+    }
 
-	public List<Integer> getDiasMes() {
-		Integer[] dias = new Integer[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22,
-				23, 24, 25, 26, 27, 28, 29, 30, 31 };
-		return Arrays.asList(dias);
+    public List<Integer> getDiasMes() {
+        Integer[] dias = new Integer[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22,
+            23, 24, 25, 26, 27, 28, 29, 30, 31};
+        return Arrays.asList(dias);
 
-	}
+    }
 
-	public List<String> getMesAno() {
-		String[] meses = new String[] { "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto",
-				"Setembro", "Outubro", "Novembro", "Dezembro" };
-		return Arrays.asList(meses);
+    public List<String> getMesAno() {
+        String[] meses = new String[]{"Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto",
+            "Setembro", "Outubro", "Novembro", "Dezembro"};
+        return Arrays.asList(meses);
 
-	}
+    }
 
-	@PostConstruct
-	public void listar() {
+    @PostConstruct
+    public void listar() {
 
-		try {
-			DatasDAO datasDAO = new DatasDAO();
-			datasDAO.listar();
-		} catch (RuntimeException erro) {
-			Messages.addGlobalError("Ocorreu um erro ao tentar listar as datas");
-		}
+        try {
+            DatasDAO datasDAO = new DatasDAO();
+            datasDAO.listar();
+        } catch (RuntimeException erro) {
+            Messages.addGlobalError("Ocorreu um erro ao tentar listar as datas");
+        }
 
-	}
+    }
 
-	public void novo() {
+    public void novo() {
 
-		data = new Datas();
+        data = new Datas();
 
-	}
+    }
 
-	public void salvar() {
+    public void salvar() {
 
-		try {
-			DatasDAO datasDAO = new DatasDAO();
-			datasDAO.merge(data);
+        try {
+            DatasDAO datasDAO = new DatasDAO();
+            datasDAO.merge(data);
 
-			data = new Datas();
-			datas = datasDAO.listar();
-			Messages.addGlobalInfo("Data salva com sucesso");
-		} catch (RuntimeException erro) {
-			Messages.addFlashGlobalError("Ocorreu um erro ao tentar salvar uma nova Data");
-		}
-	}
+            data = new Datas();
+            datas = datasDAO.listar();
+            Messages.addGlobalInfo("Data salva com sucesso");
+        } catch (RuntimeException erro) {
+            Messages.addFlashGlobalError("Ocorreu um erro ao tentar salvar uma nova Data");
+        }
+    }
 
-	public void excluir(ActionEvent evento) {
-		try {
-			data = (Datas) evento.getComponent().getAttributes().get("dataSelecionada");
+    public void excluir(ActionEvent evento) {
+        try {
+            data = (Datas) evento.getComponent().getAttributes().get("dataSelecionada");
 
-			DatasDAO dataDAO = new DatasDAO();
-			dataDAO.excluir(data);
+            DatasDAO dataDAO = new DatasDAO();
+            dataDAO.excluir(data);
 
-			datas = dataDAO.listar();
-			Messages.addGlobalInfo("Data removida com sucesso");
-		} catch (RuntimeException erro) {
-			Messages.addFlashGlobalError("Ocorreu um erro ao tentar remover a data");
-		}
-	}
+            datas = dataDAO.listar();
+            Messages.addGlobalInfo("Data removida com sucesso");
+        } catch (RuntimeException erro) {
+            Messages.addFlashGlobalError("Ocorreu um erro ao tentar remover a data");
+        }
+    }
 
-	public void editar(ActionEvent evento) {
-		try {
-			DatasDAO dataDAO = new DatasDAO();
-			dataDAO.listar();
-			data = (Datas) evento.getComponent().getAttributes().get("dataSelecionada");
-		} catch (RuntimeException erro) {
-			Messages.addFlashGlobalError("Ocorreu um erro ao tentar selecionar uma data");
-		}
-	}
-	
-	public Datas mesAtual(){
-		try {
-			Date hoje = new Date();
-			String formato = "MM";
-			SimpleDateFormat dataFormatada = new SimpleDateFormat(formato);
-			Long compara = Long.parseLong(dataFormatada.format(hoje));
-			
-			switch (compara.toString()) {
-			case "1":
-				DatasDAO data1DAO = new DatasDAO();
-				Datas data1 = data1DAO.buscar("Janeiro");
-				return data1;
-			case "2":
-				DatasDAO data2DAO = new DatasDAO();
-				Datas data2 = data2DAO.buscar("Fevereiro");
-				data2.getNome();
-				break;
-			case "3":
-				DatasDAO data3DAO = new DatasDAO();
-				Datas data3 = data3DAO.buscar("Março");
-				data3DAO.listar();
-				break;
-			case "4":
-				DatasDAO data4DAO = new DatasDAO();
-				Datas data4 = data4DAO.buscar("Abril");
-				data4DAO.listar();
-				break;
+    public void editar(ActionEvent evento) {
+        try {
+            DatasDAO dataDAO = new DatasDAO();
+            dataDAO.listar();
+            data = (Datas) evento.getComponent().getAttributes().get("dataSelecionada");
+        } catch (RuntimeException erro) {
+            Messages.addFlashGlobalError("Ocorreu um erro ao tentar selecionar uma data");
+        }
+    }
 
-			default:
-				
-				break;
-			}
-			
-		} catch (RuntimeException erro) {
-			erro.printStackTrace();
-		}
-		return data;
-	}
+    public void preProcessPDF(Object document) throws IOException, BadElementException, DocumentException {
+        Document pdf = (Document) document;
+        pdf.open();
+        pdf.setPageSize(PageSize.A4);
+        pdf.addAuthor("Luis Carlos Santos");
+        pdf.addTitle("Datas Cadastradas");
+        pdf.addCreator("NFS Consultoria");
+        pdf.addSubject("Datas Cadastradas");
 
-	public void preProcessPDF(Object document) throws IOException, BadElementException, DocumentException {
-		Document pdf = (Document) document;
-		pdf.open();
-		pdf.setPageSize(PageSize.A4);
-		pdf.addAuthor("Luis Carlos Santos");
-		pdf.addTitle("Datas Cadastradas");
-		pdf.addCreator("NFS Consultoria");
-		pdf.addSubject("Datas Cadastradas");
+        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+        String logo = externalContext.getRealPath("") + File.separator + "resources" + File.separator + "images"
+                + File.separator + "banner.png";
 
-		ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
-		String logo = externalContext.getRealPath("") + File.separator + "resources" + File.separator + "images"
-				+ File.separator + "banner.png";
+        pdf.add(Image.getInstance(logo));
+    }
 
-		pdf.add(Image.getInstance(logo));
-	}
+    public void postProcessXLS(Object document) {
+        HSSFWorkbook wb = (HSSFWorkbook) document;
+        HSSFSheet sheet = wb.getSheetAt(0);
+        HSSFRow header = sheet.getRow(0);
 
-	public void postProcessXLS(Object document) {
-		HSSFWorkbook wb = (HSSFWorkbook) document;
-		HSSFSheet sheet = wb.getSheetAt(0);
-		HSSFRow header = sheet.getRow(0);
+        HSSFCellStyle cellStyle = wb.createCellStyle();
+        cellStyle.setFillForegroundColor(HSSFColor.AQUA.index);
+        cellStyle.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
 
-		HSSFCellStyle cellStyle = wb.createCellStyle();
-		cellStyle.setFillForegroundColor(HSSFColor.AQUA.index);
-		cellStyle.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+        for (int i = 0; i < header.getPhysicalNumberOfCells(); i++) {
+            HSSFCell cell = header.getCell(i);
 
-		for (int i = 0; i < header.getPhysicalNumberOfCells(); i++) {
-			HSSFCell cell = header.getCell(i);
-
-			cell.setCellStyle(cellStyle);
-		}
-	}
+            cell.setCellStyle(cellStyle);
+        }
+    }
 }

@@ -7,23 +7,24 @@ package br.com.nfsconsultoria.dentalcalendar.dao;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
-import org.hibernate.criterion.Restrictions;
 
 import br.com.nfsconsultoria.dentalcalendar.domain.Datas;
-import br.com.nfsconsultoria.dentalcalendar.domain.MailServer;
 import br.com.nfsconsultoria.dentalcalendar.util.HibernateUtil;
+import java.util.List;
+import org.hibernate.criterion.Restrictions;
 
 /**
  *
  * @author luis
  */
-public class DatasDAO extends GenericDAO<Datas>{
-	public Datas buscar(String mes) {
+public class DatasDAO extends GenericDAO<Datas> {
+
+    public List<Datas> listar(String mes) {
         Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
         try {
-            Criteria consulta = sessao.createCriteria(MailServer.class);
+            Criteria consulta = sessao.createCriteria(Datas.class);
             consulta.add(Restrictions.eq("mes", mes));
-            Datas resultado = (Datas) consulta.uniqueResult();
+            List<Datas> resultado = consulta.list();
             return resultado;
         } catch (RuntimeException erro) {
             throw erro;

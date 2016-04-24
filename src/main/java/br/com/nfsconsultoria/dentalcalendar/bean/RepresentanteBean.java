@@ -7,6 +7,7 @@ package br.com.nfsconsultoria.dentalcalendar.bean;
 
 import br.com.nfsconsultoria.dentalcalendar.dao.RepresentanteDAO;
 import br.com.nfsconsultoria.dentalcalendar.domain.Representante;
+import br.com.nfsconsultoria.dentalcalendar.util.RecUtil;
 import com.lowagie.text.BadElementException;
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
@@ -40,131 +41,157 @@ import org.omnifaces.util.Messages;
 @ViewScoped
 public class RepresentanteBean implements Serializable {
 
-	private Representante representante;
-	private List<Representante> representantes;
-	private String rSenha;
+    private Representante representante;
+    private List<Representante> representantes;
+    private String rSenha;
 
-	public RepresentanteBean() {
-		RepresentanteDAO repreDAO = new RepresentanteDAO();
-		this.representantes = repreDAO.listar();
-	}
+    public RepresentanteBean() {
+        RepresentanteDAO repreDAO = new RepresentanteDAO();
+        AutenticaBean login = (AutenticaBean) RecUtil.getObjectSession("autenticaBean");
+        if (login.getRepresentanteLogado().getAdmin()) {
+            this.representantes = repreDAO.listar();
+        } else {
+            this.representantes = repreDAO.listarCod(login.getRepresentanteLogado().getCodigo());
+        }
+    }
 
-	public Representante getRepresentante() {
-		return representante;
-	}
+    public Representante getRepresentante() {
+        return representante;
+    }
 
-	public void setRepresentante(Representante representante) {
-		this.representante = representante;
-	}
+    public void setRepresentante(Representante representante) {
+        this.representante = representante;
+    }
 
-	public List<Representante> getRepresentantes() {
-		return representantes;
-	}
+    public List<Representante> getRepresentantes() {
+        return representantes;
+    }
 
-	public void setRepresentantes(List<Representante> representantes) {
-		this.representantes = representantes;
-	}
+    public void setRepresentantes(List<Representante> representantes) {
+        this.representantes = representantes;
+    }
 
-	public String getrSenha() {
-		return rSenha;
-	}
+    public String getrSenha() {
+        return rSenha;
+    }
 
-	public void setrSenha(String rSenha) {
-		this.rSenha = rSenha;
-	}
+    public void setrSenha(String rSenha) {
+        this.rSenha = rSenha;
+    }
 
-	@PostConstruct
-	public void listar() {
+    @PostConstruct
+    public void listar() {
+AutenticaBean login = (AutenticaBean) RecUtil.getObjectSession("autenticaBean");
+        if (login.getRepresentanteLogado().getAdmin()) {
+        try {
+            RepresentanteDAO representanteDAO = new RepresentanteDAO();
+            representanteDAO.listar();
+        } catch (RuntimeException erro) {
+            Messages.addGlobalError("Ocorreu um erro ao tentar listar os representantes");
+            erro.printStackTrace();
+        }
+        } else {
+            try {
+            RepresentanteDAO representanteDAO = new RepresentanteDAO();
+            representanteDAO.listarCod(login.getRepresentanteLogado().getCodigo());
+        } catch (RuntimeException erro) {
+            Messages.addGlobalError("Ocorreu um erro ao tentar listar os representantes");
+            erro.printStackTrace();
+        }
+        }
 
-		try {
-			RepresentanteDAO representanteDAO = new RepresentanteDAO();
-			representanteDAO.listar("nome");
-		} catch (RuntimeException erro) {
-			Messages.addGlobalError("Ocorreu um erro ao tentar listar os representantes");
-			erro.printStackTrace();
-		}
+    }
 
-	}
+    public void novo() {
+        AutenticaBean login = (AutenticaBean) RecUtil.getObjectSession("autenticaBean");
+        if (login.getRepresentanteLogado().getAdmin()) {
 
-	public void novo() {
-		representante = new Representante();
-	}
+            representante = new Representante();
+        } else {
+            Messages.addGlobalError("Você não possui permissões administrativas");
+            return;
+        }
+    }
 
-	public void salvar() {
+    public void salvar() {
 
-		try {
-			RepresentanteDAO representanteDAO = new RepresentanteDAO();
-			if (!representante.getSenha().equals(rSenha)) {
-				Messages.addGlobalError("O campo senha e repetir senha não conferem");
-				return;
-			}
-			SimpleHash hash = new SimpleHash("md5", representante.getSenha());
-			representante.setSenha(hash.toHex());
-			representanteDAO.merge(representante);
+        try {
+            RepresentanteDAO representanteDAO = new RepresentanteDAO();
+            if (!representante.getSenha().equals(rSenha)) {
+                Messages.addGlobalError("O campo senha e repetir senha não conferem");
+                return;
+            }
+            SimpleHash hash = new SimpleHash("md5", representante.getSenha());
+            representante.setSenha(hash.toHex());
+            representanteDAO.merge(representante);
 
-			representantes = representanteDAO.listar();
-			representante = new Representante();
-			Messages.addGlobalInfo("Representante salvo com sucesso");
-		} catch (RuntimeException erro) {
-			Messages.addFlashGlobalError("Ocorreu um erro ao tentar salvar o representante");
-			erro.printStackTrace();
-		}
-	}
+            representantes = representanteDAO.listar();
+            representante = new Representante();
+            Messages.addGlobalInfo("Representante salvo com sucesso");
+        } catch (RuntimeException erro) {
+            Messages.addFlashGlobalError("Ocorreu um erro ao tentar salvar o representante");
+            erro.printStackTrace();
+        }
+    }
 
-	public void excluir(ActionEvent evento) {
-		try {
-			representante = (Representante) evento.getComponent().getAttributes().get("representanteSelecionado");
+    public void excluir(ActionEvent evento) {
+        AutenticaBean login = (AutenticaBean) RecUtil.getObjectSession("autenticaBean");
+        if (login.getRepresentanteLogado().getAdmin()) {
+            try {
+                representante = (Representante) evento.getComponent().getAttributes().get("representanteSelecionado");
 
-			RepresentanteDAO representanteDAO = new RepresentanteDAO();
-			representanteDAO.excluir(representante);
+                RepresentanteDAO representanteDAO = new RepresentanteDAO();
+                representanteDAO.excluir(representante);
 
-			representantes = representanteDAO.listar();
+                representantes = representanteDAO.listar();
 
-			Messages.addGlobalInfo("Representante removido com sucesso");
-		} catch (RuntimeException erro) {
-			Messages.addFlashGlobalError("Ocorreu um erro ao tentar remover o representante");
-			erro.printStackTrace();
-		}
-	}
+                Messages.addGlobalInfo("Representante removido com sucesso");
+            } catch (RuntimeException erro) {
+                Messages.addFlashGlobalError("Ocorreu um erro ao tentar remover o representante");
+                erro.printStackTrace();
+            }
+        }
+    }
 
-	public void editar(ActionEvent evento) {
-		try {
-			representante = (Representante) evento.getComponent().getAttributes().get("representanteSelecionado");
-		} catch (RuntimeException erro) {
-			Messages.addFlashGlobalError("Ocorreu um erro ao tentar selecionar um representante");
-			erro.printStackTrace();
-		}
-	}
+    public void editar(ActionEvent evento) {
 
-	public void preProcessPDF(Object document) throws IOException, BadElementException, DocumentException {
-		Document pdf = (Document) document;
-		pdf.open();
-		pdf.setPageSize(PageSize.A4);
-		pdf.addAuthor("Luis Carlos Santos");
-		pdf.addTitle("Representantes Cadastrados");
-		pdf.addCreator("NFS Consultoria");
-		pdf.addSubject("Representantes Cadastrados");
+        try {
+            representante = (Representante) evento.getComponent().getAttributes().get("representanteSelecionado");
+        } catch (RuntimeException erro) {
+            Messages.addFlashGlobalError("Ocorreu um erro ao tentar selecionar um representante");
+            erro.printStackTrace();
+        }
+    }
 
-		ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
-		String logo = externalContext.getRealPath("") + File.separator + "resources" + File.separator + "images"
-				+ File.separator + "banner.png";
+    public void preProcessPDF(Object document) throws IOException, BadElementException, DocumentException {
+        Document pdf = (Document) document;
+        pdf.open();
+        pdf.setPageSize(PageSize.A4);
+        pdf.addAuthor("Luis Carlos Santos");
+        pdf.addTitle("Representantes Cadastrados");
+        pdf.addCreator("NFS Consultoria");
+        pdf.addSubject("Representantes Cadastrados");
 
-		pdf.add(Image.getInstance(logo));
-	}
+        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+        String logo = externalContext.getRealPath("") + File.separator + "resources" + File.separator + "images"
+                + File.separator + "banner.png";
 
-	public void postProcessXLS(Object document) {
-		HSSFWorkbook wb = (HSSFWorkbook) document;
-		HSSFSheet sheet = wb.getSheetAt(0);
-		HSSFRow header = sheet.getRow(0);
+        pdf.add(Image.getInstance(logo));
+    }
 
-		HSSFCellStyle cellStyle = wb.createCellStyle();
-		cellStyle.setFillForegroundColor(HSSFColor.AQUA.index);
-		cellStyle.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+    public void postProcessXLS(Object document) {
+        HSSFWorkbook wb = (HSSFWorkbook) document;
+        HSSFSheet sheet = wb.getSheetAt(0);
+        HSSFRow header = sheet.getRow(0);
 
-		for (int i = 0; i < header.getPhysicalNumberOfCells(); i++) {
-			HSSFCell cell = header.getCell(i);
+        HSSFCellStyle cellStyle = wb.createCellStyle();
+        cellStyle.setFillForegroundColor(HSSFColor.AQUA.index);
+        cellStyle.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
 
-			cell.setCellStyle(cellStyle);
-		}
-	}
+        for (int i = 0; i < header.getPhysicalNumberOfCells(); i++) {
+            HSSFCell cell = header.getCell(i);
+
+            cell.setCellStyle(cellStyle);
+        }
+    }
 }

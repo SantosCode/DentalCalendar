@@ -59,12 +59,12 @@
                     </p:column>
 
                     <p:column headerText="Dentista" filterBy="#{agenda.dentista.nome}"
-                              sortBy="#{agenda.dentista.nome}">
+                              sortBy="#{agenda.dentista.nome}" filterMatchMode="contains">
                         <h:outputText value="#{agenda.dentista.nome}" />
                     </p:column>
 
                     <p:column headerText="Representante" filterBy="#{agenda.representante.nome}"
-                              sortBy="#{agenda.representante.nome}">
+                              sortBy="#{agenda.representante.nome}" filterMatchMode="contains">
                         <h:outputText value="#{agenda.representante.nome}" />
                     </p:column>
 

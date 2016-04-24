@@ -16,6 +16,7 @@ import br.com.nfsconsultoria.dentalcalendar.domain.Representante;
 import br.com.nfsconsultoria.dentalcalendar.domain.Visita;
 import br.com.nfsconsultoria.dentalcalendar.domain.MailServer;
 import br.com.nfsconsultoria.dentalcalendar.util.EmailUtil;
+import br.com.nfsconsultoria.dentalcalendar.util.RecUtil;
 
 import com.lowagie.text.BadElementException;
 import com.lowagie.text.Document;
@@ -49,188 +50,227 @@ import org.omnifaces.util.Messages;
 @ViewScoped
 public class VisitaBean implements Serializable {
 
-	private Visita visita;
-	private List<Agenda> agendas;
-	private List<Representante> representantes;
-	private List<Dentista> dentistas;
-	private List<Visita> visitas;
-	private MailServer mail;
-	private List<MailServer> mails;
+    private Visita visita;
+    private List<Agenda> agendas;
+    private List<Representante> representantes;
+    private List<Dentista> dentistas;
+    private List<Visita> visitas;
+    private MailServer mail;
+    private List<MailServer> mails;
 
-	public VisitaBean() {
-		VisitaDAO visitaDAO = new VisitaDAO();
-		AgendaDAO agendaDAO = new AgendaDAO();
-		RepresentanteDAO repreDAO = new RepresentanteDAO();
-		DentistaDAO dentDAO = new DentistaDAO();
-		mailServerDAO mailDAO = new mailServerDAO();
+    public VisitaBean() {
+        VisitaDAO visitaDAO = new VisitaDAO();
+        AgendaDAO agendaDAO = new AgendaDAO();
+        RepresentanteDAO repreDAO = new RepresentanteDAO();
+        DentistaDAO dentDAO = new DentistaDAO();
+        mailServerDAO mailDAO = new mailServerDAO();
 
-		this.visitas = visitaDAO.listar();
-		this.agendas = agendaDAO.listar();
-		this.representantes = repreDAO.listar();
-		this.dentistas = dentDAO.listar();
-		this.mails = mailDAO.listar();
-	}
+        AutenticaBean login = (AutenticaBean) RecUtil.getObjectSession("autenticaBean");
+        Agenda agenCod = agendaDAO.buscarRep(login.getRepresentanteLogado().getCodigo());
 
-	public Visita getVisita() {
-		return this.visita;
-	}
+        if (login.getRepresentanteLogado().getAdmin()) {
+            this.visitas = visitaDAO.listar();
+            this.agendas = agendaDAO.listar();
+            this.representantes = repreDAO.listar();
+            this.dentistas = dentDAO.listar();
+            this.mails = mailDAO.listar();
+        } else {
+            this.visitas = visitaDAO.listarAgen(agenCod.getCodigo());
+            this.agendas = agendaDAO.listarRep(login.getRepresentanteLogado().getCodigo());
+            this.representantes = repreDAO.listarCod(login.getRepresentanteLogado().getCodigo());
+            this.dentistas = dentDAO.listar();
+            this.mails = mailDAO.listar();
+        }
+    }
 
-	public void setVisita(Visita visita) {
-		this.visita = visita;
-	}
+    public Visita getVisita() {
+        return this.visita;
+    }
 
-	public List<Agenda> getAgendas() {
-		return agendas;
-	}
+    public void setVisita(Visita visita) {
+        this.visita = visita;
+    }
 
-	public void setAgendas(List<Agenda> agendas) {
-		this.agendas = agendas;
-	}
+    public List<Agenda> getAgendas() {
+        return agendas;
+    }
 
-	public List<Representante> getRepresentantes() {
-		return representantes;
-	}
+    public void setAgendas(List<Agenda> agendas) {
+        this.agendas = agendas;
+    }
 
-	public void setRepresentantes(List<Representante> representantes) {
-		this.representantes = representantes;
-	}
+    public List<Representante> getRepresentantes() {
+        return representantes;
+    }
 
-	public List<Dentista> getDentistas() {
-		return dentistas;
-	}
+    public void setRepresentantes(List<Representante> representantes) {
+        this.representantes = representantes;
+    }
 
-	public void setDentistas(List<Dentista> dentistas) {
-		this.dentistas = dentistas;
-	}
+    public List<Dentista> getDentistas() {
+        return dentistas;
+    }
 
-	public List<Visita> getVisitas() {
-		return this.visitas;
-	}
+    public void setDentistas(List<Dentista> dentistas) {
+        this.dentistas = dentistas;
+    }
 
-	public void setVisitas(List<Visita> visitas) {
-		this.visitas = visitas;
-	}
+    public List<Visita> getVisitas() {
+        return this.visitas;
+    }
 
-	public MailServer getMail() {
-		return mail;
-	}
+    public void setVisitas(List<Visita> visitas) {
+        this.visitas = visitas;
+    }
 
-	public void setMail(MailServer mail) {
-		this.mail = mail;
-	}
+    public MailServer getMail() {
+        return mail;
+    }
 
-	public List<MailServer> getMails() {
-		return mails;
-	}
+    public void setMail(MailServer mail) {
+        this.mail = mail;
+    }
 
-	public void setMails(List<MailServer> mails) {
-		this.mails = mails;
-	}
+    public List<MailServer> getMails() {
+        return mails;
+    }
 
-	@PostConstruct
-	public void listar() {
+    public void setMails(List<MailServer> mails) {
+        this.mails = mails;
+    }
 
-		try {
-			VisitaDAO visitaDAO = new VisitaDAO();
-			this.visitas = visitaDAO.listar();
-		} catch (RuntimeException erro) {
-			Messages.addGlobalError("Ocorreu um erro ao tentar listar os acordos");
-		}
+    @PostConstruct
+    public void listar() {
+        AutenticaBean login = (AutenticaBean) RecUtil.getObjectSession("autenticaBean");
+        AgendaDAO agendaDAO = new AgendaDAO();
+        Agenda agenCod = agendaDAO.buscarRep(login.getRepresentanteLogado().getCodigo());
+        try {
+            VisitaDAO visitaDAO = new VisitaDAO();
+            if (login.getRepresentanteLogado().getAdmin()) {
+                this.visitas = visitaDAO.listar();
+            } else {
+                this.visitas = visitaDAO.listarAgen(agenCod.getCodigo());
+            }
+        } catch (RuntimeException erro) {
+            Messages.addGlobalError("Ocorreu um erro ao tentar listar os acordos");
+        }
 
-	}
+    }
 
-	public void novo() {
+    public void novo() {
 
-		RepresentanteDAO representanteDAO = new RepresentanteDAO();
-		DentistaDAO dentistaDAO = new DentistaDAO();
-		AgendaDAO agendaDAO = new AgendaDAO();
+        RepresentanteDAO representanteDAO = new RepresentanteDAO();
+        DentistaDAO dentistaDAO = new DentistaDAO();
+        AgendaDAO agendaDAO = new AgendaDAO();
+        AutenticaBean login = (AutenticaBean) RecUtil.getObjectSession("autenticaBean");
+        if (login.getRepresentanteLogado().getAdmin()) {
+            this.representantes = representanteDAO.listar();
+            this.dentistas = dentistaDAO.listar();
+            this.agendas = agendaDAO.listar();
+        } else {
+            this.representantes = representanteDAO.listarCod(login.getRepresentanteLogado().getCodigo());
+            this.dentistas = dentistaDAO.listar();
+            this.agendas = agendaDAO.listarRep(login.getRepresentanteLogado().getCodigo());
+        }
+        visita = new Visita();
+        if (this.representantes.isEmpty()) {
+            Messages.addGlobalError("É nescessario cadastrar representantes antes");
+        }
+        if (this.dentistas.isEmpty()) {
+            Messages.addGlobalError("É nescessario cadastrar dentistas antes");
+        }
+        if (this.agendas.isEmpty()) {
+            Messages.addGlobalError("É nescessario cadastrar agenda antes");
+        }
+    }
 
-		this.representantes = representanteDAO.listar();
-		this.dentistas = dentistaDAO.listar();
-		this.agendas = agendaDAO.listar();
-		visita = new Visita();
+    public void salvar() {
+        AgendaDAO agendaDAO = new AgendaDAO();
+        AutenticaBean login = (AutenticaBean) RecUtil.getObjectSession("autenticaBean");
+        Agenda agenCod = agendaDAO.buscarRep(login.getRepresentanteLogado().getCodigo());
 
-		if (this.representantes.isEmpty()) {
-			Messages.addGlobalError("É nescessario cadastrar representantes antes");
-		}
-		if (this.dentistas.isEmpty()) {
-			Messages.addGlobalError("É nescessario cadastrar dentistas antes");
-		}
-		if (this.agendas.isEmpty()) {
-			Messages.addGlobalError("É nescessario cadastrar agenda antes");
-		}
-	}
+        try {
+            if (visita.getEmail()) {
+                if (!visita.getAgenda().getDentista().getEmail().isEmpty()) {
+                    EmailUtil email = new EmailUtil();
+                    email.EnviarEmail(null, visita.getAgenda().getDentista().getEmail(),
+                            visita.getAgenda().getRepresentante().getEmail(), "Radiodoc", visita.getAcordo());
+                } else {
+                    Messages.addGlobalError("Dentista não possui e-mail cadastrado");
+                }
+            }
+            VisitaDAO visitaDAO = new VisitaDAO();
+            visitaDAO.merge(visita);
+            visita = new Visita();
+            if (login.getRepresentanteLogado().getAdmin()) {
+                visitas = visitaDAO.listar();
+            } else {
+                visitas = visitaDAO.listarAgen(agenCod.getCodigo());
+            }
+            Messages.addGlobalInfo("Visita salva com sucesso");
+        } catch (RuntimeException erro) {
+            Messages.addFlashGlobalError("Ocorreu um erro ao tentar salvar uma novo acordo");
+        }
+    }
 
-	public void salvar() {
+    public void excluir(ActionEvent evento) {
+        AgendaDAO agendaDAO = new AgendaDAO();
+        AutenticaBean login = (AutenticaBean) RecUtil.getObjectSession("autenticaBean");
+        Agenda agenCod = agendaDAO.buscarRep(login.getRepresentanteLogado().getCodigo());
 
-		try {
-			if (visita.getEmail()) {
-				EmailUtil email = new EmailUtil();
-				email.EnviarEmail(null, visita.getAgenda().getDentista().getEmail(),
-						visita.getAgenda().getRepresentante().getEmail(), "RadioDoc", visita.getAcordo());
-			}
-			VisitaDAO visitaDAO = new VisitaDAO();
-			visitaDAO.merge(visita);
-			visita = new Visita();
-			visitas = visitaDAO.listar();
-			Messages.addGlobalInfo("Visita salva com sucesso");
-		} catch (RuntimeException erro) {
-			Messages.addFlashGlobalError("Ocorreu um erro ao tentar salvar uma nova visita");
-		}
-	}
+        try {
+            visita = (Visita) evento.getComponent().getAttributes().get("visitaSelecionada");
 
-	public void excluir(ActionEvent evento) {
-		try {
-			visita = (Visita) evento.getComponent().getAttributes().get("visitaSelecionada");
+            VisitaDAO visitaDAO = new VisitaDAO();
+            visitaDAO.excluir(visita);
+            if (login.getRepresentanteLogado().getAdmin()) {
+                visitas = visitaDAO.listar();
+            } else {
+                visitas = visitaDAO.listarAgen(agenCod.getCodigo());
+            }
+            Messages.addGlobalInfo("Visita removida com sucesso");
+        } catch (RuntimeException erro) {
+            Messages.addFlashGlobalError("Ocorreu um erro ao tentar remover o acordo");
+        }
+    }
 
-			VisitaDAO visitaDAO = new VisitaDAO();
-			visitaDAO.excluir(visita);
+    public void editar(ActionEvent evento) {
+        try {
+            visita = (Visita) evento.getComponent().getAttributes().get("visitaSelecionada");
+        } catch (RuntimeException erro) {
+            Messages.addFlashGlobalError("Ocorreu um erro ao tentar selecionar um acordo");
+        }
+    }
 
-			visitas = visitaDAO.listar();
+    public void preProcessPDF(Object document) throws IOException, BadElementException, DocumentException {
+        Document pdf = (Document) document;
+        pdf.open();
+        pdf.setPageSize(PageSize.A4);
+        pdf.addAuthor("Luis Carlos Santos");
+        pdf.addTitle("Acordo Cadastrados");
+        pdf.addCreator("NFS Consultoria");
+        pdf.addSubject("Acordo Cadastrados");
 
-			Messages.addGlobalInfo("Visita removida com sucesso");
-		} catch (RuntimeException erro) {
-			Messages.addFlashGlobalError("Ocorreu um erro ao tentar remover a visita");
-		}
-	}
+        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+        String logo = externalContext.getRealPath("") + File.separator + "resources" + File.separator + "images"
+                + File.separator + "banner.png";
 
-	public void editar(ActionEvent evento) {
-		try {
-			visita = (Visita) evento.getComponent().getAttributes().get("visitaSelecionada");
-		} catch (RuntimeException erro) {
-			Messages.addFlashGlobalError("Ocorreu um erro ao tentar selecionar uma visita");
-		}
-	}
+        pdf.add(Image.getInstance(logo));
+    }
 
-	public void preProcessPDF(Object document) throws IOException, BadElementException, DocumentException {
-		Document pdf = (Document) document;
-		pdf.open();
-		pdf.setPageSize(PageSize.A4);
-		pdf.addAuthor("Luis Carlos Santos");
-		pdf.addTitle("Agendas Cadastradas");
-		pdf.addCreator("NFS Consultoria");
-		pdf.addSubject("Agendas Cadastradas");
+    public void postProcessXLS(Object document) {
+        HSSFWorkbook wb = (HSSFWorkbook) document;
+        HSSFSheet sheet = wb.getSheetAt(0);
+        HSSFRow header = sheet.getRow(0);
 
-		ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
-		String logo = externalContext.getRealPath("") + File.separator + "resources" + File.separator + "images"
-				+ File.separator + "banner.png";
+        HSSFCellStyle cellStyle = wb.createCellStyle();
+        cellStyle.setFillForegroundColor(HSSFColor.AQUA.index);
+        cellStyle.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
 
-		pdf.add(Image.getInstance(logo));
-	}
+        for (int i = 0; i < header.getPhysicalNumberOfCells(); i++) {
+            HSSFCell cell = header.getCell(i);
 
-	public void postProcessXLS(Object document) {
-		HSSFWorkbook wb = (HSSFWorkbook) document;
-		HSSFSheet sheet = wb.getSheetAt(0);
-		HSSFRow header = sheet.getRow(0);
-
-		HSSFCellStyle cellStyle = wb.createCellStyle();
-		cellStyle.setFillForegroundColor(HSSFColor.AQUA.index);
-		cellStyle.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
-
-		for (int i = 0; i < header.getPhysicalNumberOfCells(); i++) {
-			HSSFCell cell = header.getCell(i);
-
-			cell.setCellStyle(cellStyle);
-		}
-	}
+            cell.setCellStyle(cellStyle);
+        }
+    }
 }

@@ -26,24 +26,24 @@
 
                         <h:commandLink>
                             <p:graphicImage name="/images/excel.png" width="24" />
-                            <p:dataExporter type="xls" target="tabela" fileName="visita"
+                            <p:dataExporter type="xls" target="tabela" fileName="acordo"
                                             postProcessor="#{visitaBean.postProcessXLS}" />
                         </h:commandLink>
 
                         <h:commandLink>
                             <p:graphicImage name="/images/pdf.png" width="24" />
-                            <p:dataExporter type="pdf" target="tabela" fileName="visita"
+                            <p:dataExporter type="pdf" target="tabela" fileName="acordo"
                                             preProcessor="#{visitaBean.preProcessPDF}" />
                         </h:commandLink>
 
                         <h:commandLink>
                             <p:graphicImage name="/images/csv.png" width="24" />
-                            <p:dataExporter type="csv" target="tabela" fileName="visita" />
+                            <p:dataExporter type="csv" target="tabela" fileName="acordo" />
                         </h:commandLink>
 
                         <h:commandLink>
                             <p:graphicImage name="/images/xml.png" width="24" />
-                            <p:dataExporter type="xml" target="tabela" fileName="visita" />
+                            <p:dataExporter type="xml" target="tabela" fileName="acordo" />
                         </h:commandLink>
 
                     </f:facet>
@@ -52,7 +52,7 @@
                               sortBy="#{visita.agenda.dia}" filterMatchMode="contains">
                         <h:outputText value="#{visita.agenda.dia}" />
                     </p:column>
-                    
+
                     <p:column headerText="Hora" filterBy="#{visita.agenda.hora}"
                               sortBy="#{visita.agenda.hora}" filterMatchMode="contains">
                         <h:outputText value="#{visita.agenda.hora}" />
@@ -68,7 +68,7 @@
                               sortBy="#{visita.agenda.dentista.nome}" filterMatchMode="contains">
                         <h:outputText value="#{visita.agenda.dentista.nome}" />
                     </p:column>
-                   
+
                     <p:column headerText="E-Mail" filterBy="#{visita.email}"
                               sortBy="#{visita.email}" filterMatchMode="contains">
                         <p:selectBooleanButton onLabel="Enviado" offLabel="Não Enviado" 
@@ -118,7 +118,7 @@
                   fitViewport="true">
             <h:form id="formCadastro">
                 <h:panelGrid id="painel" columns="2">
-                    
+
                     <p:outputLabel for="agenda" value="Agenda:" />
                     <p:selectOneMenu id="agenda" value="#{visitaBean.visita.agenda}"
                                      effect="fade" filter="true" required="true"
@@ -129,16 +129,16 @@
                         <f:selectItems value="#{visitaBean.agendas}" var="agen"
                                        itemValue="#{agen}" itemLabel="#{agen.dia} às #{agen.hora} Dr(a). #{agen.dentista.nome}" />
                     </p:selectOneMenu>
-                    
+            
                     <p:outputLabel for="acordo" value="Acordo:" />
                     <p:editor id="acordo" value="#{visitaBean.visita.acordo}"
                               required="true" requiredMessage="O campo acordo é obrigatório"  
-                              rendered="true" maxlength="300" />
-                    
+                              rendered="true" maxlength="3000" />
+
                     <p:outputLabel for="mail" value="Enviar e-mail para o dentista?"/>
                     <p:selectBooleanButton id="mail" onLabel="Sim" offLabel="Não"  value="#{visitaBean.visita.email}"/>
                 </h:panelGrid>
-               
+
                 <h:panelGrid columns="2">
                     <p:commandButton value="Salvar"
                                      actionListener="#{visitaBean.salvar}"
@@ -176,7 +176,7 @@
                                    style="font-weight: bold" />
                     <p:editor id="acordo" widgetVar="editor" value="#{visitaBean.visita.acordo}" disabled="true" 
                               rendered="true" width="600" converter="omnifaces.SelectItemsConverter" />
-                    
+
                     <p:outputLabel for="mail" value="Enviar e-mail para o dentista?"/>
                     <p:selectBooleanButton id="mail" onLabel="Sim" offLabel="Não"  
                                            value="#{visitaBean.visita.email}" disabled="true"/>

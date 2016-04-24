@@ -1,15 +1,72 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-        <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:h="http://xmlns.jcp.org/jsf/html"
-	xmlns:f="http://xmlns.jcp.org/jsf/core"
-	xmlns:p="http://primefaces.org/ui"
-	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-	template="/template/modelo.xhtml">
-            <ui:define name="conteudo">
-                <h3> Seja bem vindo ao sistema de gestão de visitas e agendamento Dental Calendar.<br/>
-                    Acesse as funcionalidades através do menu ao lado.</h3>
-            </ui:define>
-        </ui:composition>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="/template/modelo.xhtml">
+    <ui:define name="conteudo">
+        <h3> Seja bem vindo ao sistema de gestão de visitas e agendamento Dental Calendar.<br/>
+            Acesse as funcionalidades através do menu ao lado.</h3>
+        <h:form>
+            <p:panel header="DashBoard">
+                <p:panel header="Agenda do Dia" toggleable="true">      
+                <p:dataTable id="tabelaAgenda" emptyMessage="Nenhum agenda para hoje."
+                             paginator="true" value="#{indexBean.agendas}" var="agenda"
+                             rows="10" paginatorPosition="top" rendered="true"
+                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {NextPageLink} {LastPageLink}">
+
+                    <p:column headerText="Hora" sortBy="#{agenda.hora}">
+                        <p:calendar value="#{agenda.hora}" pattern="HH:mm" timeOnly="true"
+                                    readonly="true" showOn="false" size="6"/>
+                    </p:column>
+
+                    <p:column headerText="Dentista">
+                        <h:outputText value="#{agenda.dentista.nome}" />
+                    </p:column>
+                    
+                    <p:column headerText="Bairro">
+                        <h:outputText value="#{agenda.dentista.bairro}" />
+                    </p:column>
+                    
+                    <p:column headerText="Cidade">
+                        <h:outputText value="#{agenda.dentista.cidade}" />
+                    </p:column>
+
+                    <p:column headerText="Representante"> 
+                        <h:outputText value="#{agenda.representante.nome}" />
+                    </p:column>
+                </p:dataTable>
+            </p:panel>
+
+                <p:panel header="Datas Especiais deste Mês" toggleable="true">      
+                <p:dataTable id="tabelaMes" emptyMessage="Nenhum evento para este mês."
+                             paginator="true" value="#{indexBean.datas}" var="data"
+                             rows="10" paginatorPosition="top" rendered="true"
+                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {NextPageLink} {LastPageLink}">
+
+
+                    <p:column headerText="Dia" sortBy="#{data.dia}" sortable="true">
+                        <h:outputText value="#{data.dia}"/>
+                    </p:column>
+
+                    <p:column headerText="Mês" >
+                        <h:outputText value="#{data.mes}"/>
+                    </p:column>
+
+                    <p:column headerText="Evento" >
+                        <h:outputText value="#{data.evento}" />
+                    </p:column>
+
+                    <p:column headerText="Nome" >
+                        <h:outputText value="#{data.nome}" />
+                    </p:column>
+                </p:dataTable>
+            </p:panel>
+            </p:panel>
+        </h:form>
+    </ui:define>
+</ui:composition>
 
 

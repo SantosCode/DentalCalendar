@@ -16,6 +16,7 @@ import org.omnifaces.util.Messages;
 
 import br.com.nfsconsultoria.dentalcalendar.dao.mailServerDAO;
 import br.com.nfsconsultoria.dentalcalendar.domain.MailServer;
+import br.com.nfsconsultoria.dentalcalendar.util.RecUtil;
 
 /**
  *
@@ -54,15 +55,20 @@ public class mailSeverBean {
         try {
             mailServerDAO mailDAO = new mailServerDAO();
             mailServers = mailDAO.listar();
-        } catch(RuntimeException erro)  {
-            Messages.addGlobalError("Ocorreu o erro " + erro.getMessage() 
+        } catch (RuntimeException erro) {
+            Messages.addGlobalError("Ocorreu o erro " + erro.getMessage()
                     + " ao tentar listar mail server");
             erro.printStackTrace();
         }
     }
-    
-    public void novo(){
-        mailServer = new MailServer();
+
+    public void novo() {
+        AutenticaBean login = (AutenticaBean) RecUtil.getObjectSession("autenticaBean");
+        if (login.getRepresentanteLogado().getAdmin()) {
+            mailServer = new MailServer();
+        } else {
+            Messages.addGlobalError("Você não possui permissões administrativas");
+        }
     }
 
     public void salvar() {
@@ -74,43 +80,53 @@ public class mailSeverBean {
             mailServer = new MailServer();
             Messages.addGlobalInfo("Mail server salvo com sucesso");
         } catch (RuntimeException erro) {
-            Messages.addGlobalError("Ocorreu o erro " + erro.getMessage() 
+            Messages.addGlobalError("Ocorreu o erro " + erro.getMessage()
                     + " ao salvar mail server");
             erro.printStackTrace();
         }
     }
-    
-    public void excluir(ActionEvent evento){
-        try {
-            mailServer = (MailServer) evento.getComponent().getAttributes()
-                    .get("mailSelecionado");
-            mailServerDAO mailDAO = new mailServerDAO();
-            mailDAO.excluir(mailServer);
-            mailServer = new MailServer();
-            mailServer.setEmail("seu_email");
-            mailServer.setSenha("sua_senha");
-            mailServer.setPorta("25");
-            mailServer.setServidor("smtp.dominio.com.br");
-            mailServer.setTssl(Boolean.TRUE);
-            mailDAO.merge(mailServer);
-            mailServers = mailDAO.listar();
-        } catch (RuntimeException erro) {
-            Messages.addGlobalError("Ocorreu o erro " + erro.getMessage() 
-                    + " ao tentar excluir SMTP");
-            erro.printStackTrace();
+
+    public void excluir(ActionEvent evento) {
+        AutenticaBean login = (AutenticaBean) RecUtil.getObjectSession("autenticaBean");
+        if (login.getRepresentanteLogado().getAdmin()) {
+            try {
+                mailServer = (MailServer) evento.getComponent().getAttributes()
+                        .get("mailSelecionado");
+                mailServerDAO mailDAO = new mailServerDAO();
+                mailDAO.excluir(mailServer);
+                mailServer = new MailServer();
+                mailServer.setEmail("seu_email");
+                mailServer.setSenha("sua_senha");
+                mailServer.setPorta("25");
+                mailServer.setServidor("smtp.dominio.com.br");
+                mailServer.setTssl(Boolean.TRUE);
+                mailDAO.merge(mailServer);
+                mailServers = mailDAO.listar();
+            } catch (RuntimeException erro) {
+                Messages.addGlobalError("Ocorreu o erro " + erro.getMessage()
+                        + " ao tentar excluir SMTP");
+                erro.printStackTrace();
+            }
+        } else {
+            Messages.addGlobalError("Você não possui permissões administrativas");
         }
     }
-    
-    public void editar(ActionEvent evento){
-        try {
-            mailServerDAO mailDAO = new mailServerDAO();
-            mailDAO.listar();
-            mailServer = (MailServer) evento.getComponent().getAttributes()
-                    .get("mailSelecionado");
-        } catch (RuntimeException erro) {
-            Messages.addGlobalError("Ocorreu o erro " + erro.getMessage() 
-                    + " ao editar mail server");
-            erro.printStackTrace();
+
+    public void editar(ActionEvent evento) {
+        AutenticaBean login = (AutenticaBean) RecUtil.getObjectSession("autenticaBean");
+        if (login.getRepresentanteLogado().getAdmin()) {
+            try {
+                mailServerDAO mailDAO = new mailServerDAO();
+                mailDAO.listar();
+                mailServer = (MailServer) evento.getComponent().getAttributes()
+                        .get("mailSelecionado");
+            } catch (RuntimeException erro) {
+                Messages.addGlobalError("Ocorreu o erro " + erro.getMessage()
+                        + " ao editar mail server");
+                erro.printStackTrace();
+            }
+        } else {
+            Messages.addGlobalError("Você não possui permissões administrativas");
         }
     }
 }

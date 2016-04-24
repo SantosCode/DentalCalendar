@@ -23,74 +23,74 @@ import org.omnifaces.util.Messages;
 @SessionScoped
 public class AutenticaBean {
 
-	private Representante representante;
-	private Representante representanteLogado;
-	private Boolean isLogado;
+    private Representante representante;
+    private Representante representanteLogado;
+    private Boolean isLogado;
 
-	private List<Representante> representantes;
+    private List<Representante> representantes;
 
-	public AutenticaBean() {
-		RepresentanteDAO repreDAO = new RepresentanteDAO();
-		this.representantes = repreDAO.listar();
-	}
+    public AutenticaBean() {
+        RepresentanteDAO repreDAO = new RepresentanteDAO();
+        this.representantes = repreDAO.listar();
+    }
 
-	public Representante getRepresentante() {
-		return representante;
-	}
+    public Representante getRepresentante() {
+        return representante;
+    }
 
-	public void setRepresentante(Representante representante) {
-		this.representante = representante;
-	}
+    public void setRepresentante(Representante representante) {
+        this.representante = representante;
+    }
 
-	public List<Representante> getRepresentantes() {
-		return representantes;
-	}
+    public List<Representante> getRepresentantes() {
+        return representantes;
+    }
 
-	public void setRepresentantes(List<Representante> representantes) {
-		this.representantes = representantes;
-	}
+    public void setRepresentantes(List<Representante> representantes) {
+        this.representantes = representantes;
+    }
 
-	public Representante getRepresentanteLogado() {
-		return representanteLogado;
-	}
+    public Representante getRepresentanteLogado() {
+        return representanteLogado;
+    }
 
-	public void setRepresentanteLogado(Representante representanteLogado) {
-		this.representanteLogado = representanteLogado;
-	}
+    public void setRepresentanteLogado(Representante representanteLogado) {
+        this.representanteLogado = representanteLogado;
+    }
 
-	public Boolean getIsLogado() {
-		return isLogado;
-	}
+    public Boolean getIsLogado() {
+        return isLogado;
+    }
 
-	public void setIsLogado(Boolean isLogado) {
-		this.isLogado = isLogado;
-	}
+    public void setIsLogado(Boolean isLogado) {
+        this.isLogado = isLogado;
+    }
 
-	@PostConstruct
-	public void iniciar() {
+    @PostConstruct
+    public void iniciar() {
 
-		representante = new Representante();
-		representanteLogado = null;
-		isLogado = false;
-	}
+        representante = new Representante();
+        representanteLogado = null;
+        isLogado = false;
+    }
 
-	public void autenticar() {
-		try {
-			RepresentanteDAO repreDAO = new RepresentanteDAO();
-			representanteLogado = repreDAO.autenticar(representante.getLogin(), representante.getSenha());
+    public void autenticar() {
+        try {
+            RepresentanteDAO repreDAO = new RepresentanteDAO();
+            representanteLogado = repreDAO.autenticar(representante.getLogin(), representante.getSenha());
 
-			if (representanteLogado == null) {
+            if (representanteLogado == null) {
 
-				Messages.addGlobalError(" Representante e/ou senha incorretos ");
-				isLogado = false;
-				return;
-			} else {
-				Messages.addGlobalInfo("Seja bem vindo " + representante.getNome());
-				Faces.redirect("./pages/index.xhtml");
-				isLogado = true;
-			}
-		} catch (IOException erro) {
-			Messages.addGlobalError(erro.getMessage());
-		}
-	}
+                Messages.addGlobalError(" Representante e/ou senha incorretos ");
+                isLogado = false;
+                return;
+            } else {
+                Messages.addGlobalInfo("Seja bem vindo " + representante.getNome());
+                Faces.redirect("./pages/index.xhtml");
+                isLogado = true;
+            }
+        } catch (IOException erro) {
+            Messages.addGlobalError(erro.getMessage());
+        }
+    }
 }

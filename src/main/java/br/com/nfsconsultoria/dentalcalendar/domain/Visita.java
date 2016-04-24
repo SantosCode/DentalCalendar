@@ -9,7 +9,7 @@ import javax.persistence.ManyToOne;
 @Entity
 public class Visita extends GenericDomain {
 
-    @Column(nullable = false, length = 300)
+    @Column(nullable = false, length = 3000)
     private String acordo;
     
     @Column
