@@ -12,7 +12,9 @@ import com.lowagie.text.*;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.shiro.crypto.hash.SimpleHash;
+import org.omnifaces.util.Faces;
 import org.omnifaces.util.Messages;
+import org.primefaces.component.commandbutton.CommandButton;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -105,13 +107,9 @@ public class RepresentanteBean implements Serializable {
 
     public void novo() {
         AutenticaBean login = (AutenticaBean) RecUtil.getObjectSession("autenticaBean");
-        if (login.getRepresentanteLogado().getAdmin().equals("Admin")) {
 
-            representante = new Representante();
-        } else {
-            Messages.addGlobalError("Você não possui permissões administrativas");
-            return;
-        }
+        representante = new Representante();
+
     }
 
     public void salvar() {
@@ -127,8 +125,7 @@ public class RepresentanteBean implements Serializable {
             SimpleHash hash = new SimpleHash("md5", representante.getSenha());
             representante.setSenha(hash.toHex());
 
-            if (login.getRepresentanteLogado().getAdmin().equals("Representante")
-                    || login.getRepresentanteLogado().getAdmin().equals("Analista")) {
+            if (login.getRepresentanteLogado().getAdmin().equals("Representante")) {
                 representante.setAdmin(login.getRepresentanteLogado().getAdmin());
             }
             representanteDAO.merge(representante);
@@ -171,17 +168,41 @@ public class RepresentanteBean implements Serializable {
 
         AutenticaBean login = (AutenticaBean) RecUtil.getObjectSession("autenticaBean");
 
-        if (login.getRepresentanteLogado().getAdmin().equals("Admin")
-                || login.getRepresentanteLogado().getAdmin().equals("Representante")) {
+        try {
+            representante = (Representante) evento.getComponent().getAttributes().get("representanteSelecionado");
+        } catch (RuntimeException erro) {
+            Messages.addFlashGlobalError("Ocorreu um erro ao tentar selecionar um representante");
+            erro.printStackTrace();
+        }
 
-            try {
-                representante = (Representante) evento.getComponent().getAttributes().get("representanteSelecionado");
-            } catch (RuntimeException erro) {
-                Messages.addFlashGlobalError("Ocorreu um erro ao tentar selecionar um representante");
-                erro.printStackTrace();
+    }
+
+    public void exibir() {
+
+        try {
+
+            AutenticaBean login = (AutenticaBean) RecUtil.getObjectSession("autenticaBean");
+
+            if (login.getRepresentanteLogado().getAdmin().equals("Analista")) {
+
+                CommandButton cmdExcluir = (CommandButton) Faces.getViewRoot().findComponent("formListagem:tabela:cmdExcluir");
+                cmdExcluir.setDisabled(true);
+
+                CommandButton cmdEditar = (CommandButton) Faces.getViewRoot().findComponent("formListagem:tabela:cmdEditar");
+                cmdEditar.setDisabled(true);
+
+                CommandButton cmdNovo = (CommandButton) Faces.getViewRoot().findComponent("formListagem:tabela:cmdNovo");
+                cmdNovo.setDisabled(true);
+
             }
-        } else {
-            Messages.addGlobalError("Você não possui permissões administrativas");
+
+            if (login.getRepresentanteLogado().getAdmin().equals("Representante")) {
+                CommandButton cmdNovo = (CommandButton) Faces.getViewRoot().findComponent("formListagem:tabela:cmdNovo");
+                cmdNovo.setDisabled(true);
+            }
+
+        } catch (RuntimeException erro) {
+            erro.printStackTrace();
         }
     }
 

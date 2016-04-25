@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="2fcfb44d-b3c4-4f89-a4f5-6f0e3bbe04fc" name="Integrator" url="http://184.107.24.224">
+        <fileTransfer host="184.107.24.224" port="22" rootFolder="/home/tnsoluti" accessType="SFTP" password="dfdddfc3dfcedffedfeadfc6dfc5dffedfd9df99dfe4dfe4dfcd" username="tnsoluti">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" />
+          </advancedOptions>
+          <option name="port" value="22" />
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

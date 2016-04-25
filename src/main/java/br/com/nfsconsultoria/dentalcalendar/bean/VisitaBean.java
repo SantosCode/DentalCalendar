@@ -12,7 +12,9 @@ import br.com.nfsconsultoria.dentalcalendar.util.RecUtil;
 import com.lowagie.text.*;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.hssf.util.HSSFColor;
+import org.omnifaces.util.Faces;
 import org.omnifaces.util.Messages;
+import org.primefaces.component.commandbutton.CommandButton;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -175,57 +177,48 @@ public class VisitaBean implements Serializable {
         AgendaDAO agendaDAO = new AgendaDAO();
         AutenticaBean login = (AutenticaBean) RecUtil.getObjectSession("autenticaBean");
 
-        if (login.getRepresentanteLogado().getAdmin().equals("Admin")
-                || login.getRepresentanteLogado().getAdmin().equals("Representante")) {
-            try {
-                if (visita.getEmail()) {
-                    if (!visita.getAgenda().getDentista().getEmail().isEmpty()) {
-                        EmailUtil email = new EmailUtil();
-                        email.EnviarEmail(null, visita.getAgenda().getDentista().getEmail(),
-                                visita.getAgenda().getRepresentante().getEmail(), "Radiodoc", visita.getAcordo());
-                    } else {
-                        Messages.addGlobalError("Dentista não possui e-mail cadastrado");
-                    }
+        try {
+            if (visita.getEmail()) {
+                if (!visita.getAgenda().getDentista().getEmail().isEmpty()) {
+                    EmailUtil email = new EmailUtil();
+                    email.EnviarEmail(null, visita.getAgenda().getDentista().getEmail(),
+                            visita.getAgenda().getRepresentante().getEmail(), "NFS Radiologia", visita.getAcordo());
+                } else {
+                    Messages.addGlobalError("Dentista não possui e-mail cadastrado");
                 }
-                VisitaDAO visitaDAO = new VisitaDAO();
-                visita.setRepresentante(visita.getAgenda().getRepresentante());
-                visitaDAO.merge(visita);
-                visita = new Visita();
-                if (login.getRepresentanteLogado().getAdmin().equals("Admin")) {
-                    visitas = visitaDAO.listar();
-                } else if (login.getRepresentanteLogado().getAdmin().equals("Representante")) {
-                    visitas = visitaDAO.listarRep(login.getRepresentanteLogado().getCodigo());
-                }
-                Messages.addGlobalInfo("Visita salva com sucesso");
-            } catch (RuntimeException erro) {
-                Messages.addFlashGlobalError("Ocorreu um erro ao tentar salvar uma novo acordo");
             }
-        } else {
-            Messages.addGlobalError("Você não possui permissões administrativas");
+            VisitaDAO visitaDAO = new VisitaDAO();
+            visita.setRepresentante(visita.getAgenda().getRepresentante());
+            visitaDAO.merge(visita);
+            visita = new Visita();
+            if (login.getRepresentanteLogado().getAdmin().equals("Admin")) {
+                visitas = visitaDAO.listar();
+            } else if (login.getRepresentanteLogado().getAdmin().equals("Representante")) {
+                visitas = visitaDAO.listarRep(login.getRepresentanteLogado().getCodigo());
+            }
+            Messages.addGlobalInfo("Acordo salvo com sucesso");
+        } catch (RuntimeException erro) {
+            Messages.addFlashGlobalError("Ocorreu um erro ao tentar salvar uma novo acordo");
         }
     }
 
     public void excluir(ActionEvent evento) {
         AgendaDAO agendaDAO = new AgendaDAO();
         AutenticaBean login = (AutenticaBean) RecUtil.getObjectSession("autenticaBean");
-        if (login.getRepresentanteLogado().getAdmin().equals("Admin")
-                || login.getRepresentanteLogado().getAdmin().equals("Representante")) {
-            try {
-                visita = (Visita) evento.getComponent().getAttributes().get("visitaSelecionada");
 
-                VisitaDAO visitaDAO = new VisitaDAO();
-                visitaDAO.excluir(visita);
-                if (login.getRepresentanteLogado().getAdmin().equals("Admin")) {
-                    visitas = visitaDAO.listar();
-                } else if (login.getRepresentanteLogado().getAdmin().equals("Representante")) {
-                    visitas = visitaDAO.listarRep(login.getRepresentanteLogado().getCodigo());
-                }
-                Messages.addGlobalInfo("Visita removida com sucesso");
-            } catch (RuntimeException erro) {
-                Messages.addFlashGlobalError("Ocorreu um erro ao tentar remover o acordo");
+        try {
+            visita = (Visita) evento.getComponent().getAttributes().get("visitaSelecionada");
+
+            VisitaDAO visitaDAO = new VisitaDAO();
+            visitaDAO.excluir(visita);
+            if (login.getRepresentanteLogado().getAdmin().equals("Admin")) {
+                visitas = visitaDAO.listar();
+            } else if (login.getRepresentanteLogado().getAdmin().equals("Representante")) {
+                visitas = visitaDAO.listarRep(login.getRepresentanteLogado().getCodigo());
             }
-        } else {
-            Messages.addGlobalError("Você não possui permissões administrativas");
+            Messages.addGlobalInfo("Visita removida com sucesso");
+        } catch (RuntimeException erro) {
+            Messages.addFlashGlobalError("Ocorreu um erro ao tentar remover o acordo");
         }
     }
 
@@ -234,6 +227,27 @@ public class VisitaBean implements Serializable {
             visita = (Visita) evento.getComponent().getAttributes().get("visitaSelecionada");
         } catch (RuntimeException erro) {
             Messages.addFlashGlobalError("Ocorreu um erro ao tentar selecionar um acordo");
+        }
+    }
+
+    public void exibir() {
+
+        try {
+
+            AutenticaBean login = (AutenticaBean) RecUtil.getObjectSession("autenticaBean");
+
+            if (login.getRepresentanteLogado().getAdmin().equals("Analista")) {
+                CommandButton cmdExcluir = (CommandButton) Faces.getViewRoot().findComponent("formListagem:tabela:cmdExcluir");
+                cmdExcluir.setDisabled(true);
+
+                CommandButton cmdEditar = (CommandButton) Faces.getViewRoot().findComponent("formListagem:tabela:cmdEditar");
+                cmdEditar.setDisabled(true);
+
+                CommandButton cmdNovo = (CommandButton) Faces.getViewRoot().findComponent("formListagem:tabela:cmdNovo");
+                cmdNovo.setDisabled(true);
+            }
+        } catch (RuntimeException erro) {
+            erro.printStackTrace();
         }
     }
 

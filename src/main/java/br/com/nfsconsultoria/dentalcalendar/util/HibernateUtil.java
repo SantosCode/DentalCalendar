@@ -5,14 +5,15 @@
  */
 package br.com.nfsconsultoria.dentalcalendar.util;
 
-import java.sql.Connection;
-import java.sql.SQLException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.jdbc.ReturningWork;
 import org.hibernate.service.ServiceRegistry;
+
+import java.sql.Connection;
+import java.sql.SQLException;
 
 /**
  * Hibernate Utility class with a convenient method to get Session Factory
@@ -27,8 +28,10 @@ public class HibernateUtil {
 	public static SessionFactory getFabricaDeSessoes() {
 		return fabricaDeSessoes;
 	}
-	
-	public static Connection getConexao(){
+
+
+    /* Converter sessão para conexão para relatório do jasper */
+    public static Connection getConexao(){
 		Session sessao = fabricaDeSessoes.openSession();
 		
 		Connection conexao = sessao.doReturningWork(new ReturningWork<Connection>() {

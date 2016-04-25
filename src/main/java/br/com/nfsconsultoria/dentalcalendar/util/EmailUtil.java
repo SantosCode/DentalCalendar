@@ -33,9 +33,9 @@ public class EmailUtil {
         email.setCharset("ISO-8859-1");
         try {
             if (de != null ) {
-                email.setFrom(de, "Radiodoc");
+                email.setFrom(de, "NFS Radiologia");
             } else{
-                email.setFrom(smtp.getEmail(), "Radiodoc");
+                email.setFrom(smtp.getEmail(), "NFS Radiologia");
             }
             if (resp != null){
                 email.addReplyTo(resp);

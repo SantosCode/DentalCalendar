@@ -9,6 +9,9 @@
                 template="/template/modelo.xhtml">
 
     <ui:define name="conteudo">
+        <f:metadata>
+            <f:event type="preRenderView" listener="#{visitaBean.exibir}"/>
+        </f:metadata>
         <h:form id="formListagem">
             <p:panel header="Acordos">
                 <p:dataTable id="tabela" emptyMessage="Nenhum registro encontrado."
@@ -16,7 +19,7 @@
                              rows="10" paginatorPosition="top" rendered="true"
                              paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {NextPageLink} {LastPageLink}">
                     <f:facet name="header">
-                        <p:commandButton value="Novo Cadastro"
+                        <p:commandButton id="cmdNovo" value="Novo Cadastro"
                                          actionListener="#{visitaBean.novo}"
                                          oncomplete="PF('dialogo').show();"
                                          update=":mensagem :formCadastro:painel">
@@ -76,7 +79,7 @@
                     </p:column>
 
                     <p:column headerText="Opções" exportable="false">
-                        <p:commandButton icon="ui-icon-trash"
+                        <p:commandButton id="cmdExcluir" icon="ui-icon-trash"
                                          actionListener="#{visitaBean.excluir}"
                                          update=":mensagem :formListagem:tabela">
                             <p:confirm header="Confirmação"
@@ -84,7 +87,7 @@
                             <f:attribute name="visitaSelecionada" value="#{visita}"/>
                         </p:commandButton>
 
-                        <p:commandButton icon="ui-icon-pencil"
+                        <p:commandButton id="cmdEditar" icon="ui-icon-pencil"
                                          actionListener="#{visitaBean.editar}"
                                          update=":mensagem :formCadastro:painel"
                                          oncomplete="PF('dialogo').show();">

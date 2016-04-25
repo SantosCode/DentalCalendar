@@ -8,6 +8,9 @@
                 template="/template/modelo.xhtml">
 
     <ui:define name="conteudo">
+        <f:metadata>
+            <f:event type="preRenderView" listener="#{representanteBean.exibir}"/>
+        </f:metadata>
         <h:form id="formListagem">
             <p:panel header="Representantes">
                 <p:dataTable id="tabela" emptyMessage="Nenhum registro encontrado."
@@ -16,7 +19,7 @@
                              paginatorPosition="top" rendered="true" liveResize="true"
                              paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {NextPageLink} {LastPageLink}">
                     <f:facet name="header">
-                        <p:commandButton value="Novo Cadastro"
+                        <p:commandButton id="cmdNovo" value="Novo Cadastro"
                                          actionListener="#{representanteBean.novo}"
                                          oncomplete="PF('dialogo').show();"
                                          update=":mensagem :formCadastro:painel">
@@ -73,7 +76,7 @@
                     </p:column>
 
                     <p:column headerText="Opções" exportable="false">
-                        <p:commandButton icon="ui-icon-trash"
+                        <p:commandButton id="cmdExcluir" icon="ui-icon-trash"
                                          actionListener="#{representanteBean.excluir}"
                                          update=":mensagem :formListagem:tabela">
                             <p:confirm header="Confirmação"
@@ -82,7 +85,7 @@
                                          value="#{representante}" />
                         </p:commandButton>
 
-                        <p:commandButton icon="ui-icon-pencil"
+                        <p:commandButton id="cmdEditar" icon="ui-icon-pencil"
                                          actionListener="#{representanteBean.editar}"
                                          update=":mensagem :formCadastro:painel"
                                          oncomplete="PF('dialogo').show();">
