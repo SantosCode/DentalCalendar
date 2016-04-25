@@ -169,7 +169,7 @@ public class RepresentanteBean implements Serializable {
 
     public void editar(ActionEvent evento) {
 
-        AutenticaBean login = (AutenticaBean) RecUtil.getObjectSession("autenicaBean");
+        AutenticaBean login = (AutenticaBean) RecUtil.getObjectSession("autenticaBean");
 
         if (login.getRepresentanteLogado().getAdmin().equals("Admin")
                 || login.getRepresentanteLogado().getAdmin().equals("Representante")) {
