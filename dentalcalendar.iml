@@ -117,10 +117,10 @@
     <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.6.4" level="project" />
     <orderEntry type="library" name="Maven: org.apache.poi:poi:3.14" level="project" />
     <orderEntry type="library" name="Maven: commons-codec:commons-codec:1.10" level="project" />
-    <orderEntry type="module-library">
+    <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
-          <root url="jar://$USER_HOME$/Downloads/EasyReport-master/dist/EasyReport.jar!/" />
+          <root url="jar://$USER_HOME$/Dropbox/EasyReport.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
