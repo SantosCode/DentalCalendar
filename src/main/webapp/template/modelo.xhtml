@@ -1,65 +1,73 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
-    <h:head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <title>DentalCalendar</title>
-        <h:outputStylesheet library="css" name="estilos.css" />
-        <h:outputScript name="scripts.js" library="js" />
-    </h:head>
-    <h:body>
-        <p:growl id="mensagem" />
-        <p:layout >
-            <div id="geral" class="divCabecalho">
-                <p:layoutUnit position="north" resizable="true" style="height: 100px">
+<h:head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>DentalCalendar</title>
+    <h:outputStylesheet library="css" name="estilos.css"/>
+    <h:outputScript name="scripts.js" library="js"/>
+</h:head>
+<h:body>
+    <p:growl id="mensagem"/>
+    <p:layout>
+        <div id="geral" class="divCabecalho">
+            <p:layoutUnit position="north" resizable="true" style="height: 100px">
                 <div id="topo" class="divTopo">
-                   <p:graphicImage library="images" name="banner.png" styleClass="imagemCentralizada" />
+                    <p:graphicImage library="images" name="banner.png" styleClass="imagemCentralizada"/>
                 </div>
-                    </p:layoutUnit> 
-                <p:layoutUnit position="west" resizable="true"  size="300px" style="width: 150px; height: 340px">
+            </p:layoutUnit>
+            <p:layoutUnit position="west" resizable="true" size="300px" style="width: 150px; height: 340px">
                 <div id="cabecalho" class="divCabecalho">
                     <h:form id="formMenu">
-                        <p:menu toggleable="true" style="size: auto">
-                                <p:submenu label="Arquivo">
-                                    <p:menuitem value="Inicio" url="/pages/index.xhtml"/>
-                                    <p:menuitem value="Sair" url="/login.xhtml" />
-                                </p:submenu>
 
-                                <p:submenu label="Cadastros">
-                                    <p:menuitem value="Representantes" url="/pages/representante.xhtml" />
-                                    <p:menuitem value="Secretaria(o)" url="/pages/secretaria.xhtml" />
-                                    <p:menuitem value="Dentistas" url="/pages/dentista.xhtml" />
-                                    <p:menuitem value="Clinicas" url="/pages/clinica.xhtml" />
-                                    <p:menuitem value="Agenda" url="/pages/agenda.xhtml" />
-                                    <p:menuitem value="Acordos" url="/pages/visita.xhtml" />
-                                    <p:menuitem value="Datas" url="/pages/datas.xhtml" />
-                                    <p:menuitem value="Radiologias" url="/pages/radiologias.xhtml"/>
-                                    <p:menuitem value="Especialidades" url="/pages/especialidades.xhtml"/>
-                                </p:submenu>
-                                
-                                <p:submenu label="Configurações">
-                                    <p:menuitem value="E-Mail" url="/pages/mailserver.xhtml"/>
-                                </p:submenu>
-                            
-                                <p:submenu label="Ajuda">
-                                    <p:menuitem value="Sobre" url="/pages/sobre.xhtml"/>
-                                </p:submenu>
-                            </p:menu>
+                        <p:menu toggleable="true" style="size: auto">
+                            <p:submenu label="Arquivo">
+                                <p:menuitem value="Inicio" url="/pages/index.xhtml"/>
+                                <p:menuitem value="Sair" url="/login.xhtml"/>
+                            </p:submenu>
+
+                            <p:submenu label="Relatórios">
+                                <p:menuitem value="Dentistas" url="/pages/drelatorio.xhmtl"/>
+                                <p:menuitem value="Acordos" url="/pages/arelatorio.xhtml"/>
+                            </p:submenu>
+
+
+                            <p:submenu label="Cadastros">
+                                <p:menuitem value="Representantes" url="/pages/representante.xhtml"/>
+                                <p:menuitem value="Secretaria" url="/pages/secretaria.xhtml"/>
+                                <p:menuitem value="Dentistas" url="/pages/dentista.xhtml"/>
+                                <p:menuitem value="Clinicas" url="/pages/clinica.xhtml"/>
+                                <p:menuitem value="Agenda" url="/pages/agenda.xhtml"/>
+                                <p:menuitem value="Acordos" url="/pages/visita.xhtml"/>
+                                <p:menuitem value="Datas" url="/pages/datas.xhtml"/>
+                                <p:menuitem value="Radiologias" url="/pages/radiologias.xhtml"/>
+                                <p:menuitem value="Especialidades" url="/pages/especialidades.xhtml"/>
+                            </p:submenu>
+
+                            <p:submenu label="Configurações">
+                                <p:menuitem value="E-Mail" url="/pages/mailserver.xhtml"/>
+                            </p:submenu>
+
+                            <p:submenu label="Ajuda">
+                                <p:menuitem value="Sobre" url="/pages/sobre.xhtml"/>
+                            </p:submenu>
+                        </p:menu>
+
                     </h:form>
                 </div>
-                        </p:layoutUnit>
-                <div id="conteudo" class="left_content">
-                    <p:layoutUnit position="center" resizable="true">
-                        <h:outputText value="Bem vindo #{autenticaBean.representanteLogado.nome}." 
-                                      style="font-family: initial; font: bold; color: blue; "/>
-                    <ui:insert name="conteudo" />
+            </p:layoutUnit>
+            <div id="conteudo" class="left_content">
+                <p:layoutUnit position="center" resizable="true">
+                    <h:outputText value="Bem vindo #{autenticaBean.representanteLogado.nome}."
+                                  style="font-family: Arial, sans-serif; font: bold; color: blue; "/>
+                    <ui:insert name="conteudo"/>
                 </p:layoutUnit>
-                </div>
             </div>
-        </p:layout>
-    </h:body>
+        </div>
+    </p:layout>
+</h:body>
 </html>

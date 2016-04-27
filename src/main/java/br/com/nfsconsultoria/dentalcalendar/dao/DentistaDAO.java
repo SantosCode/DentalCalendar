@@ -7,11 +7,12 @@ package br.com.nfsconsultoria.dentalcalendar.dao;
 
 import br.com.nfsconsultoria.dentalcalendar.domain.Dentista;
 import br.com.nfsconsultoria.dentalcalendar.util.HibernateUtil;
-import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
 import org.hibernate.Query;
 import org.hibernate.Session;
+
+import java.util.List;
 
 /**
  *
@@ -48,4 +49,5 @@ public class DentistaDAO extends GenericDAO<Dentista> {
             sessao.close();
         }
     }
+
 }
