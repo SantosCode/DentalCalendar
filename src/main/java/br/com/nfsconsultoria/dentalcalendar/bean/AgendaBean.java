@@ -16,6 +16,7 @@ import br.com.nfsconsultoria.dentalcalendar.util.RecUtil;
 import com.lowagie.text.*;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.hssf.util.HSSFColor;
+import org.apache.poi.ss.usermodel.CellStyle;
 import org.omnifaces.util.Messages;
 
 import javax.annotation.PostConstruct;
@@ -219,12 +220,18 @@ public class AgendaBean implements Serializable {
 
     public void preProcessPDF(Object document) throws IOException, BadElementException, DocumentException {
         Document pdf = (Document) document;
-        pdf.open();
         pdf.setPageSize(PageSize.A4);
         pdf.addAuthor("Luis Carlos Santos");
         pdf.addTitle("Agendas Cadastradas");
         pdf.addCreator("NFS Consultoria");
         pdf.addSubject("Agendas Cadastradas");
+        pdf.open();
+
+        Font catFont = new Font(Font.TIMES_ROMAN, 18, Font.BOLD);
+
+        Paragraph p = new Paragraph("Relatório de Agendas", catFont);
+        p.setAlignment(Element.ALIGN_CENTER);
+        p.setSpacingAfter(20);
 
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
         String logo = externalContext.getRealPath("") + File.separator + "resources" + File.separator + "images"
@@ -238,9 +245,17 @@ public class AgendaBean implements Serializable {
         HSSFSheet sheet = wb.getSheetAt(0);
         HSSFRow header = sheet.getRow(0);
 
+        HSSFFont font = wb.createFont();
+        font.setBold(true);
+        font.setColor(HSSFColor.WHITE.index);
+
         HSSFCellStyle cellStyle = wb.createCellStyle();
-        cellStyle.setFillForegroundColor(HSSFColor.AQUA.index);
+        cellStyle.setFillForegroundColor(HSSFColor.LIGHT_BLUE.index);
         cellStyle.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+        cellStyle.setWrapText(true);
+        cellStyle.setAlignment(CellStyle.ALIGN_JUSTIFY);
+        cellStyle.setFont(font);
+
 
         for (int i = 0; i < header.getPhysicalNumberOfCells(); i++) {
             HSSFCell cell = header.getCell(i);

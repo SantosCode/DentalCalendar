@@ -34,7 +34,8 @@
                         <h:commandLink>
                             <p:graphicImage name="/images/pdf.png" width="24"/>
                             <p:dataExporter type="pdf" target="tabela" fileName="dentistas"
-                                            encoding="UTF-8" preProcessor="#{dentistaBean.preProcessPDF}"/>
+                                            encoding="ISO-8859-1" preProcessor="#{dentistaBean.preProcessPDF}"
+                                            selectionOnly="yes"/>
                         </h:commandLink>
 
                         <h:commandLink>
@@ -47,6 +48,10 @@
                             <p:dataExporter type="xml" target="tabela" fileName="dentistas"/>
                         </h:commandLink>
                     </f:facet>
+
+                    <p:column headerText="Clinica" filterBy="#{dentista.clinica.nome}" visible="false">
+                        <h:outputText value="#{dentista.clinica.nome}"/>
+                    </p:column>
 
                     <p:column headerText="Dentista" filterBy="#{dentista.nome}"
                               sortBy="#{dentista.nome}" filterMatchMode="contains">
@@ -67,20 +72,48 @@
                         <h:outputText value="#{dentista.especialidade.descricao}"/>
                     </p:column>
 
+                    <p:column headerText="Tel Fixo" filterBy="#{dentista.telfixo}" visible="false">
+                        <h:outputText value="#{dentista.telfixo}"/>
+                    </p:column>
+
                     <p:column headerText="Tel Cel" filterBy="#{dentista.telcel}"
                               filterMatchMode="contains" sortBy="#{dentista.telcel}">
                         <h:outputText value="#{dentista.telcel}"/>
                     </p:column>
 
+                    <p:column headerText="E-Mail" filterBy="#{dentista.email}" visible="false" resizable="true">
+                        <h:outputText value="#{dentista.email}"/>
+                    </p:column>
+
+                    <p:column headerText="Rua" filterBy="#{dentista.rua}" visible="false" resizable="true">
+                        <h:outputText value="#{dentista.rua}"/>
+                    </p:column>
+
+                    <p:column headerText="Complemento" filterBy="#{dentista.complemento}" visible="false">
+                        <h:outputText value="#{dentista.complemento}"/>
+                    </p:column>
 
                     <p:column headerText="Bairro" filterBy="#{dentista.bairro}"
                               filterMatchMode="contains" sortBy="#{dentista.bairro}">
                         <h:outputText value="#{dentista.bairro}"/>
                     </p:column>
 
+                    <p:column headerText="CEP" filterBy="#{dentista.cep}" visible="false">
+                        <h:outputText value="#{dentista.cep}"/>
+                    </p:column>
+
                     <p:column headerText="Cidade" filterBy="#{dentista.cidade}"
                               filterMatchMode="contains" sortBy="#{dentista.cidade}">
                         <h:outputText value="#{dentista.cidade}"/>
+                    </p:column>
+
+                    <p:column headerText="Nascimento" filterBy="#{dentista.diaNasc}" visible="false">
+                        <h:outputText value="#{dentista.diaNasc}/#{dentista.mesNasc}"/>
+                    </p:column>
+
+                    <p:column headerText="Secretaria" filterBy="#{dentista.secretaria1}" visible="false">
+                        <h:outputText
+                                value="#{dentista.secretaria1.nome}  #{dentista.secretaria2.nome}  #{dentista.secretaria3.nome}  #{dentista.secretaria4.nome}"/>
                     </p:column>
 
                     <p:column headerText="Cortesia" filterBy="#{dentista.cortesia}"
@@ -110,7 +143,7 @@
 
                         <p:commandButton icon="ui-icon-info"
                                          actionListener="#{dentistaBean.editar}"
-                                         update=":mensagem :formVisu:painel"
+                                         update=":mensagem :formVisu:vpainel"
                                          oncomplete="PF('dlgVisu').show();">
                             <f:attribute name="dentistaSelecionado" value="#{dentista}"/>
                             <f:actionListener
@@ -330,7 +363,7 @@
                     <h:outputText id="vespec"
                                   value="#{dentistaBean.dentista.especialidade.descricao}"/>
 
-                    <p:outputLabel for="cro" value="CRO-SP:" style="font-weight: bold"/>
+                    <p:outputLabel for="vcro" value="CRO-SP:" style="font-weight: bold"/>
                     <h:outputText id="vcro" value="#{dentistaBean.dentista.cro}"/>
 
                     <p:outputLabel for="vtelFixo" value="Tel Fixo:"

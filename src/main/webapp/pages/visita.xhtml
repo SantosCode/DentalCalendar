@@ -75,7 +75,7 @@
                     <p:column headerText="E-Mail" filterBy="#{visita.email}"
                               sortBy="#{visita.email}" filterMatchMode="contains">
                         <p:selectBooleanButton onLabel="Enviado" offLabel="Não Enviado"
-                                               value="#{visita.email}" disabled="true"/>
+                                               value="#{visita.email}" disabled="true" converter="javax.faces.Boolean"/>
                     </p:column>
 
                     <p:column headerText="Opções" exportable="false">
@@ -98,7 +98,7 @@
 
                         <p:commandButton icon="ui-icon-info"
                                          actionListener="#{visitaBean.editar}"
-                                         update=":mensagem :formVisu:painel"
+                                         update=":mensagem :formVisu:vpainel"
                                          oncomplete="PF('dlgVisu').show();">
                             <f:attribute name="visitaSelecionada" value="#{visita}"/>
                             <f:actionListener
@@ -158,7 +158,7 @@
                   resizable="false" modal="true" closable="false" appendTo="@(body)"
                   showEffect="clip" responsive="true" dynamic="true" fitViewport="true" positionType="absolute">
             <h:form id="formVisu">
-                <h:panelGrid id="painel" columns="2">
+                <h:panelGrid id="vpainel" columns="2">
                     <p:outputLabel for="dia" value="Dia:" style="font-weight: bold"/>
                     <p:calendar id="dia" value="#{visitaBean.visita.agenda.dia}"
                                 pattern="yyyy-MM-dd" mask="true" readonly="true" showOn="false"/>
@@ -177,13 +177,13 @@
                     <h:outputText id="representante"
                                   value="#{visitaBean.visita.agenda.representante.nome}"/>
 
-                    <p:outputLabel for="acordo" value="Acordo:"
+                    <p:outputLabel for="vacordo" value="Acordo:"
                                    style="font-weight: bold"/>
-                    <p:editor id="acordo" widgetVar="editor" value="#{visitaBean.visita.acordo}" disabled="true"
+                    <p:editor id="vacordo" widgetVar="editor" value="#{visitaBean.visita.acordo}" disabled="true"
                               rendered="true" width="600" converter="omnifaces.SelectItemsConverter"/>
 
-                    <p:outputLabel for="mail" value="Enviar e-mail para o dentista?"/>
-                    <p:selectBooleanButton id="mail" onLabel="Sim" offLabel="Não"
+                    <p:outputLabel for="vmail" value="Enviar e-mail para o dentista?"/>
+                    <p:selectBooleanButton id="vmail" onLabel="Sim" offLabel="Não"
                                            value="#{visitaBean.visita.email}" disabled="true"/>
                 </h:panelGrid>
 
