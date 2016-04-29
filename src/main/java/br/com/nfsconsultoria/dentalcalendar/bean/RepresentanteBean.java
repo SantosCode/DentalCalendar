@@ -42,6 +42,8 @@ public class RepresentanteBean implements Serializable {
 
     public RepresentanteBean() {
         RepresentanteDAO repreDAO = new RepresentanteDAO();
+        /* Verificação de permissão de acesso
+        * Permissão total de listagem para usuario Admin e permissão parcial para analista */
         AutenticaBean login = (AutenticaBean) RecUtil.getObjectSession("autenticaBean");
         if (login.getRepresentanteLogado().getAdmin().equals("Admin")
                 || login.getRepresentanteLogado().getAdmin().equals("Analista")) {
@@ -106,8 +108,6 @@ public class RepresentanteBean implements Serializable {
     }
 
     public void novo() {
-        AutenticaBean login = (AutenticaBean) RecUtil.getObjectSession("autenticaBean");
-
         representante = new Representante();
 
     }
@@ -177,6 +177,7 @@ public class RepresentanteBean implements Serializable {
 
     }
 
+    /*Metodo que oculta botões para usuarios analista*/
     public void exibir() {
 
         try {

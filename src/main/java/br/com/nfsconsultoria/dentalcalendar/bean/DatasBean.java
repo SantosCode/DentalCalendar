@@ -26,7 +26,6 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- *
  * @author luis
  */
 @SuppressWarnings("serial")
@@ -61,14 +60,14 @@ public class DatasBean implements Serializable {
 
     public List<Integer> getDiasMes() {
         Integer[] dias = new Integer[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22,
-            23, 24, 25, 26, 27, 28, 29, 30, 31};
+                23, 24, 25, 26, 27, 28, 29, 30, 31};
         return Arrays.asList(dias);
 
     }
 
     public List<String> getMesAno() {
         String[] meses = new String[]{"Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto",
-            "Setembro", "Outubro", "Novembro", "Dezembro"};
+                "Setembro", "Outubro", "Novembro", "Dezembro"};
         return Arrays.asList(meses);
 
     }
@@ -140,7 +139,7 @@ public class DatasBean implements Serializable {
 
         Font catFont = new Font(Font.TIMES_ROMAN, 18, Font.BOLD);
 
-        Paragraph p = new Paragraph("Relatório de Dentistas", catFont);
+        Paragraph p = new Paragraph("Relatório de Datas Especiais", catFont);
         p.setAlignment(Element.ALIGN_CENTER);
         p.setSpacingAfter(20);
 

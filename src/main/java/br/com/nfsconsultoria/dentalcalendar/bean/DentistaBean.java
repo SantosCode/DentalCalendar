@@ -27,7 +27,6 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- *
  * @author luis
  */
 @SuppressWarnings("serial")
@@ -136,14 +135,14 @@ public class DentistaBean implements Serializable {
 
     public List<Integer> getDiasMes() {
         Integer[] dias = new Integer[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
-            16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31};
+                16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31};
         return Arrays.asList(dias);
 
     }
 
     public List<String> getMesAno() {
         String[] meses = new String[]{"Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto",
-            "Setembro", "Outubro", "Novembro", "Dezembro"};
+                "Setembro", "Outubro", "Novembro", "Dezembro"};
         return Arrays.asList(meses);
 
     }
@@ -160,7 +159,7 @@ public class DentistaBean implements Serializable {
 
             RadiologiaDAO radiologiaDAO = new RadiologiaDAO();
             radiologiaDAO.listar();
-            
+
             SecretariaDAO secDAO = new SecretariaDAO();
             secDAO.listar();
 
@@ -179,13 +178,10 @@ public class DentistaBean implements Serializable {
 
         if (this.radiologias.isEmpty()) {
             Messages.addGlobalError("É nescessario cadastrar radiologia antes");
-        } else if (this.especiais.isEmpty()) {
+        }
+        if (this.especiais.isEmpty()) {
             Messages.addGlobalError("É nescessario cadastrar especialidades antes");
         }
-    }
-    
-    public void novaCli(){
-        clinica = new Clinica();
     }
 
     public void salvar() {
@@ -218,7 +214,7 @@ public class DentistaBean implements Serializable {
             erro.printStackTrace();
         }
     }
-    
+
     public void excluir(ActionEvent evento) {
         try {
             dentista = (Dentista) evento.getComponent().getAttributes().get("dentistaSelecionado");

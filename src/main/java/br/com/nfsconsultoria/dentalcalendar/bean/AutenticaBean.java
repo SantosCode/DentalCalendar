@@ -7,17 +7,18 @@ package br.com.nfsconsultoria.dentalcalendar.bean;
 
 import br.com.nfsconsultoria.dentalcalendar.dao.RepresentanteDAO;
 import br.com.nfsconsultoria.dentalcalendar.domain.Representante;
-import java.io.IOException;
-import java.util.List;
-import javax.annotation.PostConstruct;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
 import org.omnifaces.util.Faces;
 import org.omnifaces.util.Messages;
 
+import javax.annotation.PostConstruct;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
+import java.io.IOException;
+import java.util.List;
+
 /**
  *
- * @author luis
+ * @author luissantos
  */
 @ManagedBean
 @SessionScoped
@@ -81,7 +82,7 @@ public class AutenticaBean {
 
             if (representanteLogado == null) {
 
-                Messages.addGlobalError(" Representante e/ou senha incorretos ");
+                Messages.addGlobalError(" Representante e/ou Senha incorretos ");
                 isLogado = false;
                 return;
             } else {

@@ -14,7 +14,7 @@ import org.omnifaces.util.Messages;
 
 /**
  *
- * @author luis
+ * @author luissantos
  */
 public class EmailUtil {
 

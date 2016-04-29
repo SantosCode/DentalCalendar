@@ -60,7 +60,7 @@ public class VisitaBean implements Serializable {
             this.representantes = repreDAO.listar();
             this.dentistas = dentDAO.listar();
             this.mails = mailDAO.listar();
-        } else {
+        } else if (login.getRepresentanteLogado().equals("Representante")) {
             this.visitas = visitaDAO.listarRep(login.getRepresentanteLogado().getCodigo());
             this.agendas = agendaDAO.listarRep(login.getRepresentanteLogado().getCodigo());
             this.representantes = repreDAO.listarCod(login.getRepresentanteLogado().getCodigo());
@@ -133,7 +133,7 @@ public class VisitaBean implements Serializable {
             if (login.getRepresentanteLogado().getAdmin().equals("Admin")
                     || login.getRepresentanteLogado().getAdmin().equals("Analista")) {
                 this.visitas = visitaDAO.listar();
-            } else {
+            } else if (login.getRepresentanteLogado().equals("Representante")) {
                 this.visitas = visitaDAO.listarRep(login.getRepresentanteLogado().getCodigo());
             }
         } catch (RuntimeException erro) {
@@ -204,7 +204,7 @@ public class VisitaBean implements Serializable {
     }
 
     public void excluir(ActionEvent evento) {
-        AgendaDAO agendaDAO = new AgendaDAO();
+
         AutenticaBean login = (AutenticaBean) RecUtil.getObjectSession("autenticaBean");
 
         try {
@@ -217,7 +217,7 @@ public class VisitaBean implements Serializable {
             } else if (login.getRepresentanteLogado().getAdmin().equals("Representante")) {
                 visitas = visitaDAO.listarRep(login.getRepresentanteLogado().getCodigo());
             }
-            Messages.addGlobalInfo("Visita removida com sucesso");
+            Messages.addGlobalInfo("Acordo removido com sucesso");
         } catch (RuntimeException erro) {
             Messages.addFlashGlobalError("Ocorreu um erro ao tentar remover o acordo");
         }

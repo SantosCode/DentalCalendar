@@ -1,5 +1,6 @@
 <?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
@@ -9,7 +10,7 @@
 
     <ui:define name="conteudo">
         <h:form id="formListagem">
-            <p:panel header="Datas Especiais">      
+            <p:panel header="Datas Especiais">
                 <p:dataTable id="tabela" emptyMessage="Nenhum registro encontrado."
                              paginator="true" value="#{datasBean.datas}" var="data"
                              rows="10" paginatorPosition="top" rendered="true"
@@ -19,19 +20,20 @@
                                          oncomplete="PF('dialogo').show();"
                                          update=":mensagem :formCadastro:nasc :formCadastro:painel">
                             <f:actionListener
-                                type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+                                    type="org.omnifaces.eventlistener.ResetInputAjaxActionListener"/>
                         </p:commandButton>
 
                         <h:commandLink>
                             <p:graphicImage name="/images/excel.png" width="24"/>
                             <p:dataExporter type="xls" target="tabela" fileName="datas"
-                                            postProcessor="#{agendaBean.postProcessXLS}"/>
+                                            postProcessor="#{datasBean.postProcessXLS}"/>
                         </h:commandLink>
 
                         <h:commandLink>
                             <p:graphicImage name="/images/pdf.png" width="24"/>
                             <p:dataExporter type="pdf" target="tabela" fileName="datas"
-                                            preProcessor="#{agendaBean.preProcessPDF}"/>
+                                            encoding="ISO-8859-1"
+                                            preProcessor="#{datasBean.preProcessPDF}"/>
                         </h:commandLink>
 
                         <h:commandLink>
@@ -41,13 +43,13 @@
 
                         <h:commandLink>
                             <p:graphicImage name="/images/xml.png" width="24"/>
-                            <p:dataExporter type="xml" target="tabela" fileName="datas" />
+                            <p:dataExporter type="xml" target="tabela" fileName="datas"/>
                         </h:commandLink>
 
                     </f:facet>
 
-                    <p:column headerText="Dia" filterBy="#{data.dia}"  filterMatchMode="contains"
-                              sortBy="#{data.dia}" >
+                    <p:column headerText="Dia" filterBy="#{data.dia}" filterMatchMode="contains"
+                              sortBy="#{data.dia}">
                         <h:outputText value="#{data.dia}"/>
                     </p:column>
 
@@ -58,12 +60,12 @@
 
                     <p:column headerText="Evento" filterBy="#{data.evento}" filterMatchMode="contains"
                               sortBy="#{data.evento}">
-                        <h:outputText value="#{data.evento}" />
+                        <h:outputText value="#{data.evento}"/>
                     </p:column>
 
-                    <p:column headerText="Nome" filterBy="#{data.nome}" filterMatchMode="contains"
-                              sortBy="#{data.nome}">
-                        <h:outputText value="#{data.nome}" />
+                    <p:column headerText="Nome" filterBy="#{data.mes}" filterMatchMode="contains"
+                              sortBy="#{data.mes}">
+                        <h:outputText value="#{data.nome}"/>
                     </p:column>
 
                     <p:column headerText="Opções" exportable="false">
@@ -71,53 +73,53 @@
                                          actionListener="#{datasBean.excluir}"
                                          update=":mensagem :formListagem:tabela">
                             <p:confirm header="Confirmação" message="Deseja excluir a cidade"
-                                       icon="ui-icon-alert" />
-                            <f:attribute name="dataSelecionada" value="#{data}" />
+                                       icon="ui-icon-alert"/>
+                            <f:attribute name="dataSelecionada" value="#{data}"/>
                         </p:commandButton>
 
                         <p:commandButton icon="ui-icon-pencil"
                                          actionListener="#{datasBean.editar}"
                                          update=":mensagem :formCadastro:painel"
                                          oncomplete="PF('dialogo').show();">
-                            <f:attribute name="dataSelecionada" value="#{data}" />
+                            <f:attribute name="dataSelecionada" value="#{data}"/>
                             <f:actionListener
-                                type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+                                    type="org.omnifaces.eventlistener.ResetInputAjaxActionListener"/>
                         </p:commandButton>
 
                         <p:commandButton icon="ui-icon-info"
                                          actionListener="#{datasBean.editar}"
                                          update=":mensagem :formVisu:painel" oncomplete="PF('dlgVisu').show();">
-                            <f:attribute name="dataSelecionada" value="#{data}" />
+                            <f:attribute name="dataSelecionada" value="#{data}"/>
                             <f:actionListener
-                                type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+                                    type="org.omnifaces.eventlistener.ResetInputAjaxActionListener"/>
                         </p:commandButton>
                     </p:column>
                 </p:dataTable>
             </p:panel>
             <p:confirmDialog global="true">
                 <p:commandButton value="Sim" type="button"
-                                 styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                 styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>
                 <p:commandButton value="Não" type="button"
-                                 styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                                 styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>
             </p:confirmDialog>
         </h:form>
 
         <p:dialog header="Datas - Cadastro" widgetVar="dialogo"
-                  draggable="false" resizable="false" modal="true" closable="false" appendTo="@(body)" 
+                  draggable="false" resizable="false" modal="true" closable="false" appendTo="@(body)"
                   showEffect="clip" responsive="true" dynamic="true"
                   fitViewport="true" positionType="absolute">
             <h:form id="formCadastro">
-                
+
                 <h:panelGrid id="nasc" columns="4">
-                    <p:outputLabel for="diaNasc" value="Dia:" />
+                    <p:outputLabel for="diaNasc" value="Dia:"/>
                     <p:selectOneMenu id="diaNasc"
-                                     value="#{datasBean.data.dia}" 
+                                     value="#{datasBean.data.dia}"
                                      filter="true" required="true"
                                      requiredMessage="O campo dia de nascimento é obrigatório "
                                      converter="omnifaces.SelectItemsConverter">
                         <f:selectItem noSelectionOption="true"
-                                      itemLabel="Dia" />
-                        <f:selectItems value="#{datasBean.diasMes}" var="diaNasc" itemValue="#{diaNasc}" />Ï
+                                      itemLabel="Dia"/>
+                        <f:selectItems value="#{datasBean.diasMes}" var="diaNasc" itemValue="#{diaNasc}"/>Ï
                     </p:selectOneMenu>
 
                     <p:outputLabel for="mesNasc" value="Mês:"/>
@@ -128,52 +130,52 @@
                                      converter="omnifaces.SelectItemsConverter">
                         <f:selectItem noSelectionOption="true"
                                       itemLabel="Mês"/>
-                        <f:selectItems value="#{datasBean.mesAno}" var="mesNasc" itemValue="#{mesNasc}" />
+                        <f:selectItems value="#{datasBean.mesAno}" var="mesNasc" itemValue="#{mesNasc}"/>
                     </p:selectOneMenu>
                 </h:panelGrid>
                 <h:panelGrid id="painel" columns="2">
                     <p:outputLabel for="evento" value="Evento:"/>
-                    <p:inputText id="evento" value="#{datasBean.data.evento}" required="true" 
+                    <p:inputText id="evento" value="#{datasBean.data.evento}" required="true"
                                  requiredMessage="O campo evento é obrigatório"/>
 
                     <p:outputLabel for="nome" value="Nome:"/>
-                    <p:inputText id="nome" value="#{datasBean.data.nome}" required="true" 
+                    <p:inputText id="nome" value="#{datasBean.data.nome}" required="true"
                                  requiredMessage="O campo nome é obrigatório"/>
                 </h:panelGrid>
 
                 <h:panelGrid columns="2">
                     <p:commandButton value="Salvar"
                                      actionListener="#{datasBean.salvar}"
-                                     update=":mensagem :formCadastro:nasc :formCadastro:painel  :formListagem:tabela" />
+                                     update=":mensagem :formCadastro:nasc :formCadastro:painel  :formListagem:tabela"/>
 
-                    <p:commandButton value="Fechar" oncomplete="PF('dialogo').hide();" />
+                    <p:commandButton value="Fechar" oncomplete="PF('dialogo').hide();"/>
                 </h:panelGrid>
             </h:form>
         </p:dialog>
 
         <p:dialog header="Datas Especiais" widgetVar="dlgVisu"
-                  draggable="false" resizable="false" modal="true" closable="false" appendTo="@(body)" 
+                  draggable="false" resizable="false" modal="true" closable="false" appendTo="@(body)"
                   showEffect="clip" responsive="true" dynamic="true"
                   fitViewport="true" positionType="absolute">
             <h:form id="formVisu">
                 <h:panelGrid id="painel" columns="2">
                     <p:outputLabel for="dia" value="Dia:" style="font-weight: bold"/>
-                    <p:outputLabel id="dia" value="#{datasBean.data.dia}" />
+                    <p:outputLabel id="dia" value="#{datasBean.data.dia}"/>
 
                     <p:outputLabel for="mes" value="Mes:" style="font-weight: bold"/>
-                    <p:outputLabel id="mes" value="#{datasBean.data.mes}" />
+                    <p:outputLabel id="mes" value="#{datasBean.data.mes}"/>
 
                     <p:outputLabel for="evento" value="Evento:" style="font-weight: bold"/>
                     <h:outputText id="evento" value="#{datasBean.data.evento}"/>
 
                     <p:outputLabel for="nome" value="Nome:" style="font-weight: bold"/>
-                    <h:outputText  id="nome" value="#{datasBean.data.nome}" />
+                    <h:outputText id="nome" value="#{datasBean.data.nome}"/>
                 </h:panelGrid>
 
                 <h:panelGrid columns="2">
-                    <p:commandButton value="Fechar" oncomplete="PF('dlgVisu').hide();" />
-                    <p:commandButton value="Imprimir" type="button" icon="ui-icon-print" >
-                        <p:printer target="formVisu" />
+                    <p:commandButton value="Fechar" oncomplete="PF('dlgVisu').hide();"/>
+                    <p:commandButton value="Imprimir" type="button" icon="ui-icon-print">
+                        <p:printer target="formVisu"/>
                     </p:commandButton>
                 </h:panelGrid>
             </h:form>
