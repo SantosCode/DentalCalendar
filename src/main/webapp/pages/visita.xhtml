@@ -72,10 +72,10 @@
                         <h:outputText value="#{visita.agenda.dentista.nome}"/>
                     </p:column>
 
-                    <p:column headerText="E-Mail" filterBy="#{visita.email}"
-                              sortBy="#{visita.email}" filterMatchMode="contains">
+                    <p:column headerText="E-Mail" filterBy="#{visita.emailStr}"
+                              sortBy="#{visita.emailStr}" filterMatchMode="contains">
                         <p:selectBooleanButton onLabel="Enviado" offLabel="Não Enviado"
-                                               value="#{visita.email}" disabled="true" converter="javax.faces.Boolean"/>
+                                               value="#{visita.email}" disabled="true" label="#{visita.emailStr}"/>
                     </p:column>
 
                     <p:column headerText="Opções" exportable="false">

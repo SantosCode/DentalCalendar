@@ -5,10 +5,6 @@
  */
 package br.com.nfsconsultoria.dentalcalendar.domain;
 
-
-import org.webx.easyreport.annotations.ReportColumn;
-import org.webx.easyreport.classTypes.Classes;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -23,60 +19,46 @@ import javax.persistence.ManyToOne;
 public class Dentista extends GenericDomain{
     
     @Column(nullable = false, length = 45, unique = true)
-    @ReportColumn(property = "nomme", title = "Dentista", colClass = Classes.STRING)
     private String nome;
     
     @Column(nullable = true, length = 6, unique = true)
-    @ReportColumn(property = "cro", title = "CRO-SP", colClass = Classes.STRING)
     private String cro;
     
     @Column(nullable = false, length = 15)
-    @ReportColumn(property = "telfixo", title = "Tel Fixo", colClass = Classes.STRING)
     private String telfixo;
     
     @Column(nullable = true, length = 15)
-    @ReportColumn(property = "telcel", title = "Tel Celular", colClass = Classes.STRING)
     private String telcel;
     
     @Column(nullable = true, length = 45)
-    @ReportColumn(property = "email", title = "E-Mail", colClass = Classes.STRING)
     private String email;
     
     @Column(nullable = false, length = 80)
-    @ReportColumn(property = "rua", title = "Rua", colClass = Classes.STRING)
     private String rua;
     
     @Column(nullable = true, length = 45)
-    @ReportColumn(property = "complemento", title = "Complemento", colClass = Classes.STRING)
     private String complemento;
     
     @Column(nullable = false, length = 45)
-    @ReportColumn(property = "bairro", title = "Bairro", colClass = Classes.STRING)
     private String bairro;
     
     @Column(nullable = true, length = 10)
-    @ReportColumn(property = "cep", title = "CEP", colClass = Classes.STRING)
     private String cep;
     
     @Column(nullable = false, length = 45)
-    @ReportColumn(property = "cidade", title = "Cidade", colClass = Classes.STRING)
     private String cidade;
     
     @Column(length = 2)
-    @ReportColumn(property = "diaNasc", title = "Dia Nasc", colClass = Classes.INTEGER)
     private Integer diaNasc;
     
     @Column(length = 15)
-    @ReportColumn(property = "mesNasc", title = "Mês Nasc", colClass = Classes.STRING)
     private String mesNasc;
     
     @Column
-    @ReportColumn(property = "cortesia", title = "Cortesia", colClass = Classes.STRING)
     private Boolean cortesia;
     
     @ManyToOne
     @JoinColumn(nullable = false)
-    @ReportColumn(property = "especialidade", title = "Especialidade", colClass = Classes.STRING)
     private Especial especialidade;
     
     @ManyToOne
@@ -84,27 +66,22 @@ public class Dentista extends GenericDomain{
     private Radiologia radiologia;
     
     @ManyToOne
-    @ReportColumn(property = "clinica", title = "Clinica", colClass = Classes.STRING)
     private Clinica clinica;
     
   @ManyToOne
   @JoinColumn(nullable = true)
-  @ReportColumn(property = "secretaria1", title = "Secretária", colClass = Classes.STRING)
   private Secretaria secretaria1;
   
   @ManyToOne
   @JoinColumn(nullable = true)
-  @ReportColumn(property = "secretaria2", title = "Secretária", colClass = Classes.STRING)
   private Secretaria secretaria2;
   
   @ManyToOne
   @JoinColumn(nullable = true)
-  @ReportColumn(property = "secretaria3", title = "Secretária", colClass = Classes.STRING)
   private Secretaria secretaria3;
   
   @ManyToOne
   @JoinColumn(nullable = true)
-  @ReportColumn(property = "secretaria4", title = "Secretária", colClass = Classes.STRING)
   private Secretaria secretaria4;
  
     public String getNome() {
@@ -265,5 +242,13 @@ public class Dentista extends GenericDomain{
 
     public void setClinica(Clinica clinica) {
         this.clinica = clinica;
+    }
+
+    public String getCortesiaStr(){
+        if (cortesia){
+            return "Sim";
+        } else {
+            return "Não";
+        }
     }
 }

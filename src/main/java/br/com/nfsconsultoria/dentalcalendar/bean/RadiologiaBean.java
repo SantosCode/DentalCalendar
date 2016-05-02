@@ -133,7 +133,7 @@ public class RadiologiaBean implements Serializable {
 
 		Font catFont = new Font(Font.TIMES_ROMAN, 18, Font.BOLD);
 
-		Paragraph p = new Paragraph("Relatório de Dentistas", catFont);
+		Paragraph p = new Paragraph("Relatório de Radiologias", catFont);
 		p.setAlignment(Element.ALIGN_CENTER);
 		p.setSpacingAfter(20);
 

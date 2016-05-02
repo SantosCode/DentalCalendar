@@ -54,4 +54,13 @@ public class Visita extends GenericDomain {
     public void setRepresentante(Representante representante) {
         this.representante = representante;
     }
+
+    public String getEmailStr(){
+        if (email){
+            return "Enviado";
+        } else {
+            return "Não";
+        }
+    }
+
 }

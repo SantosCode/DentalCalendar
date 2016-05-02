@@ -250,7 +250,7 @@ public class DentistaBean implements Serializable {
         pdf.addTitle("Dentistas Cadastrados");
         pdf.addCreator("NFS Consultoria");
         pdf.addSubject("Dentistas Cadastrados");
-        pdf.setPageSize(size);
+        pdf.setPageSize(PageSize.A4.rotate());
         pdf.setMarginMirroring(true);
 
         pdf.open();

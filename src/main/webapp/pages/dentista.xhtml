@@ -13,8 +13,7 @@
             <p:panel header="Dentistas">
                 <p:dataTable id="tabela" emptyMessage="Nenhum registro encontrado."
                              paginator="true" value="#{dentistaBean.dentistas}" var="dentista"
-                             rows="10" paginatorPosition="top" rendered="true" liveResize="true"
-                             tableStyle="width: auto"
+                             rows="10" paginatorPosition="top" rendered="true"
                              paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {NextPageLink} {LastPageLink}">
                     <f:facet name="header">
                         <p:commandButton value="Novo Cadastro"
@@ -49,7 +48,8 @@
                         </h:commandLink>
                     </f:facet>
 
-                    <p:column headerText="Clinica" filterBy="#{dentista.clinica.nome}" visible="false">
+                    <p:column headerText="Clinica" filterBy="#{dentista.clinica.nome}" visible="false"
+                              filterMatchMode="contains" exportable="false">
                         <h:outputText value="#{dentista.clinica.nome}"/>
                     </p:column>
 
@@ -61,18 +61,19 @@
                     <p:column headerText="CRO"
                               filterBy="#{dentista.cro}"
                               filterMatchMode="contains"
-                              sortBy="#{dentista.cro}">
+                              sortBy="#{dentista.cro}" exportable="false">
                         <h:outputText value="#{dentista.cro}"/>
                     </p:column>
 
                     <p:column headerText="Espec"
                               filterBy="#{dentista.especialidade.descricao}"
                               filterMatchMode="contains"
-                              sortBy="#{dentista.especialidade.descricao}">
+                              sortBy="#{dentista.especialidade.descricao}" exportable="false">
                         <h:outputText value="#{dentista.especialidade.descricao}"/>
                     </p:column>
 
-                    <p:column headerText="Tel Fixo" filterBy="#{dentista.telfixo}" visible="false">
+                    <p:column headerText="Tel Fixo" filterBy="#{dentista.telfixo}" visible="false"
+                              filterMatchMode="contains">
                         <h:outputText value="#{dentista.telfixo}"/>
                     </p:column>
 
@@ -81,24 +82,28 @@
                         <h:outputText value="#{dentista.telcel}"/>
                     </p:column>
 
-                    <p:column headerText="E-Mail" filterBy="#{dentista.email}" visible="false" resizable="true">
+                    <p:column headerText="E-Mail" filterBy="#{dentista.email}" visible="false" resizable="true"
+                              filterMatchMode="contains" exportable="false">
                         <h:outputText value="#{dentista.email}"/>
                     </p:column>
 
-                    <p:column headerText="Rua" filterBy="#{dentista.rua}" visible="false" resizable="true">
+                    <p:column headerText="Rua" filterBy="#{dentista.rua}" visible="false" resizable="true"
+                              filterMatchMode="contains">
                         <h:outputText value="#{dentista.rua}"/>
                     </p:column>
 
-                    <p:column headerText="Complemento" filterBy="#{dentista.complemento}" visible="false">
+                    <p:column headerText="Complemento" filterBy="#{dentista.complemento}" visible="false"
+                              filterMatchMode="contains">
                         <h:outputText value="#{dentista.complemento}"/>
                     </p:column>
 
                     <p:column headerText="Bairro" filterBy="#{dentista.bairro}"
-                              filterMatchMode="contains" sortBy="#{dentista.bairro}">
+                              filterMatchMode="contains" sortBy="#{dentista.bairro}" filterable="true">
                         <h:outputText value="#{dentista.bairro}"/>
                     </p:column>
 
-                    <p:column headerText="CEP" filterBy="#{dentista.cep}" visible="false">
+                    <p:column headerText="CEP" filterBy="#{dentista.cep}" visible="false"
+                              filterMatchMode="contains">
                         <h:outputText value="#{dentista.cep}"/>
                     </p:column>
 
@@ -107,19 +112,22 @@
                         <h:outputText value="#{dentista.cidade}"/>
                     </p:column>
 
-                    <p:column headerText="Nascimento" filterBy="#{dentista.diaNasc}" visible="false">
+                    <p:column headerText="Nascimento" filterBy="#{dentista.diaNasc}" visible="false"
+                              filterMatchMode="contains" exportable="false">
                         <h:outputText value="#{dentista.diaNasc}/#{dentista.mesNasc}"/>
                     </p:column>
 
-                    <p:column headerText="Secretaria" filterBy="#{dentista.secretaria1}" visible="false">
+                    <p:column headerText="Secretaria" filterBy="#{dentista.secretaria1}" visible="false"
+                              filterMatchMode="contains">
                         <h:outputText
                                 value="#{dentista.secretaria1.nome}  #{dentista.secretaria2.nome}  #{dentista.secretaria3.nome}  #{dentista.secretaria4.nome}"/>
                     </p:column>
 
-                    <p:column headerText="Cortesia" filterBy="#{dentista.cortesia}"
-                              filterMatchMode="contains" sortBy="#{dentista.cortesia}">
+                    <p:column headerText="Cortesia" filterBy="#{dentista.cortesiaStr}"
+                              filterMatchMode="contains" sortBy="#{dentista.cortesiaStr}" exportable="false">
                         <p:selectBooleanButton value="#{dentista.cortesia}" onLabel="Sim"
-                                               offLabel="Não" disabled="true"/>
+                                               offLabel="Não" disabled="true"
+                                               label="#{dentista.cortesiaStr}"/>
                     </p:column>
 
                     <p:column headerText="Opções" exportable="false">
