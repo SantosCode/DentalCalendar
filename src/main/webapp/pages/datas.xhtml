@@ -88,7 +88,7 @@
 
                         <p:commandButton icon="ui-icon-info"
                                          actionListener="#{datasBean.editar}"
-                                         update=":mensagem :formVisu:painel" oncomplete="PF('dlgVisu').show();">
+                                         update=":mensagem :formVisu:vpainel" oncomplete="PF('dlgVisu').show();">
                             <f:attribute name="dataSelecionada" value="#{data}"/>
                             <f:actionListener
                                     type="org.omnifaces.eventlistener.ResetInputAjaxActionListener"/>
@@ -158,18 +158,18 @@
                   showEffect="clip" responsive="true" dynamic="true"
                   fitViewport="true" positionType="absolute">
             <h:form id="formVisu">
-                <h:panelGrid id="painel" columns="2">
+                <h:panelGrid id="vpainel" columns="2">
                     <p:outputLabel for="dia" value="Dia:" style="font-weight: bold"/>
                     <p:outputLabel id="dia" value="#{datasBean.data.dia}"/>
 
                     <p:outputLabel for="mes" value="Mes:" style="font-weight: bold"/>
                     <p:outputLabel id="mes" value="#{datasBean.data.mes}"/>
 
-                    <p:outputLabel for="evento" value="Evento:" style="font-weight: bold"/>
-                    <h:outputText id="evento" value="#{datasBean.data.evento}"/>
+                    <p:outputLabel for="vevento" value="Evento:" style="font-weight: bold"/>
+                    <h:outputText id="vevento" value="#{datasBean.data.evento}"/>
 
-                    <p:outputLabel for="nome" value="Nome:" style="font-weight: bold"/>
-                    <h:outputText id="nome" value="#{datasBean.data.nome}"/>
+                    <p:outputLabel for="vnome" value="Nome:" style="font-weight: bold"/>
+                    <h:outputText id="vnome" value="#{datasBean.data.nome}"/>
                 </h:panelGrid>
 
                 <h:panelGrid columns="2">
